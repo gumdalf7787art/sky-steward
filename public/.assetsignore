@@ -1,0 +1,2 @@
+# Cloudflare Wrangler Assets Ignore
+# This file is empty to allow uploading _worker.js while suppressing the security warning.
