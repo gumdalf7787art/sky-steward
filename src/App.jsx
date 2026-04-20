@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import CategoryList from './pages/CategoryList';
 import MyPage from './pages/MyPage';
-// import BusinessRegister from './pages/BusinessRegister';
+import BusinessRegister from './pages/BusinessRegister';
 // import ChurchRegister from './pages/ChurchRegister';
 // import AdminDashboard from './pages/AdminDashboard';
 
@@ -22,6 +22,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/category/:categoryId" element={<CategoryList />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/business-register" element={<BusinessRegister />} />
           </Routes>
         </div>
       </BrowserRouter>
