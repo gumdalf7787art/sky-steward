@@ -11,6 +11,6 @@ database_name = "sky-db"
 database_id = "xxx-xxx-xxx" # Replace with actual ID later
 preview_database_id = "DB" # Use a local database for Wrangler dev
 
-# [[r2_buckets]]
-# binding = "MY_BUCKET"
-# bucket_name = "sky-media"
+[[r2_buckets]]
+binding = "MY_BUCKET"
+bucket_name = "sky-media"
