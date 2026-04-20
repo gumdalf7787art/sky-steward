@@ -13,7 +13,13 @@ async function hashPassword(password) {
 
 // Utils: JWT
 function base64url(source) {
-    let encoded = btoa(source);
+    // UTF-8 문자열을 바이트 배열로 변환한 뒤 btoa를 적용하여 한글을 지원합니다.
+    const bytes = new TextEncoder().encode(source);
+    let binary = "";
+    for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    let encoded = btoa(binary);
     encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     return encoded;
 }
