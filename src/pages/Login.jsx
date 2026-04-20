@@ -41,8 +41,9 @@ const Login = () => {
         token: data.token
       });
       
-      // Save token to localStorage
+      // Save to localStorage for persistence
       localStorage.setItem('sky_token', data.token);
+      localStorage.setItem('sky_user', JSON.stringify(data.user));
 
       navigate('/');
     } catch (err) {
