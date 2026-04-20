@@ -8,7 +8,7 @@ directory = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "sky-db"
-database_id = "xxx-xxx-xxx" # Replace with actual ID later
+database_id = "d14b7c0f-d1b1-4e8b-96fd-083c66a44dd0"
 preview_database_id = "DB" # Use a local database for Wrangler dev
 
 [[r2_buckets]]
