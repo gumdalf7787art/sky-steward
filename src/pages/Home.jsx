@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import { useRecoilValue } from 'recoil';
-import { authState } from '../atoms/auth';
 
 const Home = () => {
-  const auth = useRecoilValue(authState);
   const [currentBanner, setCurrentBanner] = useState(0);
 
   const banners = [
@@ -223,7 +220,7 @@ const Home = () => {
           </div>
         </section>
       </main>
-      <BottomNav isLoggedIn={auth.isAuthenticated} />
+      <BottomNav />
     </>
   );
 };
