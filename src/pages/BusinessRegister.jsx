@@ -454,6 +454,10 @@ const BusinessRegister = () => {
                                 <span>키워드 입력</span>
                                 <span className="text-[10px] text-slate-400">{formData.keywords.length}/10</span>
                             </label>
+                            <p className="text-[11px] text-slate-400 font-medium ml-1 leading-relaxed">
+                                성도들이 검색할만한 키워드를 모두 넣으세요.<br/>
+                                <span className="text-primary/70">예: 식당, 카페, 미용실, 운동, 맛집 등</span> 검색할만한 단어를 넣으셔야 검색에 유리해집니다.
+                            </p>
                             <div className="flex flex-wrap gap-2 mb-2 min-h-[44px] p-2 rounded-2xl bg-slate-50/50 border border-slate-100">
                                 {formData.keywords.map(kw => (
                                     <span key={kw} className="flex items-center gap-1 px-3 py-1 bg-white text-primary text-[12px] font-bold rounded-full border border-primary/20 hover:border-primary/50 transition-all shadow-sm">
