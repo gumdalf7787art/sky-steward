@@ -15,6 +15,7 @@ const BusinessDetail = () => {
     const [activeTab, setActiveTab] = useState('home');
     const [showMapModal, setShowMapModal] = useState(false);
     const [showMenuBoard, setShowMenuBoard] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
     // Review Modal States
     const [showReviewModal, setShowReviewModal] = useState(false);
@@ -189,23 +190,67 @@ const BusinessDetail = () => {
                 </div>
             </div>
 
-            {/* 1. TOP: Image Swiper Section (Relative) */}
-            <div className="max-w-md mx-auto aspect-[4/3] bg-slate-200 relative overflow-hidden group">
-                {images.length > 0 ? (
-                    <img 
-                        src={`/api/media/${images[0]}`} 
-                        alt={data.business.name} 
-                        className="w-full h-full object-cover"
-                    />
-                ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                        <span className="material-symbols-outlined text-[48px]">image</span>
-                        <p className="text-xs font-bold mt-2 italic opacity-60">이미지가 없습니다</p>
+            {/* 1. TOP: Image Swiper Section (Enhanced) */}
+            <div className="max-w-md mx-auto relative group">
+                <div className="aspect-[4/3] bg-slate-200 relative overflow-hidden">
+                    {images.length > 0 ? (
+                        <>
+                            <img 
+                                src={`/api/media/${images[currentImageIndex]}`} 
+                                alt={data.business.name} 
+                                className="w-full h-full object-cover transition-all duration-300"
+                            />
+                            
+                            {/* Navigation Arrows */}
+                            {images.length > 1 && (
+                                <>
+                                    <button 
+                                        onClick={() => setCurrentImageIndex(prev => (prev === 0 ? images.length - 1 : prev - 1))}
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
+                                    >
+                                        <span className="material-symbols-outlined">chevron_left</span>
+                                    </button>
+                                    <button 
+                                        onClick={() => setCurrentImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1))}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
+                                    >
+                                        <span className="material-symbols-outlined">chevron_right</span>
+                                    </button>
+                                </>
+                            )}
+                        </>
+                    ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                            <span className="material-symbols-outlined text-[48px]">image</span>
+                            <p className="text-xs font-bold mt-2 italic opacity-60">이미지가 없습니다</p>
+                        </div>
+                    )}
+                    
+                    <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest uppercase">
+                    {currentImageIndex + 1} / {images.length || 1}
+                    </div>
+                </div>
+
+                {/* Thumbnail List (Horizontal Scroll) */}
+                {images.length > 1 && (
+                    <div className="bg-white border-b border-slate-100 px-4 py-3">
+                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide no-scrollbar">
+                            {images.map((img, index) => (
+                                <div 
+                                    key={index}
+                                    onClick={() => setCurrentImageIndex(index)}
+                                    className={`w-16 h-16 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer transition-all ${
+                                        currentImageIndex === index 
+                                            ? 'ring-2 ring-primary ring-offset-2 scale-105 shadow-md' 
+                                            : 'opacity-50 grayscale-[50%] hover:opacity-100'
+                                    }`}
+                                >
+                                    <img src={`/api/media/${img}`} className="w-full h-full object-cover" alt={`썸네일 ${index + 1}`} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
-                <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest uppercase">
-                   1 / {images.length || 1}
-                </div>
             </div>
 
             {/* 2. MIDDLE: Tab Bar (Sticky below Action Bar) */}
