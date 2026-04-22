@@ -18,15 +18,19 @@ export async function onRequestPost(context) {
     try {
         const formData = await request.formData();
         const name = formData.get("name");
+        const ceoName = formData.get("ceo_name");
         const bizNo = formData.get("biz_no");
         const category = formData.get("category");
         const phone = formData.get("phone");
+        const showPhone = formData.get("show_phone") === "true" ? 1 : 0;
         const address = formData.get("address");
         const churchId = formData.get("church_id");
-        const imageFile = formData.get("image"); // This should be a File object
+        const keywords = formData.get("keywords"); // Expecting JSON string
+        const description = formData.get("description");
+        const imageFile = formData.get("image");
 
-        if (!name || !bizNo || !category) {
-            return new Response(JSON.stringify({ error: "필수 항목을 입력해주세요." }), { status: 400 });
+        if (!name || !bizNo || !category || !ceoName || !phone) {
+            return new Response(JSON.stringify({ error: "필수 항목(* 표시)을 모두 입력해주세요." }), { status: 400 });
         }
 
         // 1. Check if biz_no already exists
@@ -51,11 +55,10 @@ export async function onRequestPost(context) {
 
         const businessId = crypto.randomUUID();
 
-        // 3. Start Transaction-like sequence (D1 doesn't support full multi-statement transactions in all environments easily via bind, so we do sequential)
-        // First insert business
+        // 3. Insert business with new fields
         await env.DB.prepare(`
-            INSERT INTO businesses (id, user_id, church_id, biz_no, name, category, address, phone, images)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO businesses (id, user_id, church_id, biz_no, name, category, address, phone, images, ceo_name, show_phone, keywords, description)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).bind(
             businessId, 
             user.id, 
@@ -65,7 +68,11 @@ export async function onRequestPost(context) {
             category, 
             address || "", 
             phone || "", 
-            JSON.stringify(imageKey ? [imageKey] : [])
+            JSON.stringify(imageKey ? [imageKey] : []),
+            ceoName,
+            showPhone,
+            keywords || "[]",
+            description || ""
         ).run();
 
         // Then update user role
