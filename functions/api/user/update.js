@@ -48,6 +48,8 @@ export async function onRequestPost({ request, env }) {
                 try {
                     // Base64를 바이너리로 변환
                     const base64Data = profile_image.split(',')[1];
+                    if (!base64Data) throw new Error("이미지 데이터가 올바르지 않습니다.");
+                    
                     const binaryString = atob(base64Data);
                     const bytes = new Uint8Array(binaryString.length);
                     for (let i = 0; i < binaryString.length; i++) {
@@ -60,16 +62,6 @@ export async function onRequestPost({ request, env }) {
                             status: 500,
                             headers: { 'Content-Type': 'application/json' }
                         });
-                    }
-
-                    // Base64를 바이너리로 변환
-                    const base64Data = profile_image.split(',')[1];
-                    if (!base64Data) throw new Error("이미지 데이터가 올바르지 않습니다.");
-                    
-                    const binaryString = atob(base64Data);
-                    const bytes = new Uint8Array(binaryString.length);
-                    for (let i = 0; i < binaryString.length; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
                     }
 
                     // R2에 저장 (avatars/유저ID.jpg)
