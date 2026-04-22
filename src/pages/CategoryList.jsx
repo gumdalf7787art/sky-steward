@@ -7,6 +7,9 @@ const CategoryList = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   
+  const [businesses, setBusinesses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   // URL id to Korean Title mapping mockup
   const getCategoryTitle = (id) => {
     const titles = {
@@ -46,51 +49,38 @@ const CategoryList = () => {
   const [selectedProvince, setSelectedProvince] = useState('전체');
   const [selectedDistrict, setSelectedDistrict] = useState('전체');
 
+  // Fetch real data from API
+  useEffect(() => {
+    const fetchBusinesses = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/business/category?id=${categoryId}`);
+        const data = await res.json();
+        if (data.success) {
+            setBusinesses(data.businesses);
+        }
+      } catch (err) {
+        console.error("Failed to fetch businesses", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBusinesses();
+  }, [categoryId]);
+
   // Handle Province Change
   const handleProvinceChange = (e) => {
     setSelectedProvince(e.target.value);
     setSelectedDistrict('전체'); // Reset sub-district
   };
 
-  // Mock Data for Horizontal Cards (Updating with real IDs for testing)
-  const mockBusinesses = [
-    {
-      id: 'sample-biz-bakery',
-      name: '은혜로운 베이커리',
-      church: '빛가온교회',
-      location: '서울 서초구 서초대로 321',
-      region: '서울',
-      tags: ['#천연발효', '#단체주문환영'],
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7dusOH9hUFr3oPfsKxNvuSyTeiDGrh7bikSBXpCRDiteKWfCyGZq-c8_kSiNfQt2KWN8b-8QpXIa1DHyP0dn5QEw2yFLu9cTmDSECGyIhLFAia_-F-1wAuim4fLFPyw7YwRQk50-6MGCmcFER9epQSChF4pbQiusxCPFa-POI4QEuWyLXCsG7gqB7aa_RHs3vDVXQlf329hwr3wagbjBeXvSrM-4Gx8vdi2o0M0CDF67FDjUZvUQW-Fynz8fmQDb_WXQn80WL-d4d'
-    },
-    {
-      id: '7bbb8867-d638-4007-b1b0-315bf1955a96',
-      name: '피지오컴퍼니3',
-      church: '빛가온교회',
-      location: '경기 성남시 분당구 수내동',
-      region: '경기',
-      tags: ['#재활전문', '#체형교정'],
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCWb8M9Wc7b-_fU8hKzHw-KkZ7Q_rR5N-qXlZ6zQhKqC5D8j4L-x1kC9H8zY8T0J6G-O2Fw5vW8xUqL7N_mX2GZ6H4W_qT8xUqL7N_mX2GZ6H4W_qT8xUqL7N_mX2GZ6H4' 
-    },
-    {
-      id: 'sample-biz-math',
-      name: '하늘 꿈 수학학원',
-      church: '빛가온교회',
-      location: '서울 위례대로 777',
-      region: '서울',
-      tags: ['#초중고전문', '#1:1코칭'],
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBHY02ixP4AbP_jMJFLbgZu0GPTfUjig3tf4nhvfq4j-hzgIaTNB_1xdGjh54I4ITdVukS8FnspgkzpZpMOJerXuoPbU-lpeM3sHSRdnIPwUc0vkzeoKEbtVAJqz2fSBrLW1txesPOPOP1Koug8JS4ReMKJKf6DzLu1Lw6JjOPKUlpj_xDbqm9Csn_viPAw-IDjxB02ImhKBPFtjZ4YC9KtAYMDpBhHD1o52PUSrCgfbpjv8K9ANUCzu9UnGFjcknywFjF5S03vln9s'
-    }
-  ];
-
-  const filteredBusinesses = mockBusinesses.filter(b => {
+  const filteredBusinesses = businesses.filter(b => {
     // 1단계 도 필터
-    if (selectedProvince !== '전체' && b.region !== selectedProvince) return false;
+    if (selectedProvince !== '전체' && !b.address?.includes(selectedProvince)) return false;
     
     // 2단계 시/군/구 필터 (위치 문자열에 포함되는지 체크)
     if (selectedProvince !== '전체' && selectedDistrict !== '전체') {
-      // "경기 성남시 분당구 수내동" includes "성남시 분당구"
-      if (!b.location.includes(selectedDistrict)) return false;
+      if (!b.address?.includes(selectedDistrict)) return false;
     }
     return true;
   });
@@ -140,7 +130,12 @@ const CategoryList = () => {
 
         {/* Horizontal Business List */}
         <div className="px-margin-mobile flex flex-col gap-4">
-          {filteredBusinesses.map((biz) => (
+          {loading ? (
+            <div className="py-20 text-center space-y-4">
+                <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto"></div>
+                <p className="text-sm text-slate-400 font-bold">사업장을 불러오는 중입니다...</p>
+            </div>
+          ) : filteredBusinesses.map((biz) => (
             <div 
               key={biz.id} 
               onClick={() => navigate(`/business/${biz.id}`)}
@@ -150,7 +145,7 @@ const CategoryList = () => {
               {/* Left Image Square */}
               <div className="w-[110px] min-w-[110px] h-full relative bg-gray-200 flex-shrink-0">
                 <img 
-                  src={biz.image} 
+                  src={biz.images && biz.images.length > 0 ? `/api/media/${biz.images[0]}` : 'https://via.placeholder.com/150?text=No+Image'} 
                   alt={biz.name} 
                   className="w-full h-full object-cover"
                   onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image' }}
@@ -161,20 +156,20 @@ const CategoryList = () => {
               <div className="flex flex-col justify-center p-3 w-full overflow-hidden">
                 <div className="flex justify-between items-start mb-0.5">
                   <h4 className="font-headline-md text-body-lg text-on-surface truncate font-bold">{biz.name}</h4>
-                  <button className="text-outline hover:text-primary"><span className="material-symbols-outlined text-[20px]">bookmark_border</span></button>
+                  <button onClick={(e) => { e.stopPropagation(); }} className="text-outline hover:text-primary"><span className="material-symbols-outlined text-[20px]">bookmark_border</span></button>
                 </div>
                 
-                <p className="text-[12px] text-primary font-semibold mb-1 truncate">{biz.church}</p>
+                <p className="text-[12px] text-primary font-semibold mb-1 truncate">{biz.church_name}</p>
                 
                 <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">
                   <span className="material-symbols-outlined text-[14px]">location_on</span>
-                  <span className="truncate">{biz.location}</span>
+                  <span className="truncate">{biz.address}</span>
                 </div>
                 
                 <div className="flex gap-1 overflow-x-auto hide-scrollbar min-w-max">
-                  {biz.tags.map((tag, idx) => (
+                  {biz.keywords?.slice(0, 3).map((tag, idx) => (
                     <span key={idx} className="bg-surface-container px-1.5 py-0.5 rounded text-[10px] text-on-surface-variant whitespace-nowrap">
-                      {tag}
+                      #{tag}
                     </span>
                   ))}
                 </div>
