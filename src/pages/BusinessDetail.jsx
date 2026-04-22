@@ -397,19 +397,19 @@ const BusinessDetail = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Review Writing Button (Static at the bottom of review section) */}
+                    <div className="pt-8 pb-12 flex justify-center">
+                        <button 
+                            onClick={handleOpenReviewModal}
+                            className="flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-full font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all w-full max-w-[280px] justify-center"
+                        >
+                            <span className="material-symbols-outlined">edit_square</span>
+                            리뷰 작성하기
+                        </button>
+                    </div>
                 </section>
             </main>
-
-            {/* Bottom Floating Action Area */}
-            <div className="fixed bottom-24 left-0 right-0 z-40 px-6 flex justify-center pointer-events-none">
-                <button 
-                    onClick={handleOpenReviewModal}
-                    className="pointer-events-auto flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-black shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all"
-                >
-                    <span className="material-symbols-outlined">edit_square</span>
-                    리뷰 작성하기
-                </button>
-            </div>
 
             {/* Map Selection Modal */}
             {showMapModal && (
