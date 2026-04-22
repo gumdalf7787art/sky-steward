@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import Home from './pages/Home';
+import ScrollToTop from './components/ScrollToTop';
 // 추후 페이지들이 추가될 예정입니다.
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -15,9 +16,12 @@ function App() {
   return (
     <RecoilRoot>
       <BrowserRouter>
+        <ScrollToTop />
         <div className="bg-background text-on-background font-body-md min-h-screen pb-24">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/search" element={<div>검색 페이지 (준비 중)</div>} />
+            <Route path="/favorites" element={<div>관심업체 페이지 (준비 중)</div>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/category/:categoryId" element={<CategoryList />} />

@@ -9,26 +9,34 @@ const Home = () => {
   const banners = [
     {
       title: "하나님 나라를 확장하는\n청지기 사업장을 응원합니다.",
-      subtitle: "우리 교회 성도들이 운영하는 신뢰할 수 있는 업체"
+      subtitle: "우리 교회 성도들이 운영하는 신뢰할 수 있는 업체",
+      color: "bg-[#1A4173]",
+      onColor: "text-white"
     },
     {
       title: "세상의 빛이 되는 일터\n하나님 나라의 가치를 경영합니다.",
-      subtitle: "정직과 사랑으로 신뢰받는 우리 교회 청지기"
+      subtitle: "정직과 사랑으로 신뢰받는 우리 교회 청지기",
+      color: "bg-[#0D9488]", // Teal
+      onColor: "text-white"
     },
     {
       title: "사랑을 나누는 소비\n성도들의 일터를 든든히 세웁니다.",
-      subtitle: "이웃 사랑의 실천, 가까운 교우의 사업장 이용부터"
+      subtitle: "이웃 사랑의 실천, 가까운 교우의 사업장 이용부터",
+      color: "bg-[#4338CA]", // Indigo
+      onColor: "text-white"
     },
     {
       title: "일터에서 시작되는 축복\n성도들의 손길로 이어집니다.",
-      subtitle: "믿음의 동역자가 운영하는 은혜로운 사업장"
+      subtitle: "믿음의 동역자가 운영하는 은혜로운 사업장",
+      color: "bg-[#D97706]", // Amber
+      onColor: "text-white"
     }
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 3500);
+    }, 4000);
     return () => clearInterval(timer);
   }, [banners.length]);
 
@@ -52,19 +60,19 @@ const Home = () => {
 
         {/* Hero Section */}
         <section className="px-margin-mobile pt-[8px] pb-[11px]">
-          <div className="relative overflow-hidden rounded-xl bg-primary text-on-primary flex flex-col justify-center p-md min-h-[140px]">
-            <div className="absolute top-0 right-0 -mr-8 -mt-8 w-40 h-40 bg-on-primary-container/20 rounded-full blur-3xl"></div>
+          <div className={`relative overflow-hidden rounded-xl ${banners[currentBanner].color} transition-colors duration-700 flex flex-col justify-center px-6 py-8 min-h-[110px]`}>
+            <div className="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             
-            <div className="relative z-10 mb-3">
+            <div className={`relative z-10 ${banners[currentBanner].onColor}`}>
               <h2 
                 key={`title-${currentBanner}`} 
-                className="font-headline-md text-headline-md mb-1 whitespace-pre-line animate-[fadeIn_0.5s_ease-out]"
+                className="font-headline-sm text-headline-sm font-bold mb-0.5 whitespace-pre-line animate-[slideInRight_0.6s_ease-out]"
               >
                 {banners[currentBanner].title}
               </h2>
               <p 
                 key={`subtitle-${currentBanner}`}
-                className="text-on-primary-container text-body-md opacity-90 animate-[fadeIn_0.5s_ease-out]"
+                className="text-label-lg font-light opacity-90 animate-[slideInRight_0.6s_ease-out_0.1s_both]"
               >
                 {banners[currentBanner].subtitle}
               </p>
@@ -217,6 +225,22 @@ const Home = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Footer Section */}
+        <section className="px-margin-mobile py-10 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col space-y-2">
+              <h4 className="text-body-lg font-bold text-slate-800 dark:text-slate-200">블루프라임</h4>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-label-lg text-slate-500 dark:text-slate-400">
+                <p>대표 : 김덕규</p>
+                <p>사업자등록번호 : 153-87-03544</p>
+              </div>
+              <p className="text-label-md text-slate-400 dark:text-slate-500 pt-4">
+                Copyright © BluePrime. All rights reserved.
+              </p>
+            </div>
           </div>
         </section>
       </main>

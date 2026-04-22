@@ -7,6 +7,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
+    emailConfirm: '',
     password: '',
     passwordConfirm: '',
     nickname: '',
@@ -22,6 +23,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Email Match Check
+    if (formData.email !== formData.emailConfirm) {
+      setError('이메일이 일치하지 않습니다.');
+      return;
+    }
     
     // Password Validation
     if (formData.password !== formData.passwordConfirm) {
@@ -50,7 +57,11 @@ const Signup = () => {
       alert('회원가입이 완료되었습니다. 로그인해주세요.');
       navigate('/login');
     } catch (err) {
-      setError(err.message);
+      if (err.message === 'Email already exists') {
+        setError('이미 가입된 이메일 입니다. 다른 이메일로 가입해주세요.');
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -98,7 +109,7 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-label-lg text-on-surface mb-1" htmlFor="email">이메일</label>
+            <label className="block text-label-lg text-on-surface mb-1" htmlFor="email">이메일 주소</label>
             <input 
               required
               id="email"
@@ -109,6 +120,25 @@ const Signup = () => {
               className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="user@example.com"
             />
+          </div>
+
+          <div>
+            <label className="block text-label-lg text-on-surface mb-1" htmlFor="emailConfirm">이메일 확인</label>
+            <input 
+              required
+              id="emailConfirm"
+              name="emailConfirm"
+              type="email" 
+              value={formData.emailConfirm}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              placeholder="위와 동일한 이메일을 입력해주세요"
+            />
+            {formData.emailConfirm && (
+              <p className={`text-[12px] mt-1.5 pl-1 font-medium ${formData.email === formData.emailConfirm ? 'text-green-600' : 'text-error'}`}>
+                {formData.email === formData.emailConfirm ? '이메일이 일치합니다.' : '이메일이 일치하지 않습니다.'}
+              </p>
+            )}
           </div>
 
           <div>
@@ -140,6 +170,11 @@ const Signup = () => {
               className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="위와 동일한 비밀번호를 입력해주세요"
             />
+            {formData.passwordConfirm && (
+              <p className={`text-[12px] mt-1.5 pl-1 font-medium ${formData.password === formData.passwordConfirm ? 'text-green-600' : 'text-error'}`}>
+                {formData.password === formData.passwordConfirm ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+              </p>
+            )}
           </div>
 
           <div>
