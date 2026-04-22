@@ -20,9 +20,9 @@ export async function onRequestGet({ request, env }) {
             SELECT b.*, c.name as church_name 
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
-            WHERE REPLACE(b.name, ' ', '') LIKE ?
+            WHERE REPLACE(b.name, ' ', '') LIKE ? OR REPLACE(b.ceo_name, ' ', '') LIKE ?
             ORDER BY b.created_at DESC
-        `).bind(searchTerm).all();
+        `).bind(searchTerm, searchTerm).all();
 
         // 2. Search by Church Name (Whitespace insensitive)
         const byChurch = await env.DB.prepare(`
@@ -42,10 +42,11 @@ export async function onRequestGet({ request, env }) {
                 REPLACE(b.description, ' ', '') LIKE ? OR 
                 REPLACE(b.category, ' ', '') LIKE ? OR 
                 REPLACE(b.keywords, ' ', '') LIKE ? OR 
-                REPLACE(c.name, ' ', '') LIKE ?
+                REPLACE(c.name, ' ', '') LIKE ? OR
+                REPLACE(b.ceo_name, ' ', '') LIKE ?
             )
             ORDER BY b.created_at DESC
-        `).bind(searchTerm, searchTerm, searchTerm, searchTerm).all();
+        `).bind(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm).all();
 
         // 4. Search Churches themselves (Whitespace insensitive)
         const byChurchList = await env.DB.prepare(`

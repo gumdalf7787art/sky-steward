@@ -322,10 +322,13 @@ const BusinessDetail = () => {
 
                         {/* Intro / Details */}
                         <div className="space-y-3">
-                            <h3 className="text-[15px] font-black text-slate-800 flex items-center gap-1.5">
-                                <span className="material-symbols-outlined text-primary text-[20px]">info</span>
-                                업체 소개
-                            </h3>
+                                <p className="text-sm font-bold text-primary flex items-center gap-1.5 leading-relaxed">
+                                    <span className="material-symbols-outlined text-[16px]">church</span>
+                                    <span>
+                                        {data.business.church_name || "소속교회 정보 없음"}
+                                        {data.business.ceo_name && <span className="text-slate-400 font-medium ml-1">({data.business.ceo_name} 대표님)</span>}
+                                    </span>
+                                </p>
                             <p className="text-sm text-slate-500 leading-relaxed font-medium">
                                 {data.business.description || "등록된 소개글이 없습니다. 하나님 나라를 꿈꾸는 정직한 청지기 사업장입니다."}
                             </p>

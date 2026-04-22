@@ -146,7 +146,9 @@ const ChurchDetail = () => {
                                         <div className="flex items-center gap-1.5 mb-1">
                                             <span className="text-[10px] font-black text-primary bg-primary/5 px-2 py-0.5 rounded-md">{biz.category}</span>
                                         </div>
-                                        <h4 className="font-black text-slate-800 truncate group-hover:text-primary transition-colors">{biz.name}</h4>
+                                        <h4 className="font-black text-slate-800 truncate group-hover:text-primary transition-colors">
+                                            {biz.name} {biz.ceo_name && <span className="text-[11px] text-slate-400 font-bold ml-1">({biz.ceo_name} 대표님)</span>}
+                                        </h4>
                                         <p className="text-[12px] text-slate-400 font-medium truncate mt-0.5">
                                             {biz.address} {biz.address_detail || ''}
                                         </p>

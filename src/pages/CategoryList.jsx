@@ -159,7 +159,9 @@ const CategoryList = () => {
                   <button onClick={(e) => { e.stopPropagation(); }} className="text-outline hover:text-primary"><span className="material-symbols-outlined text-[20px]">bookmark_border</span></button>
                 </div>
                 
-                <p className="text-[12px] text-primary font-semibold mb-1 truncate">{biz.church_name}</p>
+                <p className="text-[12px] text-primary font-semibold mb-1 truncate">
+                  {biz.church_name} {biz.ceo_name && <span className="text-slate-400 font-medium ml-1">({biz.ceo_name} 대표님)</span>}
+                </p>
                 
                 <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">
                   <span className="material-symbols-outlined text-[14px]">location_on</span>

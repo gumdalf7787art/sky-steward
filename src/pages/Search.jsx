@@ -77,7 +77,7 @@ const Search = () => {
                 <h4 className="font-black text-slate-800 truncate">{biz.name}</h4>
                 <p className="text-[12px] text-slate-500 font-medium flex items-center gap-1">
                     <span className="material-symbols-outlined text-[14px]">church</span>
-                    {biz.church_name}
+                    {biz.church_name} {biz.ceo_name && <span className="text-slate-400 font-bold ml-1">({biz.ceo_name} 대표님)</span>}
                 </p>
                 <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
                     {biz.address} {biz.address_detail || ''}

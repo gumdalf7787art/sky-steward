@@ -155,7 +155,7 @@ const Home = () => {
                 <div className="flex justify-between items-start mb-xs">
                   <div>
                     <h4 className="font-headline-md text-headline-md text-on-surface">은혜로운 베이커리</h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
+                    <p className="text-body-md text-primary font-semibold">빛가온교회 <span className="text-slate-400 font-medium ml-1">(이은혜 대표님)</span></p>
                   </div>
                   <span className="material-symbols-outlined text-outline">favorite</span>
                 </div>
@@ -183,7 +183,7 @@ const Home = () => {
                 <div className="flex justify-between items-start mb-xs">
                   <div>
                     <h4 className="font-headline-md text-headline-md text-on-surface">하늘 꿈 수학학원</h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
+                    <p className="text-body-md text-primary font-semibold">빛가온교회 <span className="text-slate-400 font-medium ml-1">(박수학 대표님)</span></p>
                   </div>
                   <span className="material-symbols-outlined text-outline">favorite</span>
                 </div>
@@ -235,7 +235,7 @@ const Home = () => {
                 </div>
                 <div className="p-3">
                   <h4 className="text-body-md font-bold text-on-surface truncate">{item.name}</h4>
-                  <p className="text-[11px] text-primary font-semibold mb-1">{item.church}</p>
+                  <p className="text-[11px] text-primary font-semibold mb-1">{item.church} (성도 대표님)</p>
                   <div className="flex items-center gap-0.5 text-outline mb-2">
                     <span className="material-symbols-outlined text-[14px]">location_on</span>
                     <span className="text-[10px] truncate">{item.loc}</span>
