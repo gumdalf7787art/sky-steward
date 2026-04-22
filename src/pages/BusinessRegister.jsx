@@ -9,6 +9,16 @@ const BusinessRegister = () => {
     const navigate = useNavigate();
     const auth = useRecoilValue(authState);
     const setAuth = useSetRecoilState(authState);
+    const [isAuthReady, setIsAuthReady] = useState(false);
+
+    useEffect(() => {
+        if (auth === undefined) return; // Wait for recoil initialization
+        if (!auth.isAuthenticated) {
+            navigate('/login');
+        } else {
+            setIsAuthReady(true);
+        }
+    }, [auth, navigate]);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -199,6 +209,13 @@ const BusinessRegister = () => {
             setLoading(false);
         }
     };
+
+    if (!isAuthReady) return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8FAFC]">
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-slate-400 font-medium">인증 정보를 확인 중입니다...</p>
+        </div>
+    );
 
     return (
         <>
