@@ -101,7 +101,7 @@ const MyPage = () => {
                   <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
                     <span className="material-symbols-outlined font-light">add_business</span>
                   </div>
-                  <span className="text-[16px] font-bold text-slate-800">사업자 등록</span>
+                  <span className="text-[16px] font-bold text-slate-800">사업체 등록</span>
                 </div>
                 <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
               </Link>
