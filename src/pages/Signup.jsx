@@ -26,17 +26,20 @@ const Signup = () => {
 
     // Email Match Check
     if (formData.email !== formData.emailConfirm) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setError('이메일이 일치하지 않습니다.');
       return;
     }
     
     // Password Validation
     if (formData.password !== formData.passwordConfirm) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setError('비밀번호가 일치하지 않습니다.');
       return;
     }
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setError('비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.');
       return;
     }
@@ -57,6 +60,7 @@ const Signup = () => {
       alert('회원가입이 완료되었습니다. 로그인해주세요.');
       navigate('/login');
     } catch (err) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       if (err.message === 'Email already exists') {
         setError('이미 가입된 이메일 입니다. 다른 이메일로 가입해주세요.');
       } else {
