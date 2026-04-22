@@ -26,7 +26,7 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ 
             success: true, 
             token,
-            user: { id: user.id, email: user.email, role: user.role, nickname: user.nickname }
+            user: { id: user.id, email: user.email, role: user.role, nickname: user.nickname, profile_image: user.profile_image }
         }), { status: 200 });
 
     } catch (e) {
