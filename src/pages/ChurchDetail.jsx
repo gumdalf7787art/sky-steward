@@ -124,7 +124,7 @@ const ChurchDetail = () => {
                                 <div 
                                     key={biz.id}
                                     onClick={() => navigate(`/business/${biz.id}`)}
-                                    className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 cursor-pointer hover:shadow-xl hover:border-transparent transition-all active:scale-[0.98] group"
+                                    className="bg-white border border-slate-200 rounded-3xl p-4 flex gap-4 cursor-pointer hover:shadow-xl hover:border-transparent transition-all active:scale-[0.98] group"
                                 >
                                     <div className="w-20 h-20 bg-slate-50 rounded-2xl overflow-hidden flex-shrink-0 border border-slate-50">
                                         {biz.images ? (

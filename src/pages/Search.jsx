@@ -61,7 +61,7 @@ const Search = () => {
     const BusinessCard = ({ biz }) => (
         <div 
             onClick={() => navigate(`/business/${biz.id}`)}
-            className="bg-white border border-slate-100 rounded-2xl p-4 flex gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+            className="bg-white border border-slate-200 rounded-2xl p-4 flex gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
         >
             <div className="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0">
                 {biz.images ? (
@@ -89,7 +89,7 @@ const Search = () => {
         return (
             <div 
                 onClick={() => navigate(`/church/${church.id}`)}
-                className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+                className="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
             >
                 <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
                     {churchImages.length > 0 ? (
