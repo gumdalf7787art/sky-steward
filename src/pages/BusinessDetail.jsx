@@ -1,38 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { authState } from '../atoms/auth';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
 const BusinessDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const auth = useRecoilValue(authState);
+    
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('home');
     const [showMapModal, setShowMapModal] = useState(false);
+    
+    // Review Modal States
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [submittingReview, setSubmittingReview] = useState(false);
+    const [newRating, setNewRating] = useState(5);
+    const [newComment, setNewComment] = useState('');
 
     // Refs for sequential scroll
     const homeRef = useRef(null);
     const menuRef = useRef(null);
     const reviewRef = useRef(null);
 
-    useEffect(() => {
-        const fetchDetail = async () => {
-            try {
-                const res = await fetch(`/api/business/${id}`);
-                const json = await res.json();
-                if (json.success) {
-                    setData(json);
-                }
-            } catch (err) {
-                console.error("Failed to fetch business detail", err);
-            } finally {
-                setLoading(false);
+    const fetchDetail = useCallback(async () => {
+        try {
+            const res = await fetch(`/api/business/${id}`);
+            const json = await res.json();
+            if (json.success) {
+                setData(json);
             }
-        };
+        } catch (err) {
+            console.error("Failed to fetch business detail", err);
+        } finally {
+            setLoading(false);
+        }
+    }, [id]);
+
+    useEffect(() => {
         fetchDetail();
         window.scrollTo(0, 0);
-    }, [id]);
+    }, [fetchDetail]);
 
     const scrollToSection = (ref, tabName) => {
         setActiveTab(tabName);
@@ -90,6 +101,57 @@ const BusinessDetail = () => {
         setShowMapModal(false);
     };
 
+    const handleOpenReviewModal = () => {
+        if (!auth.isAuthenticated) {
+            if (confirm("리뷰를 작성하려면 로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                navigate('/login');
+            }
+            return;
+        }
+        setShowReviewModal(true);
+    };
+
+    const handleSubmitReview = async () => {
+        if (!newComment.trim()) {
+            alert("리뷰 내용을 입력해 주세요.");
+            return;
+        }
+
+        setSubmittingReview(true);
+        try {
+            const res = await fetch('/api/reviews', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.token}`
+                },
+                body: JSON.stringify({
+                    business_id: id,
+                    rating: newRating,
+                    comment: newComment
+                })
+            });
+
+            const result = await res.json();
+            if (result.success) {
+                alert("리뷰가 소중하게 등록되었습니다. 감사합니다!");
+                setShowReviewModal(false);
+                setNewComment('');
+                setNewRating(5);
+                fetchDetail(); // Refresh data
+                // Scroll to review section to see the new review
+                setTimeout(() => scrollToSection(reviewRef, 'review'), 500);
+            } else {
+                alert(result.error || "리뷰 등록 중 오류가 발생했습니다.");
+            }
+        } catch (err) {
+            console.error("Failed to submit review", err);
+            alert("서버 통신 오류가 발생했습니다.");
+        } finally {
+            setSubmittingReview(false);
+        }
+    };
+
     if (loading) return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
             <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
@@ -108,7 +170,7 @@ const BusinessDetail = () => {
     const images = data.business.images ? JSON.parse(data.business.images) : [];
     
     return (
-        <div className="bg-slate-50 min-h-screen pb-32 relative">
+        <div className="bg-slate-50 min-h-screen pb-40 relative">
             <Header />
             
             {/* Sticky Action Bar */}
@@ -308,7 +370,7 @@ const BusinessDetail = () => {
                                             <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center text-slate-300 font-black text-xs border border-slate-50 shadow-sm">
                                                 {review.user_image ? (
                                                     <img src={`/api/media/${review.user_image}`} className="w-full h-full object-cover" />
-                                                ) : review.user_nickname?.charAt(0)}
+                                                ) : (review.user_nickname?.charAt(0) || "?")}
                                             </div>
                                             <div className="space-y-0.5">
                                                 <div className="flex items-center gap-2">
@@ -337,6 +399,17 @@ const BusinessDetail = () => {
                     </div>
                 </section>
             </main>
+
+            {/* Bottom Floating Action Area */}
+            <div className="fixed bottom-24 left-0 right-0 z-40 px-6 flex justify-center pointer-events-none">
+                <button 
+                    onClick={handleOpenReviewModal}
+                    className="pointer-events-auto flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-black shadow-2xl shadow-primary/40 hover:scale-105 active:scale-95 transition-all"
+                >
+                    <span className="material-symbols-outlined">edit_square</span>
+                    리뷰 작성하기
+                </button>
+            </div>
 
             {/* Map Selection Modal */}
             {showMapModal && (
@@ -386,6 +459,71 @@ const BusinessDetail = () => {
                             >
                                 취소
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Review Writing Modal */}
+            {showReviewModal && (
+                <div className="fixed inset-0 z-[100] flex items-end justify-center px-4 pb-10 sm:items-center sm:p-0">
+                    <div 
+                        className="fixed inset-0 transition-opacity bg-slate-900/40 backdrop-blur-sm" 
+                        onClick={() => !submittingReview && setShowReviewModal(false)}
+                    ></div>
+                    <div className="relative w-full max-w-sm overflow-hidden transition-all transform bg-white rounded-[2.5rem] shadow-2xl animate-[slideInUp_0.3s_ease-out]">
+                        <div className="px-6 pt-8 pb-10 space-y-6">
+                            <div className="space-y-1 text-center">
+                                <h3 className="text-xl font-black text-slate-900 leading-none">리뷰 작성하기</h3>
+                                <p className="text-[13px] text-slate-400 font-bold tracking-tight">이용 경험을 공유해 주세요!</p>
+                            </div>
+                            
+                            {/* Star Rating Selector */}
+                            <div className="flex justify-center gap-2 py-2">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <button 
+                                        key={star} 
+                                        onClick={() => setNewRating(star)}
+                                        className="focus:outline-none active:scale-125 transition-transform"
+                                    >
+                                        <span className={`material-symbols-outlined text-[40px] ${star <= newRating ? 'text-amber-400 fill-1' : 'text-slate-100'}`}>
+                                            star
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="space-y-4">
+                                <textarea 
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    placeholder="사장님과 다른 성도님들께 남기고 싶은 한마디!"
+                                    className="w-full h-32 p-4 bg-slate-50 rounded-3xl border-none focus:ring-2 focus:ring-primary/20 text-sm font-medium resize-none placeholder:text-slate-300"
+                                />
+                                <div className="flex gap-2">
+                                    <button 
+                                        disabled={submittingReview}
+                                        onClick={() => setShowReviewModal(false)}
+                                        className="flex-1 py-4 bg-slate-100 text-slate-500 rounded-2xl font-black text-[13px] active:scale-95 transition-all"
+                                    >
+                                        취소
+                                    </button>
+                                    <button 
+                                        disabled={submittingReview}
+                                        onClick={handleSubmitReview}
+                                        className="flex-[2] py-4 bg-primary text-white rounded-2xl font-black text-[13px] active:scale-95 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+                                    >
+                                        {submittingReview ? (
+                                            <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                        ) : (
+                                            <>
+                                                <span className="material-symbols-outlined text-[18px]">done_all</span>
+                                                등록하기
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
