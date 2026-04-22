@@ -17,6 +17,25 @@ export async function onRequestPost(context) {
 
     try {
         const formData = await request.formData();
+        const businessId = formData.get("id");
+        
+        if (!businessId) {
+            return new Response(JSON.stringify({ error: "사업체 ID가 누락되었습니다." }), { status: 400 });
+        }
+
+        // Check ownership
+        const existingRecord = await env.DB.prepare("SELECT user_id FROM businesses WHERE id = ?")
+            .bind(businessId)
+            .first();
+
+        if (!existingRecord) {
+            return new Response(JSON.stringify({ error: "사업체를 찾을 수 없습니다." }), { status: 404 });
+        }
+
+        if (existingRecord.user_id !== user.id) {
+            return new Response(JSON.stringify({ error: "본인의 사업체만 수정할 수 있습니다." }), { status: 403 });
+        }
+
         const name = formData.get("name");
         const ceoName = formData.get("ceo_name");
         const bizNo = formData.get("biz_no");
@@ -25,10 +44,9 @@ export async function onRequestPost(context) {
         const showPhone = formData.get("show_phone") === "true" ? 1 : 0;
         const address = formData.get("address");
         const churchId = formData.get("church_id");
-        const keywords = formData.get("keywords"); // Expecting JSON string
+        const keywords = formData.get("keywords");
         const description = formData.get("description");
         
-        // Social Links
         const website = formData.get("website") || "";
         const youtube = formData.get("youtube") || "";
         const blog = formData.get("blog") || "";
@@ -38,21 +56,15 @@ export async function onRequestPost(context) {
             return new Response(JSON.stringify({ error: "필수 항목(* 표시)을 모두 입력해주세요." }), { status: 400 });
         }
 
-        // 1. Check if biz_no already exists
-        const existing = await env.DB.prepare("SELECT id FROM businesses WHERE biz_no = ?")
-            .bind(bizNo)
-            .first();
+        // Handle Images
+        // existing_images_json should be an array of keys that the user wants to KEEP
+        const existingImagesJson = formData.get("existing_images") || "[]";
+        let finalImageKeys = JSON.parse(existingImagesJson);
 
-        if (existing) {
-            return new Response(JSON.stringify({ error: "이미 등록된 사업자번호입니다." }), { status: 400 });
-        }
-
-        // 2. Handle Multiple Images Upload to R2
-        const imageFiles = formData.getAll("images"); // Expecting multiple files
-        const imageKeys = [];
-        
-        for (let i = 0; i < imageFiles.length; i++) {
-            const file = imageFiles[i];
+        // Upload NEW images
+        const newImageFiles = formData.getAll("new_images");
+        for (let i = 0; i < newImageFiles.length; i++) {
+            const file = newImageFiles[i];
             if (file && file.size > 0) {
                 const extension = file.name ? file.name.split('.').pop() : 'jpg';
                 const key = `businesses/${user.id}-${Date.now()}-${i}.${extension}`;
@@ -60,30 +72,28 @@ export async function onRequestPost(context) {
                 await env.MY_BUCKET.put(key, file.stream(), {
                     httpMetadata: { contentType: file.type || 'image/jpeg' }
                 });
-                imageKeys.push(key);
+                finalImageKeys.push(key);
             }
         }
 
-        const businessId = crypto.randomUUID();
+        // Final Representative Image handling (the frontend should have ordered them appropriately or we just take the first)
+        // If the user reordered, finalImageKeys should already be in the correct order.
 
-        // 3. Insert business with all fields
         await env.DB.prepare(`
-            INSERT INTO businesses (
-                id, user_id, church_id, biz_no, name, category, address, phone, 
-                images, ceo_name, show_phone, keywords, description,
-                website, youtube, blog, instagram
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            UPDATE businesses SET
+                church_id = ?, biz_no = ?, name = ?, category = ?, address = ?, phone = ?, 
+                images = ?, ceo_name = ?, show_phone = ?, keywords = ?, description = ?,
+                website = ?, youtube = ?, blog = ?, instagram = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ? AND user_id = ?
         `).bind(
-            businessId, 
-            user.id, 
             churchId || null, 
             bizNo, 
             name, 
             category, 
             address, 
             phone, 
-            JSON.stringify(imageKeys),
+            JSON.stringify(finalImageKeys),
             ceoName,
             showPhone,
             keywords || "[]",
@@ -91,18 +101,14 @@ export async function onRequestPost(context) {
             website,
             youtube,
             blog,
-            instagram
+            instagram,
+            businessId,
+            user.id
         ).run();
-
-        // Then update user role
-        await env.DB.prepare("UPDATE users SET role = 'BIZ' WHERE id = ?")
-            .bind(user.id)
-            .run();
 
         return new Response(JSON.stringify({ 
             success: true, 
-            message: "사업체 등록이 완료되었습니다.",
-            business_id: businessId
+            message: "사업체 정보가 수정되었습니다."
         }), {
             headers: { "Content-Type": "application/json" }
         });

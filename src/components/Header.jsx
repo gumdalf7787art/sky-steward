@@ -1,5 +1,4 @@
 import React from 'react';
-import { Menu, Church } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {

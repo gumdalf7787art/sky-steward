@@ -10,6 +10,7 @@ import CategoryList from './pages/CategoryList';
 import MyPage from './pages/MyPage';
 import ProfileEdit from './pages/ProfileEdit';
 import BusinessRegister from './pages/BusinessRegister';
+import BusinessEdit from './pages/BusinessEdit';
 import BusinessManage from './pages/BusinessManage';
 // import ChurchRegister from './pages/ChurchRegister';
 // import AdminDashboard from './pages/AdminDashboard';
@@ -30,6 +31,7 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/profile-edit" element={<ProfileEdit />} />
             <Route path="/mypage/business-register" element={<BusinessRegister />} />
+            <Route path="/mypage/business-edit/:businessId" element={<BusinessEdit />} />
             <Route path="/mypage/business-manage" element={<BusinessManage />} />
           </Routes>
         </div>

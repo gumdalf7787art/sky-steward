@@ -127,9 +127,12 @@ const BusinessManage = () => {
                                 </div>
                                 
                                 <div className="flex gap-2">
-                                    <button className="flex-1 py-3 bg-slate-50 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-100 transition-colors">
+                                    <Link 
+                                        to={`/mypage/business-edit/${biz.id}`}
+                                        className="flex-1 py-3 bg-slate-50 text-slate-600 rounded-xl font-bold text-xs hover:bg-slate-100 transition-colors flex items-center justify-center"
+                                    >
                                         관리/수정
-                                    </button>
+                                    </Link>
                                     <button className="w-12 h-11 flex items-center justify-center bg-rose-50 text-rose-400 rounded-xl hover:bg-rose-100 transition-colors">
                                         <span className="material-symbols-outlined text-[20px]">delete</span>
                                     </button>
