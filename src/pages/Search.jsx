@@ -79,6 +79,9 @@ const Search = () => {
                     <span className="material-symbols-outlined text-[14px]">church</span>
                     {biz.church_name}
                 </p>
+                <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
+                    {biz.address} {biz.address_detail || ''}
+                </p>
             </div>
         </div>
     );
@@ -100,7 +103,7 @@ const Search = () => {
                 </div>
                 <div className="flex flex-col justify-center overflow-hidden">
                     <h4 className="font-black text-slate-800 truncate">{church.name}</h4>
-                    <p className="text-[12px] text-slate-400 font-medium truncate">{church.address || "주소 정보 없음"}</p>
+                    <p className="text-[12px] text-slate-400 font-medium truncate">{church.address} {church.address_detail || ''}</p>
                 </div>
                 <span className="material-symbols-outlined text-slate-300 ml-auto">chevron_right</span>
             </div>

@@ -55,6 +55,7 @@ export async function onRequestPut(context) {
         const name = formData.get("name");
         const denomination = formData.get("denomination");
         const address = formData.get("address");
+        const address_detail = formData.get("address_detail") || "";
         const phone = formData.get("phone");
         const description = formData.get("description") || "";
         const existingImagesJson = formData.get("existing_images") || "[]";
@@ -87,10 +88,10 @@ export async function onRequestPut(context) {
         // Update Church
         await env.DB.prepare(`
             UPDATE churches 
-            SET name = ?, denomination = ?, address = ?, phone = ?, description = ?, images = ?
+            SET name = ?, denomination = ?, address = ?, address_detail = ?, phone = ?, description = ?, images = ?
             WHERE id = ? AND user_id = ?
         `).bind(
-            name, denomination, address, phone, description, JSON.stringify(imageKeys),
+            name, denomination, address, address_detail, phone, description, JSON.stringify(imageKeys),
             churchId, user.id
         ).run();
 

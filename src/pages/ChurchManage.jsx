@@ -21,6 +21,7 @@ const ChurchManage = () => {
         name: '',
         denomination: '',
         address: '',
+        address_detail: '',
         phone: '',
         description: ''
     });
@@ -61,6 +62,7 @@ const ChurchManage = () => {
             name: church.name || '',
             denomination: church.denomination || '',
             address: church.address || '',
+            address_detail: church.address_detail || '',
             phone: church.phone || '',
             description: church.description || ''
         });
@@ -98,6 +100,7 @@ const ChurchManage = () => {
         formData.append('name', editForm.name);
         formData.append('denomination', editForm.denomination);
         formData.append('address', editForm.address);
+        formData.append('address_detail', editForm.address_detail);
         formData.append('phone', editForm.phone);
         formData.append('description', editForm.description);
         formData.append('existing_images', JSON.stringify(existingImages));
@@ -143,6 +146,28 @@ const ChurchManage = () => {
 
     const removeNewImage = (idx) => {
         setNewImages(prev => prev.filter((_, i) => i !== idx));
+    };
+
+    const handleAddressSearch = () => {
+        new window.daum.Postcode({
+            oncomplete: function(data) {
+                let fullAddress = data.address;
+                let extraAddress = '';
+
+                if (data.addressType === 'R') {
+                    if (data.bname !== '') extraAddress += data.bname;
+                    if (data.buildingName !== '') extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+                    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+                }
+
+                setEditForm(prev => ({ ...prev, address: fullAddress }));
+                
+                // 상세주소 입력칸으로 포커스 이동
+                setTimeout(() => {
+                    document.getElementById('address_detail').focus();
+                }, 100);
+            }
+        }).open();
     };
 
     if (loading && !isEditing) return (
@@ -204,7 +229,7 @@ const ChurchManage = () => {
                                                 <h4 className="font-bold text-slate-800 text-lg truncate">{church.name}</h4>
                                                 <span className="px-1.5 py-0.5 bg-primary/10 text-primary text-[9px] font-black rounded uppercase">{church.denomination}</span>
                                             </div>
-                                            <p className="text-[11px] text-slate-400 font-medium truncate italic">{church.address}</p>
+                                            <p className="text-[11px] text-slate-400 font-medium truncate italic">{church.address} {church.address_detail || ''}</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-2">
@@ -240,7 +265,27 @@ const ChurchManage = () => {
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">주소</label>
-                                <input required type="text" value={editForm.address} onChange={(e) => setEditForm({...editForm, address: e.target.value})} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
+                                <div className="space-y-2">
+                                    <div className="relative group" onClick={handleAddressSearch}>
+                                        <input 
+                                            required 
+                                            readOnly
+                                            type="text" 
+                                            value={editForm.address} 
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
+                                            placeholder="주소를 검색하세요" 
+                                        />
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
+                                    </div>
+                                    <input 
+                                        id="address_detail"
+                                        type="text" 
+                                        value={editForm.address_detail} 
+                                        onChange={(e) => setEditForm({...editForm, address_detail: e.target.value})} 
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                        placeholder="상세 주소 (층, 호수 등)" 
+                                    />
+                                </div>
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">연락처</label>

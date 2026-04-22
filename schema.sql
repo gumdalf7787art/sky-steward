@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS churches (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     address TEXT,
+    address_detail TEXT,
     manager_name TEXT,
     manager_email TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS businesses (
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     address TEXT,
+    address_detail TEXT,
     phone TEXT,
     show_phone INTEGER DEFAULT 1, -- 전화번호 노출 여부 (0: 숨김, 1: 노출)
     images JSON, -- Store R2 image keys as a JSON array

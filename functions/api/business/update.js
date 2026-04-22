@@ -43,6 +43,7 @@ export async function onRequestPost(context) {
         const phone = formData.get("phone");
         const showPhone = formData.get("show_phone") === "true" ? 1 : 0;
         const address = formData.get("address");
+        const address_detail = formData.get("address_detail") || "";
         const churchId = formData.get("church_id");
         const keywords = formData.get("keywords");
         const description = formData.get("description");
@@ -81,7 +82,7 @@ export async function onRequestPost(context) {
 
         await env.DB.prepare(`
             UPDATE businesses SET
-                church_id = ?, biz_no = ?, name = ?, category = ?, address = ?, phone = ?, 
+                church_id = ?, biz_no = ?, name = ?, category = ?, address = ?, address_detail = ?, phone = ?, 
                 images = ?, ceo_name = ?, show_phone = ?, keywords = ?, description = ?,
                 website = ?, youtube = ?, blog = ?, instagram = ?,
                 updated_at = CURRENT_TIMESTAMP
@@ -92,6 +93,7 @@ export async function onRequestPost(context) {
             name, 
             category, 
             address, 
+            address_detail,
             phone, 
             JSON.stringify(finalImageKeys),
             ceoName,

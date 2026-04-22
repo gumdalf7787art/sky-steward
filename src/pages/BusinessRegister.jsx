@@ -63,6 +63,7 @@ const BusinessRegister = () => {
         phone: '',
         show_phone: true,
         address: '',
+        address_detail: '',
         church_id: '',
         keywords: [],
         description: '',
@@ -273,6 +274,28 @@ const BusinessRegister = () => {
     const removeKeyword = (kw) => {
         setFormData(prev => ({ ...prev, keywords: prev.keywords.filter(k => k !== kw) }));
     };
+    
+    const handleAddressSearch = () => {
+        new window.daum.Postcode({
+            oncomplete: function(data) {
+                let fullAddress = data.address;
+                let extraAddress = '';
+
+                if (data.addressType === 'R') {
+                    if (data.bname !== '') extraAddress += data.bname;
+                    if (data.buildingName !== '') extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+                    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+                }
+
+                setFormData(prev => ({ ...prev, address: fullAddress }));
+                
+                // 상세주소 입력칸으로 포커스 이동
+                setTimeout(() => {
+                    document.getElementById('address_detail').focus();
+                }, 100);
+            }
+        }).open();
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -472,7 +495,29 @@ const BusinessRegister = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">영업장 주소 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="address" type="text" value={formData.address} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="사업체 주소를 입력하세요" />
+                            <div className="space-y-2">
+                                <div className="relative group" onClick={handleAddressSearch}>
+                                    <input 
+                                        required 
+                                        readOnly
+                                        name="address" 
+                                        type="text" 
+                                        value={formData.address} 
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
+                                        placeholder="클릭하여 주소를 검색하세요" 
+                                    />
+                                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
+                                </div>
+                                <input 
+                                    id="address_detail"
+                                    name="address_detail" 
+                                    type="text" 
+                                    value={formData.address_detail} 
+                                    onChange={handleChange} 
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                    placeholder="상세 주소를 입력하세요 (층, 호수 등)" 
+                                />
+                            </div>
                         </div>
 
                         {/* Extra Detail Info */}

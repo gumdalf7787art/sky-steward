@@ -79,6 +79,8 @@ const BusinessDetail = () => {
 
     const openMapApp = (type) => {
         const address = data.business.address;
+        const addressDetail = data.business.address_detail || '';
+        const fullAddress = `${address} ${addressDetail}`.trim();
         const name = data.business.name;
         if (!address) {
             alert("등록된 주소 정보가 없습니다.");
@@ -88,13 +90,13 @@ const BusinessDetail = () => {
         let url = "";
         switch (type) {
             case 'naver':
-                url = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`;
+                url = `https://map.naver.com/v5/search/${encodeURIComponent(fullAddress)}`;
                 break;
             case 'kakao':
-                url = `https://map.kakao.com/link/search/${encodeURIComponent(address)}`;
+                url = `https://map.kakao.com/link/search/${encodeURIComponent(fullAddress)}`;
                 break;
             case 'google':
-                url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address + " " + name)}`;
+                url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress + " " + name)}`;
                 break;
             default:
                 return;
@@ -334,7 +336,10 @@ const BusinessDetail = () => {
                                 <span className="material-symbols-outlined text-slate-400 mt-0.5">location_on</span>
                                 <div className="space-y-0.5">
                                     <p className="text-[13px] font-black text-slate-800">사업체 위치</p>
-                                    <p className="text-[12px] text-slate-500 font-medium">{data.business.address || "정보 없음"}</p>
+                                    <p className="text-[12px] text-slate-500 font-medium leading-relaxed">
+                                        {data.business.address || "정보 없음"}
+                                        {data.business.address_detail && <span className="block text-slate-400 text-[11px] mt-0.5">{data.business.address_detail}</span>}
+                                    </p>
                                 </div>
                             </div>
                             

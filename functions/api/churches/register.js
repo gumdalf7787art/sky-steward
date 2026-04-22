@@ -20,6 +20,7 @@ export async function onRequestPost(context) {
         const name = formData.get("name");
         const denomination = formData.get("denomination");
         const address = formData.get("address");
+        const address_detail = formData.get("address_detail") || "";
         const phone = formData.get("phone");
         const description = formData.get("description") || "";
         
@@ -59,14 +60,15 @@ export async function onRequestPost(context) {
         // manager_name and manager_email default to current user if needed, or null
         await env.DB.prepare(`
             INSERT INTO churches (
-                id, name, address, manager_name, manager_email, 
+                id, name, address, address_detail, manager_name, manager_email, 
                 denomination, phone, images, description, user_id
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).bind(
             churchId,
             name,
             address,
+            address_detail,
             user.nickname, // Using registrant's nickname as manager for now
             user.email,    // Using registrant's email
             denomination,

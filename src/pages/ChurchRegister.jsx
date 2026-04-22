@@ -40,6 +40,7 @@ const ChurchRegister = () => {
         name: '',
         denomination: '',
         address: '',
+        address_detail: '',
         phone: '',
         description: ''
     });
@@ -116,6 +117,29 @@ const ChurchRegister = () => {
         if (name === 'address') {
             setAddrStatus({ checked: false, loading: false, message: '', success: false });
         }
+    };
+
+    const handleAddressSearch = () => {
+        new window.daum.Postcode({
+            oncomplete: function(data) {
+                let fullAddress = data.address;
+                let extraAddress = '';
+
+                if (data.addressType === 'R') {
+                    if (data.bname !== '') extraAddress += data.bname;
+                    if (data.buildingName !== '') extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+                    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+                }
+
+                setFormData(prev => ({ ...prev, address: fullAddress }));
+                setAddrStatus({ checked: false, loading: false, message: '', success: false });
+                
+                // 상세주소 입력칸으로 포커스 이동
+                setTimeout(() => {
+                    document.getElementById('address_detail').focus();
+                }, 100);
+            }
+        }).open();
     };
 
     const handleAddrCheck = async () => {
@@ -248,11 +272,38 @@ const ChurchRegister = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">주소 <span className="text-rose-500 font-black">*</span></label>
-                            <div className="flex gap-2">
-                                <input required name="address" type="text" value={formData.address} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교회 주소를 입력하세요" />
-                                <button type="button" onClick={handleAddrCheck} disabled={addrStatus.loading || addrStatus.success} className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${addrStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95'}`}>
-                                    {addrStatus.loading ? '...' : addrStatus.success ? '확인됨' : '중복확인'}
-                                </button>
+                            <div className="space-y-2">
+                                <div className="flex gap-2">
+                                    <div className="relative flex-1 group" onClick={handleAddressSearch}>
+                                        <input 
+                                            required 
+                                            readOnly
+                                            name="address" 
+                                            type="text" 
+                                            value={formData.address} 
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-amber-500 transition-all text-slate-800 font-medium cursor-pointer" 
+                                            placeholder="주소를 검색하세요" 
+                                        />
+                                        <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
+                                    </div>
+                                    <button 
+                                        type="button" 
+                                        onClick={handleAddrCheck} 
+                                        disabled={addrStatus.loading || addrStatus.success || !formData.address} 
+                                        className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${addrStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95 disabled:opacity-50'}`}
+                                    >
+                                        {addrStatus.loading ? '...' : addrStatus.success ? '확인됨' : '중복확인'}
+                                    </button>
+                                </div>
+                                <input 
+                                    id="address_detail"
+                                    name="address_detail" 
+                                    type="text" 
+                                    value={formData.address_detail} 
+                                    onChange={handleChange} 
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" 
+                                    placeholder="상세 주소를 입력하세요 (층, 호수 등)" 
+                                />
                             </div>
                             {addrStatus.message && (
                                 <p className={`text-[11px] font-bold mt-1.5 ml-1 ${addrStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>{addrStatus.message}</p>

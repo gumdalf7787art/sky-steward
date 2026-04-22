@@ -24,6 +24,7 @@ export async function onRequestPost(context) {
         const phone = formData.get("phone");
         const showPhone = formData.get("show_phone") === "true" ? 1 : 0;
         const address = formData.get("address");
+        const address_detail = formData.get("address_detail") || "";
         const churchId = formData.get("church_id");
         const keywords = formData.get("keywords"); // Expecting JSON string
         const description = formData.get("description");
@@ -81,16 +82,15 @@ export async function onRequestPost(context) {
         }
 
         // 3. Insert business with all fields
-        await env.DB.prepare(`
             INSERT INTO businesses (
-                id, user_id, church_id, biz_no, name, category, address, phone, 
+                id, user_id, church_id, biz_no, name, category, address, address_detail, phone, 
                 images, ceo_name, show_phone, keywords, description,
                 website, youtube, blog, instagram,
                 operating_hours, parking_info, menu_board_image
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).bind(
-            businessId, user.id, churchId || null, bizNo, name, category, address, phone, 
+            businessId, user.id, churchId || null, bizNo, name, category, address, address_detail, phone, 
             JSON.stringify(imageKeys), ceoName, showPhone, keywords || "[]", description || "",
             website, youtube, blog, instagram,
             operatingHours, parkingInfo, menuBoardKey

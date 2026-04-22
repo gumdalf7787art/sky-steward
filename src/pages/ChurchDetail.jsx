@@ -88,9 +88,12 @@ const ChurchDetail = () => {
                                 <span className="px-2.5 py-0.5 bg-primary text-white text-[10px] font-black rounded-full shadow-sm shadow-primary/20">{church.denomination || "교단 정보 없음"}</span>
                             </div>
                             <h2 className="text-2xl font-black text-slate-900 leading-tight">{church.name}</h2>
-                            <p className="text-sm text-slate-500 flex items-center gap-1 font-medium">
-                                <span className="material-symbols-outlined text-[16px] text-slate-400">location_on</span>
-                                {church.address}
+                            <p className="text-sm text-slate-500 flex items-start gap-1 font-medium leading-relaxed">
+                                <span className="material-symbols-outlined text-[16px] text-slate-400 mt-0.5">location_on</span>
+                                <span>
+                                    {church.address}
+                                    {church.address_detail && <span className="block text-slate-400 text-[12px] font-bold mt-0.5">{church.address_detail}</span>}
+                                </span>
                             </p>
                         </div>
 
@@ -145,7 +148,7 @@ const ChurchDetail = () => {
                                         </div>
                                         <h4 className="font-black text-slate-800 truncate group-hover:text-primary transition-colors">{biz.name}</h4>
                                         <p className="text-[12px] text-slate-400 font-medium truncate mt-0.5">
-                                            {biz.address}
+                                            {biz.address} {biz.address_detail || ''}
                                         </p>
                                     </div>
                                     <div className="ml-auto flex items-center">
