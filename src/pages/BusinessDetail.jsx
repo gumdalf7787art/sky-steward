@@ -14,6 +14,7 @@ const BusinessDetail = () => {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('home');
     const [showMapModal, setShowMapModal] = useState(false);
+    const [showMenuBoard, setShowMenuBoard] = useState(false);
     
     // Review Modal States
     const [showReviewModal, setShowReviewModal] = useState(false);
@@ -291,20 +292,26 @@ const BusinessDetail = () => {
                                     <p className="text-[12px] text-slate-500 font-medium">{data.business.address || "정보 없음"}</p>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-3">
-                                <span className="material-symbols-outlined text-slate-400 mt-0.5">schedule</span>
-                                <div className="space-y-0.5">
-                                    <p className="text-[13px] font-black text-slate-800">영업 시간</p>
-                                    <p className="text-[12px] text-slate-500 font-medium uppercase tracking-tight italic">등록된 영업시간 정보가 없습니다.</p>
+                            
+                            {data.business.operating_hours && (
+                                <div className="flex items-start gap-3">
+                                    <span className="material-symbols-outlined text-slate-400 mt-0.5">schedule</span>
+                                    <div className="space-y-0.5">
+                                        <p className="text-[13px] font-black text-slate-800">영업 시간</p>
+                                        <p className="text-[12px] text-slate-500 font-medium">{data.business.operating_hours}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <span className="material-symbols-outlined text-slate-400 mt-0.5">local_parking</span>
-                                <div className="space-y-0.5">
-                                    <p className="text-[13px] font-black text-slate-800">주차 정보</p>
-                                    <p className="text-[12px] text-slate-500 font-medium">주차 가능 여부를 확인하려면 전화 문의 부탁드립니다.</p>
+                            )}
+
+                            {data.business.parking_info && (
+                                <div className="flex items-start gap-3">
+                                    <span className="material-symbols-outlined text-slate-400 mt-0.5">local_parking</span>
+                                    <div className="space-y-0.5">
+                                        <p className="text-[13px] font-black text-slate-800">주차 정보</p>
+                                        <p className="text-[12px] text-slate-500 font-medium">{data.business.parking_info}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </section>
@@ -318,7 +325,14 @@ const BusinessDetail = () => {
                             <span className="material-symbols-outlined text-amber-500 text-[24px]">restaurant_menu</span>
                             추천 메뉴
                         </h3>
-                        <button className="text-[11px] font-black text-slate-400 border-b border-slate-200 pb-0.5">메뉴판 이미지 보기</button>
+                        {data.business.menu_board_image && (
+                            <button 
+                                onClick={() => setShowMenuBoard(true)}
+                                className="text-[11px] font-black text-slate-400 border-b border-slate-200 pb-0.5"
+                            >
+                                메뉴판 이미지 보기
+                            </button>
+                        )}
                     </div>
 
                     <div className="space-y-4">
@@ -524,6 +538,34 @@ const BusinessDetail = () => {
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Menu Board Modal */}
+            {showMenuBoard && data.business.menu_board_image && (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 bg-slate-900/90 backdrop-blur-md" onClick={() => setShowMenuBoard(false)}></div>
+                    <div className="relative max-w-lg w-full bg-white rounded-[2rem] overflow-hidden shadow-2xl animate-[zoomIn_0.3s_ease-out]">
+                        <div className="flex items-center justify-between p-6 border-b border-slate-50">
+                            <h3 className="font-black text-slate-800 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-amber-500">menu_book</span>
+                                메뉴판 크게보기
+                            </h3>
+                            <button onClick={() => setShowMenuBoard(false)} className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-slate-400 text-[20px]">close</span>
+                            </button>
+                        </div>
+                        <div className="p-2 bg-slate-50 max-h-[70vh] overflow-y-auto">
+                            <img 
+                                src={`/api/media/${data.business.menu_board_image}`} 
+                                className="w-full h-auto rounded-xl"
+                                alt="Menu Board"
+                            />
+                        </div>
+                        <div className="p-6 text-center">
+                            <p className="text-[11px] font-bold text-slate-400 italic">메뉴 정보는 당사 사정에 따라 변경될 수 있습니다.</p>
                         </div>
                     </div>
                 </div>
