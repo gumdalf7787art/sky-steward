@@ -6,7 +6,7 @@ export async function onRequestPost({ request, env }) {
         const { email, password, nickname, phone } = body;
 
         if (!email || !password || !nickname) {
-            return new Response(JSON.stringify({ error: "Missing required fields" }), { status: 400 });
+            return new Response(JSON.stringify({ error: "이메일, 비밀번호, 닉네임은 필수 입력 항목입니다." }), { status: 400 });
         }
 
         // Setup user values
@@ -17,7 +17,7 @@ export async function onRequestPost({ request, env }) {
         // Check if email exists
         const existing = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
         if (existing) {
-            return new Response(JSON.stringify({ error: "Email already exists" }), { status: 409 });
+            return new Response(JSON.stringify({ error: "이미 가입된 이메일입니다." }), { status: 409 });
         }
 
         // Insert user

@@ -7,17 +7,17 @@ export async function onRequestPost({ request, env }) {
         const { email, password } = body;
 
         if (!email || !password) {
-            return new Response(JSON.stringify({ error: "Missing email or password" }), { status: 400 });
+            return new Response(JSON.stringify({ error: "이메일과 비밀번호를 모두 입력해주세요." }), { status: 400 });
         }
 
         const user = await env.DB.prepare('SELECT * FROM users WHERE email = ?').bind(email).first();
         if (!user) {
-            return new Response(JSON.stringify({ error: "Invalid credentials" }), { status: 401 });
+            return new Response(JSON.stringify({ error: "가입되지 않은 이메일이거나 비밀번호가 틀렸습니다." }), { status: 401 });
         }
 
         const hashedPassword = await hashPassword(password);
         if (user.password !== hashedPassword) {
-            return new Response(JSON.stringify({ error: "Invalid credentials" }), { status: 401 });
+            return new Response(JSON.stringify({ error: "가입되지 않은 이메일이거나 비밀번호가 틀렸습니다." }), { status: 401 });
         }
 
         // Generate JWT
