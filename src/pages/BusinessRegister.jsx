@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { authState } from '../atoms/auth';
+import Header from '../components/Header';
+import BottomNav from '../components/BottomNav';
+
+const BusinessRegister = () => {
     const navigate = useNavigate();
     const auth = useRecoilValue(authState);
     const setAuth = useSetRecoilState(authState);
