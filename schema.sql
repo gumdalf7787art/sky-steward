@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS businesses (
     category TEXT NOT NULL,
     address TEXT,
     phone TEXT,
+    show_phone INTEGER DEFAULT 1, -- 전화번호 노출 여부 (0: 숨김, 1: 노출)
     images JSON, -- Store R2 image keys as a JSON array
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),

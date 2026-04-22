@@ -9,6 +9,7 @@ const BusinessDetail = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('home');
+    const [showMapModal, setShowMapModal] = useState(false);
 
     // Refs for sequential scroll
     const homeRef = useRef(null);
@@ -63,6 +64,32 @@ const BusinessDetail = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const openMapApp = (type) => {
+        const address = data.business.address;
+        const name = data.business.name;
+        if (!address) {
+            alert("등록된 주소 정보가 없습니다.");
+            return;
+        }
+
+        let url = "";
+        switch (type) {
+            case 'naver':
+                url = `https://map.naver.com/v5/search/${encodeURIComponent(address)}`;
+                break;
+            case 'kakao':
+                url = `https://map.kakao.com/link/search/${encodeURIComponent(address)}`;
+                break;
+            case 'google':
+                url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address + " " + name)}`;
+                break;
+            default:
+                return;
+        }
+        window.open(url, "_blank");
+        setShowMapModal(false);
+    };
+
     if (loading) return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50">
             <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
@@ -81,10 +108,10 @@ const BusinessDetail = () => {
     const images = data.business.images ? JSON.parse(data.business.images) : [];
     
     return (
-        <div className="bg-slate-50 min-h-screen pb-32">
+        <div className="bg-slate-50 min-h-screen pb-32 relative">
             <Header />
             
-            {/* Action Bar */}
+            {/* Sticky Action Bar */}
             <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-3 flex items-center justify-between shadow-sm">
                 <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
                     <span className="material-symbols-outlined text-slate-800">arrow_back</span>
@@ -99,7 +126,26 @@ const BusinessDetail = () => {
                 </div>
             </div>
 
-            {/* Tab Bar (Sticky Below Header) */}
+            {/* 1. TOP: Image Swiper Section (Relative) */}
+            <div className="max-w-md mx-auto aspect-[4/3] bg-slate-200 relative overflow-hidden group">
+                {images.length > 0 ? (
+                    <img 
+                        src={`/api/media/${images[0]}`} 
+                        alt={data.business.name} 
+                        className="w-full h-full object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                        <span className="material-symbols-outlined text-[48px]">image</span>
+                        <p className="text-xs font-bold mt-2 italic opacity-60">이미지가 없습니다</p>
+                    </div>
+                )}
+                <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest uppercase">
+                   1 / {images.length || 1}
+                </div>
+            </div>
+
+            {/* 2. MIDDLE: Tab Bar (Sticky below Action Bar) */}
             <div className="sticky top-[53px] z-30 bg-white border-b border-slate-100 flex shadow-sm">
                 <button 
                     onClick={() => scrollToSection(homeRef, 'home')}
@@ -125,27 +171,8 @@ const BusinessDetail = () => {
             </div>
 
             <main className="max-w-md mx-auto">
-                {/* Home Section */}
-                <section ref={homeRef} id="home" className="space-y-6">
-                    {/* Image Swiper Placeholder */}
-                    <div className="aspect-[4/3] bg-slate-200 relative overflow-hidden group">
-                        {images.length > 0 ? (
-                            <img 
-                                src={`/api/media/${images[0]}`} 
-                                alt={data.business.name} 
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                                <span className="material-symbols-outlined text-[48px]">image</span>
-                                <p className="text-xs font-bold mt-2 italic opacity-60">이미지가 없습니다</p>
-                            </div>
-                        )}
-                        <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold tracking-widest uppercase">
-                           1 / {images.length || 1}
-                        </div>
-                    </div>
-
+                {/* 3. CONTENT: Home Section */}
+                <section ref={homeRef} id="home" className="space-y-6 pt-6">
                     {/* Basic Info Card */}
                     <div className="px-5 space-y-4">
                         <div className="space-y-1">
@@ -165,11 +192,16 @@ const BusinessDetail = () => {
 
                         {/* Call Button Group */}
                         <div className="flex gap-2">
-                            <a href={`tel:${data.business.phone}`} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-slate-900 text-white rounded-2xl font-black shadow-xl shadow-slate-900/10 active:scale-[0.98] transition-all">
-                                <span className="material-symbols-outlined text-[20px]">call</span>
-                                전화 문의
-                            </a>
-                            <button className="flex-1 flex items-center justify-center gap-2 py-4 bg-white border border-slate-100 text-slate-800 rounded-2xl font-black shadow-sm active:scale-[0.98] transition-all">
+                            {data.business.show_phone === 1 && data.business.phone && (
+                                <a href={`tel:${data.business.phone}`} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-slate-900 text-white rounded-2xl font-black shadow-xl shadow-slate-900/10 active:scale-[0.98] transition-all">
+                                    <span className="material-symbols-outlined text-[20px]">call</span>
+                                    전화 문의
+                                </a>
+                            )}
+                            <button 
+                                onClick={() => setShowMapModal(true)}
+                                className={`${(data.business.show_phone === 1 && data.business.phone) ? 'flex-1' : 'w-full'} flex items-center justify-center gap-2 py-4 bg-white border border-slate-100 text-slate-800 rounded-2xl font-black shadow-sm active:scale-[0.98] transition-all`}
+                            >
                                 <span className="material-symbols-outlined text-[20px]">near_me</span>
                                 길찾기
                             </button>
@@ -305,6 +337,59 @@ const BusinessDetail = () => {
                     </div>
                 </section>
             </main>
+
+            {/* Map Selection Modal */}
+            {showMapModal && (
+                <div className="fixed inset-0 z-[100] flex items-end justify-center px-4 pb-10 sm:items-center sm:p-0">
+                    <div 
+                        className="fixed inset-0 transition-opacity bg-slate-900/40 backdrop-blur-sm" 
+                        onClick={() => setShowMapModal(false)}
+                    ></div>
+                    <div className="relative w-full max-w-sm overflow-hidden transition-all transform bg-white rounded-[2.5rem] shadow-2xl animate-[slideInUp_0.3s_ease-out]">
+                        <div className="px-6 pt-8 pb-10 space-y-6">
+                            <div className="space-y-1 text-center">
+                                <h3 className="text-xl font-black text-slate-900 leading-none">길찾기 앱 선택</h3>
+                                <p className="text-[13px] text-slate-400 font-bold capitalize tracking-tight">이동하실 지도 앱을 선택해 주세요</p>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3">
+                                <button 
+                                    onClick={() => openMapApp('naver')}
+                                    className="flex flex-col items-center gap-3 p-4 rounded-3xl hover:bg-slate-50 transition-all active:scale-95 group"
+                                >
+                                    <div className="w-14 h-14 bg-[#03C75A] rounded-2xl flex items-center justify-center shadow-lg shadow-[#03C75A]/20 transition-transform group-hover:rotate-12">
+                                        <span className="text-white font-black text-xl">N</span>
+                                    </div>
+                                    <span className="text-[11px] font-black text-slate-700">네이버 지도</span>
+                                </button>
+                                <button 
+                                    onClick={() => openMapApp('kakao')}
+                                    className="flex flex-col items-center gap-3 p-4 rounded-3xl hover:bg-slate-50 transition-all active:scale-95 group"
+                                >
+                                    <div className="w-14 h-14 bg-[#FAE100] rounded-2xl flex items-center justify-center shadow-lg shadow-[#FAE100]/20 transition-transform group-hover:-rotate-12">
+                                        <span className="text-slate-900 font-black text-lg">K</span>
+                                    </div>
+                                    <span className="text-[11px] font-black text-slate-700">카카오맵</span>
+                                </button>
+                                <button 
+                                    onClick={() => openMapApp('google')}
+                                    className="flex flex-col items-center gap-3 p-4 rounded-3xl hover:bg-slate-50 transition-all active:scale-95 group"
+                                >
+                                    <div className="w-14 h-14 bg-white border border-slate-100 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-200 transition-transform group-hover:scale-110">
+                                        <span className="material-symbols-outlined text-[#EA4335]">map</span>
+                                    </div>
+                                    <span className="text-[11px] font-black text-slate-700">구글 지도</span>
+                                </button>
+                            </div>
+                            <button 
+                                onClick={() => setShowMapModal(false)}
+                                className="w-full py-4 bg-slate-100 text-slate-500 rounded-2xl font-black text-[13px] hover:bg-slate-200 transition-colors"
+                            >
+                                취소
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <BottomNav />
         </div>
