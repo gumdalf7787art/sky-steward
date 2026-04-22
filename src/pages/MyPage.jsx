@@ -92,20 +92,28 @@ const MyPage = () => {
             </div>
           </div>
 
-          {/* Section: UPload */}
+          {/* Section: Business Management */}
           <div>
-            <h3 className="px-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">UPload</h3>
+            <h3 className="px-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Business</h3>
             <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-              <Link to="/mypage/business-register" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+              <Link to="/mypage/business-register" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50 text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                    <span className="material-symbols-outlined font-light">add_business</span>
+                  </div>
+                  <span className="text-[16px] font-bold text-slate-800">사업자 등록</span>
+                </div>
+                <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+              </Link>
+              
+              <Link to="/mypage/business-manage" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
                     <span className="material-symbols-outlined font-light">storefront</span>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-bold text-slate-800 text-base">사업자 등록 및 관리</h4>
-                  </div>
+                  <span className="text-[16px] font-bold text-slate-800">등록 업체 관리</span>
                 </div>
-                <span className="material-symbols-outlined text-slate-300 text-[24px]">chevron_right</span>
+                <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
               </Link>
             </div>
           </div>
