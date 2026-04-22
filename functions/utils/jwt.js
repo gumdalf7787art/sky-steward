@@ -1,84 +1,87 @@
-const SECRET = "SKY_PLATFORM_SECRET_KEY"; // In production, move to env vars!
+const SECRET = "SKY_PLATFORM_SECRET_KEY";
 
+// Robust base64url that handles both string (UTF-8) and binary (TypedArray)
 function base64url(source) {
-    // UTF-8 문자열을 바이트 배열로 변환한 뒤 btoa를 적용하여 한글을 지원합니다.
-    const bytes = new TextEncoder().encode(source);
-    let binary = "";
-    for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
+    let uint8;
+    if (typeof source === "string") {
+        uint8 = new TextEncoder().encode(source);
+    } else if (source instanceof Uint8Array) {
+        uint8 = source;
+    } else if (source instanceof ArrayBuffer) {
+        uint8 = new Uint8Array(source);
+    } else {
+        uint8 = new TextEncoder().encode(JSON.stringify(source));
     }
-    let encoded = btoa(binary);
-    encoded = encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    return encoded;
+
+    const binString = Array.from(uint8, (x) => String.fromCodePoint(x)).join("");
+    return btoa(binString)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
 }
 
-// Simple JWT signing using WebCrypto HMAC SHA-256
+// Robust base64url decoding
+function fromBase64url(b64) {
+    const binString = atob(b64.replace(/-/g, "+").replace(/_/g, "/"));
+    return Uint8Array.from(binString, (m) => m.codePointAt(0));
+}
+
 export async function signJWT(payload) {
-    const header = { alg: 'HS256', typ: 'JWT' };
-    const encodedHeader = base64url(JSON.stringify(header));
-    const encodedPayload = base64url(JSON.stringify({ ...payload, exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24) })); // 24h expiration
+    const header = { alg: "HS256", typ: "JWT" };
+    const encodedHeader = base64url(header);
+    const encodedPayload = base64url({ 
+        ...payload, 
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 
+    });
 
     const tokenData = `${encodedHeader}.${encodedPayload}`;
-    
     const key = await crypto.subtle.importKey(
-        'raw',
+        "raw",
         new TextEncoder().encode(SECRET),
-        { name: 'HMAC', hash: 'SHA-256' },
+        { name: "HMAC", hash: "SHA-256" },
         false,
-        ['sign']
+        ["sign"]
     );
 
-    const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(tokenData));
-    const encodedSignature = base64url(String.fromCharCode(...new Uint8Array(signature)));
+    const signature = await crypto.subtle.sign(
+        "HMAC",
+        key,
+        new TextEncoder().encode(tokenData)
+    );
+    const encodedSignature = base64url(signature);
 
     return `${tokenData}.${encodedSignature}`;
 }
 
 export async function verifyJWT(token) {
     try {
-        const parts = token.split('.');
+        const parts = token.split(".");
         if (parts.length !== 3) return null;
 
-        const headerStr = atob(parts[0].replace(/-/g, '+').replace(/_/g, '/'));
-        
-        // Decode payload with UTF-8 support
-        const payloadBinary = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'));
-        const payloadBytes = new Uint8Array(payloadBinary.length);
-        for (let i = 0; i < payloadBinary.length; i++) {
-            payloadBytes[i] = payloadBinary.charCodeAt(i);
-        }
-        const payloadStr = new TextDecoder().decode(payloadBytes);
-        const payload = JSON.parse(payloadStr);
+        const payloadBytes = fromBase64url(parts[1]);
+        const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
 
-        // Verify expiration
         if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) return null;
 
-        const expectedSignature = parts[2];
-        const tokenData = `${parts[0]}.${parts[1]}`;
-        
         const key = await crypto.subtle.importKey(
-            'raw',
+            "raw",
             new TextEncoder().encode(SECRET),
-            { name: 'HMAC', hash: 'SHA-256' },
+            { name: "HMAC", hash: "SHA-256" },
             false,
-            ['verify']
+            ["verify"]
         );
 
-        // Convert signature back to ArrayBuffer
-        const sigStr = atob(expectedSignature.replace(/-/g, '+').replace(/_/g, '/'));
-        const sigBuf = new Uint8Array(sigStr.length);
-        for (let i = 0; i < sigStr.length; i++) sigBuf[i] = sigStr.charCodeAt(i);
-
+        const sigBytes = fromBase64url(parts[2]);
         const isValid = await crypto.subtle.verify(
-            'HMAC',
+            "HMAC",
             key,
-            sigBuf,
-            new TextEncoder().encode(tokenData)
+            sigBytes,
+            new TextEncoder().encode(`${parts[0]}.${parts[1]}`)
         );
 
-        if (isValid) return payload;
-        return null;
-    } catch(e) {
+        return isValid ? payload : null;
+    } catch (e) {
+        console.error("JWT Verify Error:", e);
         return null;
     }
 }
