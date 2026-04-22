@@ -43,8 +43,12 @@ const MyPage = () => {
             <div className="absolute bottom-[-10%] left-[-10%] w-24 h-24 bg-blue-400/20 rounded-full blur-xl"></div>
             
             <div className="relative z-10 flex flex-col items-center">
-              <div className="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center mb-4 shadow-inner">
-                <span className="material-symbols-outlined text-[40px] text-white">person</span>
+              <div className="w-20 h-20 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center mb-4 shadow-inner overflow-hidden">
+                {displayUser.profile_image ? (
+                  <img src={displayUser.profile_image} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="material-symbols-outlined text-[40px] text-white">person</span>
+                )}
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1">
@@ -66,15 +70,15 @@ const MyPage = () => {
           <div>
             <h3 className="px-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Service Menu</h3>
             <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-              <button className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50 text-left">
+              <Link to="/mypage/profile-edit" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50 text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-blue-50 text-[#1A4173] rounded-xl flex items-center justify-center">
                     <span className="material-symbols-outlined font-light">manage_accounts</span>
                   </div>
-                  <span className="text-[16px] font-bold text-slate-800">프로필 수정</span>
+                  <span className="text-[16px] font-bold text-slate-800">프로필 및 정보 수정</span>
                 </div>
                 <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
-              </button>
+              </Link>
               
               <button className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
                 <div className="flex items-center gap-4">

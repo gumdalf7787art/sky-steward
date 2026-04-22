@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     nickname TEXT NOT NULL,
     phone TEXT,
+    profile_image TEXT,
     role TEXT DEFAULT 'USER', -- USER, BIZ, ADMIN, SUPER
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
