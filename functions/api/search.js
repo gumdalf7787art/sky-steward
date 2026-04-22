@@ -27,19 +27,19 @@ export async function onRequestGet({ request, env }) {
         const byChurch = await env.DB.prepare(`
             SELECT b.*, c.name as church_name 
             FROM businesses b 
-            JOIN churches c ON b.church_id = c.id 
+            LEFT JOIN churches c ON b.church_id = c.id 
             WHERE c.name LIKE ?
             ORDER BY b.created_at DESC
         `).bind(searchTerm).all();
 
-        // 3. Search by Keyword (Description or Category) - Excluding Address
+        // 3. Search by Keyword (Description, Category, or Keywords) - Excluding Address
         const byKeyword = await env.DB.prepare(`
             SELECT b.*, c.name as church_name 
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
-            WHERE (b.description LIKE ? OR b.category LIKE ?)
+            WHERE (b.description LIKE ? OR b.category LIKE ? OR b.keywords LIKE ?)
             ORDER BY b.created_at DESC
-        `).bind(searchTerm, searchTerm).all();
+        `).bind(searchTerm, searchTerm, searchTerm).all();
 
         return new Response(JSON.stringify({
             success: true,
