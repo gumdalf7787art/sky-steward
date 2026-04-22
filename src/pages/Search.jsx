@@ -83,21 +83,29 @@ const Search = () => {
         </div>
     );
 
-    const ChurchCard = ({ church }) => (
-        <div 
-            onClick={() => navigate(`/church/${church.id}`)}
-            className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
-        >
-            <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0">
-                <span className="material-symbols-outlined text-[28px]">church</span>
+    const ChurchCard = ({ church }) => {
+        const churchImages = church.images ? JSON.parse(church.images) : [];
+        
+        return (
+            <div 
+                onClick={() => navigate(`/church/${church.id}`)}
+                className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+            >
+                <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    {churchImages.length > 0 ? (
+                        <img src={`/api/media/${churchImages[0]}`} className="w-full h-full object-cover" alt={church.name} />
+                    ) : (
+                        <span className="material-symbols-outlined text-[28px]">church</span>
+                    )}
+                </div>
+                <div className="flex flex-col justify-center overflow-hidden">
+                    <h4 className="font-black text-slate-800 truncate">{church.name}</h4>
+                    <p className="text-[12px] text-slate-400 font-medium truncate">{church.address || "주소 정보 없음"}</p>
+                </div>
+                <span className="material-symbols-outlined text-slate-300 ml-auto">chevron_right</span>
             </div>
-            <div className="flex flex-col justify-center overflow-hidden">
-                <h4 className="font-black text-slate-800 truncate">{church.name}</h4>
-                <p className="text-[12px] text-slate-400 font-medium truncate">{church.address || "주소 정보 없음"}</p>
-            </div>
-            <span className="material-symbols-outlined text-slate-300 ml-auto">chevron_right</span>
-        </div>
-    );
+        );
+    };
 
     const ResultSection = ({ title, data, limit, categoryKey, icon, type = 'business' }) => {
         if (!data || data.length === 0) return null;

@@ -12,23 +12,24 @@ export async function onRequestGet({ request, env }) {
             }), { status: 200 });
         }
 
-        const searchTerm = `%${query}%`;
+        const strippedQuery = query.replace(/\s+/g, '');
+        const searchTerm = `%${strippedQuery}%`;
 
-        // 1. Search by Business Name
+        // 1. Search by Business Name (Whitespace insensitive)
         const byName = await env.DB.prepare(`
             SELECT b.*, c.name as church_name 
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
-            WHERE b.name LIKE ?
+            WHERE REPLACE(b.name, ' ', '') LIKE ?
             ORDER BY b.created_at DESC
         `).bind(searchTerm).all();
 
-        // 2. Search by Church Name
+        // 2. Search by Church Name (Whitespace insensitive)
         const byChurch = await env.DB.prepare(`
             SELECT b.*, c.name as church_name 
             FROM businesses b 
             JOIN churches c ON b.church_id = c.id 
-            WHERE c.name LIKE ?
+            WHERE REPLACE(c.name, ' ', '') LIKE ?
             ORDER BY b.created_at DESC
         `).bind(searchTerm).all();
 
@@ -37,14 +38,19 @@ export async function onRequestGet({ request, env }) {
             SELECT b.*, c.name as church_name 
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
-            WHERE (b.description LIKE ? OR b.category LIKE ? OR b.keywords LIKE ? OR c.name LIKE ?)
+            WHERE (
+                REPLACE(b.description, ' ', '') LIKE ? OR 
+                REPLACE(b.category, ' ', '') LIKE ? OR 
+                REPLACE(b.keywords, ' ', '') LIKE ? OR 
+                REPLACE(c.name, ' ', '') LIKE ?
+            )
             ORDER BY b.created_at DESC
         `).bind(searchTerm, searchTerm, searchTerm, searchTerm).all();
 
-        // 4. Search Churches themselves
+        // 4. Search Churches themselves (Whitespace insensitive)
         const byChurchList = await env.DB.prepare(`
             SELECT * FROM churches 
-            WHERE name LIKE ?
+            WHERE REPLACE(name, ' ', '') LIKE ?
             ORDER BY created_at DESC
         `).bind(searchTerm).all();
 
