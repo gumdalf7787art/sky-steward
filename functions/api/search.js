@@ -41,13 +41,21 @@ export async function onRequestGet({ request, env }) {
             ORDER BY b.created_at DESC
         `).bind(searchTerm, searchTerm, searchTerm, searchTerm).all();
 
+        // 4. Search Churches themselves
+        const byChurchList = await env.DB.prepare(`
+            SELECT * FROM churches 
+            WHERE name LIKE ?
+            ORDER BY created_at DESC
+        `).bind(searchTerm).all();
+
         return new Response(JSON.stringify({
             success: true,
             results: {
                 byName: byName.results,
                 byChurch: byChurch.results,
                 byKeyword: byKeyword.results,
-                total: byName.results.length + byChurch.results.length + byKeyword.results.length
+                byChurchList: byChurchList.results,
+                total: byName.results.length + byChurch.results.length + byKeyword.results.length + byChurchList.results.length
             }
         }), { status: 200 });
 

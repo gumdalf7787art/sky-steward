@@ -16,7 +16,8 @@ const Search = () => {
     const [limits, setLimits] = useState({
         byName: 3,
         byChurch: 3,
-        byKeyword: 3
+        byKeyword: 3,
+        byChurchList: 3
     });
 
     const fetchResults = useCallback(async (q) => {
@@ -47,7 +48,7 @@ const Search = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         setSearchParams({ q: inputValue });
-        setLimits({ byName: 3, byChurch: 3, byKeyword: 3 }); // Reset limits on new search
+        setLimits({ byName: 3, byChurch: 3, byKeyword: 3, byChurchList: 3 }); // Reset limits on new search
     };
 
     const showMore = (category) => {
@@ -82,7 +83,23 @@ const Search = () => {
         </div>
     );
 
-    const ResultSection = ({ title, data, limit, categoryKey, icon }) => {
+    const ChurchCard = ({ church }) => (
+        <div 
+            onClick={() => navigate(`/churches/detail?id=${church.id}`)}
+            className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
+        >
+            <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                <span className="material-symbols-outlined text-[28px]">church</span>
+            </div>
+            <div className="flex flex-col justify-center overflow-hidden">
+                <h4 className="font-black text-slate-800 truncate">{church.name}</h4>
+                <p className="text-[12px] text-slate-400 font-medium truncate">{church.address || "주소 정보 없음"}</p>
+            </div>
+            <span className="material-symbols-outlined text-slate-300 ml-auto">chevron_right</span>
+        </div>
+    );
+
+    const ResultSection = ({ title, data, limit, categoryKey, icon, type = 'business' }) => {
         if (!data || data.length === 0) return null;
         
         const displayed = data.slice(0, limit);
@@ -91,11 +108,15 @@ const Search = () => {
         return (
             <section className="space-y-4">
                 <div className="flex items-center gap-2 px-1">
-                    <span className={`material-symbols-outlined text-[20px] ${categoryKey === 'byName' ? 'text-blue-500' : categoryKey === 'byChurch' ? 'text-primary' : 'text-amber-500'}`}>{icon}</span>
+                    <span className={`material-symbols-outlined text-[20px] ${categoryKey === 'byName' ? 'text-blue-500' : (categoryKey === 'byChurch' || categoryKey === 'byChurchList') ? 'text-primary' : 'text-amber-500'}`}>{icon}</span>
                     <h3 className="text-sm font-black text-slate-800">{title} <span className="text-slate-300 ml-1">{data.length}</span></h3>
                 </div>
                 <div className="grid gap-3">
-                    {displayed.map(biz => <BusinessCard key={biz.id} biz={biz} />)}
+                    {displayed.map(item => (
+                        type === 'business' 
+                            ? <BusinessCard key={item.id} biz={item} /> 
+                            : <ChurchCard key={item.id} church={item} />
+                    ))}
                 </div>
                 {hasMore && (
                     <button 
@@ -137,6 +158,14 @@ const Search = () => {
                 ) : results ? (
                     results.total > 0 ? (
                         <div className="space-y-10">
+                            <ResultSection 
+                                title="검색된 교회" 
+                                data={results.byChurchList} 
+                                limit={limits.byChurchList} 
+                                categoryKey="byChurchList" 
+                                icon="account_balance"
+                                type="church"
+                            />
                             <ResultSection 
                                 title="업체명 검색 결과" 
                                 data={results.byName} 
