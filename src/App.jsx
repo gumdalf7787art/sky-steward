@@ -12,7 +12,7 @@ import ProfileEdit from './pages/ProfileEdit';
 import BusinessRegister from './pages/BusinessRegister';
 import BusinessEdit from './pages/BusinessEdit';
 import BusinessManage from './pages/BusinessManage';
-// import ChurchRegister from './pages/ChurchRegister';
+import ChurchRegister from './pages/ChurchRegister';
 // import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
             <Route path="/mypage/business-register" element={<BusinessRegister />} />
             <Route path="/mypage/business-edit/:businessId" element={<BusinessEdit />} />
             <Route path="/mypage/business-manage" element={<BusinessManage />} />
+            <Route path="/mypage/church-register" element={<ChurchRegister />} />
           </Routes>
         </div>
       </BrowserRouter>
