@@ -54,6 +54,24 @@ export async function onRequestPost({ request, env }) {
                         bytes[i] = binaryString.charCodeAt(i);
                     }
 
+                    // R2 바인딩 확인
+                    if (!env.MY_BUCKET) {
+                        return new Response(JSON.stringify({ error: "이미지 저장소(R2)가 아직 운영 서버에 연결되지 않았습니다. 관리자에게 문의하세요." }), { 
+                            status: 500,
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    }
+
+                    // Base64를 바이너리로 변환
+                    const base64Data = profile_image.split(',')[1];
+                    if (!base64Data) throw new Error("이미지 데이터가 올바르지 않습니다.");
+                    
+                    const binaryString = atob(base64Data);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+
                     // R2에 저장 (avatars/유저ID.jpg)
                     const r2Key = `avatars/${payload.id}.jpg`;
                     await env.MY_BUCKET.put(r2Key, bytes, {
@@ -66,7 +84,7 @@ export async function onRequestPost({ request, env }) {
                     values.push(imageUrl);
                 } catch (r2Error) {
                     console.error("R2 Upload Error:", r2Error);
-                    return new Response(JSON.stringify({ error: "이미지 저장 중 오류가 발생했습니다." }), { 
+                    return new Response(JSON.stringify({ error: `이미지 저장 중 오류 발생: ${r2Error.message}` }), { 
                         status: 500,
                         headers: { 'Content-Type': 'application/json' }
                     });
@@ -75,6 +93,14 @@ export async function onRequestPost({ request, env }) {
                 updates.push('profile_image = ?');
                 values.push(profile_image);
             }
+        }
+
+        // DB 바인딩 확인
+        if (!env.DB) {
+            return new Response(JSON.stringify({ error: "데이터베이스(D1)가 연결되지 않았습니다." }), { 
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            });
         }
 
         // 3. Password Update

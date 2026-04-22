@@ -121,7 +121,7 @@ const ProfileEdit = () => {
                 data = await res.json();
             } else {
                 const text = await res.text();
-                throw new Error(text || '서버에서 응답을 받지 못했습니다.');
+                throw new Error(`${res.status} ${res.statusText}: ${text || '서버에서 응답을 받지 못했습니다.'}`);
             }
 
             if (!res.ok) {
