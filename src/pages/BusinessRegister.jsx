@@ -205,7 +205,7 @@ const BusinessRegister = () => {
             } else {
                 setChurchResults([]);
             }
-        }, 500);
+        }, 200);
 
         return () => clearTimeout(timer);
     }, [churchSearch]);
