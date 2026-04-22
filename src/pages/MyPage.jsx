@@ -122,12 +122,22 @@ const MyPage = () => {
           <div>
             <h3 className="px-2 text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3">Church</h3>
             <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-              <Link to="/mypage/church-register" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+              <Link to="/mypage/church-register" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors border-b border-slate-50 text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
                     <span className="material-symbols-outlined font-light">church</span>
                   </div>
                   <span className="text-[16px] font-bold text-slate-800">교회 등록</span>
+                </div>
+                <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
+              </Link>
+              
+              <Link to="/mypage/church-manage" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center">
+                    <span className="material-symbols-outlined font-light">account_balance</span>
+                  </div>
+                  <span className="text-[16px] font-bold text-slate-800">등록 교회 관리</span>
                 </div>
                 <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
               </Link>

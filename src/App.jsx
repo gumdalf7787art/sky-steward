@@ -13,6 +13,7 @@ import BusinessRegister from './pages/BusinessRegister';
 import BusinessEdit from './pages/BusinessEdit';
 import BusinessManage from './pages/BusinessManage';
 import ChurchRegister from './pages/ChurchRegister';
+import ChurchManage from './pages/ChurchManage';
 import BusinessDetail from './pages/BusinessDetail';
 import Search from './pages/Search';
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/mypage/business-edit/:businessId" element={<BusinessEdit />} />
             <Route path="/mypage/business-manage" element={<BusinessManage />} />
             <Route path="/mypage/church-register" element={<ChurchRegister />} />
+            <Route path="/mypage/church-manage" element={<ChurchManage />} />
             <Route path="/business/:id" element={<BusinessDetail />} />
           </Routes>
         </div>
