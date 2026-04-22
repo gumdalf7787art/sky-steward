@@ -340,41 +340,251 @@ const BusinessEdit = () => {
                     </section>
 
                     {/* Basic Info */}
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">상호명 *</label>
-                            <input required name="name" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-primary/20 outline-none" />
+                    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm space-y-5">
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1">상호명 <span className="text-rose-500 font-black">*</span></label>
+                            <input 
+                                required
+                                name="name"
+                                type="text"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                placeholder="사업장 이름을 입력하세요"
+                            />
                         </div>
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">대표자명 *</label>
-                            <input required name="ceo_name" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl" />
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1">대표자명 <span className="text-rose-500 font-black">*</span></label>
+                            <input 
+                                required
+                                name="ceo_name"
+                                type="text"
+                                value={formData.ceo_name}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                placeholder="대표자 성함을 입력하세요"
+                            />
                         </div>
-                        <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2 px-1">사업자번호 *</label>
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1">주소 <span className="text-rose-500 font-black">*</span></label>
+                            <input 
+                                required
+                                name="address"
+                                type="text"
+                                value={formData.address}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                placeholder="사업체 주소를 입력하세요"
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1 flex justify-between items-center">
+                                <span>연락처 <span className="text-rose-500 font-black">*</span></span>
+                                <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-400 select-none">
+                                    <input 
+                                        type="checkbox" 
+                                        name="show_phone" 
+                                        checked={!formData.show_phone} 
+                                        onChange={(e) => setFormData(prev => ({ ...prev, show_phone: !e.target.checked }))}
+                                        className="w-4 h-4 rounded-md border-slate-300 text-primary focus:ring-primary/20"
+                                    />
+                                    상세페이지 노출 안 함
+                                </label>
+                            </label>
+                            <input 
+                                required
+                                name="phone"
+                                type="tel"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                placeholder="예: 010-1234-5678"
+                            />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1">사업자등록번호 <span className="text-rose-500 font-black">*</span></label>
                             <div className="flex gap-2">
-                                <input required name="biz_no" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-50 border-none rounded-2xl" />
-                                <button type="button" onClick={handleBizCheck} className={`px-6 rounded-2xl font-bold text-sm transition-all ${bizStatus.success ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-white'}`}>{bizStatus.success ? '확인됨' : '중복확인'}</button>
+                                <input 
+                                    required
+                                    name="biz_no"
+                                    type="text"
+                                    value={formData.biz_no}
+                                    onChange={handleChange}
+                                    className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                    placeholder="000-00-00000"
+                                />
+                                <button 
+                                    type="button"
+                                    onClick={handleBizCheck}
+                                    disabled={bizStatus.loading || (bizStatus.success && formData.biz_no === formData.original_biz_no)}
+                                    className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${bizStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95'}`}
+                                >
+                                    {bizStatus.loading ? '...' : (bizStatus.success && formData.biz_no === formData.original_biz_no) ? '기존번호' : bizStatus.success ? '확인됨' : '중복확인'}
+                                </button>
                             </div>
-                            {bizStatus.message && <p className={`text-[11px] mt-2 px-2 font-bold ${bizStatus.success ? 'text-emerald-500' : 'text-rose-500'}`}>{bizStatus.message}</p>}
+                            {bizStatus.message && (
+                                <p className={`text-[11px] font-bold mt-1.5 ml-1 ${bizStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>
+                                    {bizStatus.message}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Church Search */}
+                        <div className="space-y-1.5 relative" ref={searchRef}>
+                            <label className="text-xs font-bold text-slate-500 ml-1">교회 선택</label>
+                            <div className="relative">
+                                <input 
+                                    type="text"
+                                    value={churchSearch || (formData.church_id ? "연결된 교회가 있습니다" : "")}
+                                    onChange={(e) => {
+                                        setChurchSearch(e.target.value);
+                                        if (formData.church_id) setFormData(prev => ({ ...prev, church_id: '' }));
+                                    }}
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12"
+                                    placeholder="교회 이름을 검색하여 변경할 수 있습니다"
+                                />
+                                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">
+                                    {isSearchingChurches ? 'sync' : 'search'}
+                                </span>
+                            </div>
+                            
+                            {churchResults.length > 0 && (
+                                <div className="absolute z-50 left-0 right-0 top-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto overflow-hidden divide-y divide-slate-50">
+                                    {churchResults.map(church => (
+                                        <button 
+                                            key={church.id}
+                                            type="button"
+                                            onClick={() => {
+                                                setFormData(prev => ({ ...prev, church_id: church.id }));
+                                                setChurchSearch(church.name);
+                                                setChurchResults([]);
+                                            }}
+                                            className="w-full px-5 py-4 text-left hover:bg-slate-50 transition-colors flex flex-col gap-0.5"
+                                        >
+                                            <span className="font-bold text-slate-800 text-sm">{church.name}</span>
+                                            <span className="text-[11px] text-slate-400 leading-tight">{church.address}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Category Select */}
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1">업종 선택 <span className="text-rose-500 font-black">*</span></label>
+                            <div className="relative">
+                                <select 
+                                    name="category"
+                                    value={formData.category}
+                                    onChange={handleChange}
+                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none"
+                                >
+                                    <option value="">카테고리를 선택하세요</option>
+                                    {[
+                                        { id: 'restaurant', label: '식당/카페' },
+                                        { id: 'mart', label: '마트/식자재' },
+                                        { id: 'beauty', label: '헤어/뷰티' },
+                                        { id: 'health', label: '스포츠/건강' },
+                                        { id: 'education', label: '학원/교육' },
+                                        { id: 'medical', label: '병원/약국' },
+                                        { id: 'realestate', label: '부동산' },
+                                        { id: 'law', label: '법률/세무' },
+                                        { id: 'car', label: '자동차/정비' },
+                                        { id: 'interior', label: '인테리어/수리' },
+                                        { id: 'welfare', label: '요양/복지' },
+                                        { id: 'shopping', label: '쇼핑' },
+                                        { id: 'marketing', label: '인쇄/마케팅' },
+                                        { id: 'online', label: '온라인쇼핑' },
+                                        { id: 'etc', label: '기타 서비스' },
+                                    ].map(cat => (
+                                        <option key={cat.id} value={cat.id}>{cat.label}</option>
+                                    ))}
+                                </select>
+                                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">
+                                    expand_more
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Keyword System */}
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-500 ml-1 flex justify-between">
+                                <span>키워드 입력</span>
+                                <span className="text-[10px] text-slate-400">{formData.keywords.length}/10</span>
+                            </label>
+                            <div className="flex flex-wrap gap-2 mb-2 min-h-[44px] p-2 rounded-2xl bg-slate-50/50 border border-slate-100">
+                                {formData.keywords.map(kw => (
+                                    <span key={kw} className="flex items-center gap-1 px-3 py-1 bg-white text-primary text-[12px] font-bold rounded-full border border-primary/20 hover:border-primary/50 transition-all shadow-sm">
+                                        #{kw}
+                                        <button type="button" onClick={() => setFormData(prev => ({ ...prev, keywords: prev.keywords.filter(k => k !== kw) }))} className="flex items-center text-slate-300 hover:text-rose-500">
+                                            <span className="material-symbols-outlined text-[14px]">close</span>
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                            <input 
+                                type="text"
+                                value={keywordInput}
+                                onChange={(e) => setKeywordInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ',') {
+                                        e.preventDefault();
+                                        const val = keywordInput.trim();
+                                        if (val && formData.keywords.length < 10 && !formData.keywords.includes(val)) {
+                                            setFormData(prev => ({ ...prev, keywords: [...prev.keywords, val] }));
+                                            setKeywordInput('');
+                                        }
+                                    }
+                                }}
+                                disabled={formData.keywords.length >= 10}
+                                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium"
+                                placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능합니다" : "키워드 입력 후 엔터를 치세요"}
+                            />
                         </div>
                     </div>
 
-                    {/* Social Links */}
-                    <section className="bg-slate-50 p-6 rounded-[32px] space-y-4">
-                        <h4 className="font-bold text-slate-800 text-sm mb-2 px-1 flex items-center gap-2"><span className="material-symbols-outlined text-primary text-[18px]">vlink</span> 소셜 미디어 / 정보 링크</h4>
+                    {/* Social Links Section */}
+                    <section className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm space-y-4">
+                        <h4 className="font-bold text-slate-800 text-sm mb-2 px-1 flex items-center gap-2">
+                             <span className="material-symbols-outlined text-primary text-[18px]">vlink</span> 
+                             소셜 미디어 / 정보 링크
+                        </h4>
                         <div className="grid gap-3">
-                            <input name="website" value={formData.website} onChange={handleChange} placeholder="홈페이지 URL" className="w-full px-5 py-3.5 bg-white rounded-xl text-sm border-none shadow-sm" />
-                            <input name="youtube" value={formData.youtube} onChange={handleChange} placeholder="유튜브 주소" className="w-full px-5 py-3.5 bg-white rounded-xl text-sm border-none shadow-sm" />
-                            <input name="blog" value={formData.blog} onChange={handleChange} placeholder="블로그 주소" className="w-full px-5 py-3.5 bg-white rounded-xl text-sm border-none shadow-sm" />
-                            <input name="instagram" value={formData.instagram} onChange={handleChange} placeholder="인스타그램 아이디" className="w-full px-5 py-3.5 bg-white rounded-xl text-sm border-none shadow-sm" />
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">language</span>
+                                <input name="website" value={formData.website} onChange={handleChange} placeholder="홈페이지 주소" className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border-none rounded-xl text-sm" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">video_library</span>
+                                <input name="youtube" value={formData.youtube} onChange={handleChange} placeholder="유튜브 채널 주소" className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border-none rounded-xl text-sm" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">rss_feed</span>
+                                <input name="blog" value={formData.blog} onChange={handleChange} placeholder="블로그 주소" className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border-none rounded-xl text-sm" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">photo_camera</span>
+                                <input name="instagram" value={formData.instagram} onChange={handleChange} placeholder="인스타그램 ID 또는 주소" className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border-none rounded-xl text-sm" />
+                            </div>
                         </div>
                     </section>
 
                     {/* Description */}
-                    <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2 px-1">사업체 설명</label>
+                    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                        <label className="block text-sm font-bold text-slate-700 mb-3 px-1">사업체 설명</label>
                         <div className="relative">
-                            <textarea name="description" value={formData.description} onChange={handleChange} maxLength={1000} className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl min-h-[160px] resize-none" placeholder="고객들에게 업체를 소개해주세요." />
+                            <textarea 
+                                name="description" 
+                                value={formData.description} 
+                                onChange={handleChange} 
+                                maxLength={1000} 
+                                className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl min-h-[160px] resize-none leading-relaxed" 
+                                placeholder="고객들에게 업체를 소개해주세요." 
+                            />
                             <div className="absolute bottom-4 right-5 text-[10px] font-bold text-slate-300">{formData.description.length}/1000</div>
                         </div>
                     </div>
