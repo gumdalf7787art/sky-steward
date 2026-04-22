@@ -14,7 +14,7 @@ import BusinessEdit from './pages/BusinessEdit';
 import BusinessManage from './pages/BusinessManage';
 import ChurchRegister from './pages/ChurchRegister';
 import BusinessDetail from './pages/BusinessDetail';
-// import AdminDashboard from './pages/AdminDashboard';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         <div className="bg-background text-on-background font-body-md min-h-screen pb-24">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/search" element={<div>검색 페이지 (준비 중)</div>} />
+            <Route path="/search" element={<Search />} />
             <Route path="/favorites" element={<div>관심업체 페이지 (준비 중)</div>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
