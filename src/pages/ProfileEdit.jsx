@@ -16,6 +16,46 @@ const ProfileEdit = () => {
     });
     const [profileView, setProfileView] = useState(null);
 
+    // Image Resizing Utility
+    const resizeImage = (file) => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400;
+                    const MAX_HEIGHT = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Web 용으로 압축된 JPEG 생성 (품질 0.8)
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    resolve(dataUrl);
+                };
+            };
+        });
+    };
+
     useEffect(() => {
         const storedUser = localStorage.getItem('sky_user');
         if (storedUser) {
@@ -30,14 +70,16 @@ const ProfileEdit = () => {
         }
     }, [navigate]);
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileView(reader.result);
-            };
-            reader.readAsDataURL(file);
+            try {
+                const resizedDataUrl = await resizeImage(file);
+                setProfileView(resizedDataUrl);
+            } catch (err) {
+                console.error("Image resizing failed", err);
+                setError("이미지 처리 중 오류가 발생했습니다.");
+            }
         }
     };
 
@@ -72,7 +114,16 @@ const ProfileEdit = () => {
                 })
             });
 
-            const data = await res.json();
+            const contentType = res.headers.get('content-type');
+            let data;
+            
+            if (contentType && contentType.includes('application/json')) {
+                data = await res.json();
+            } else {
+                const text = await res.text();
+                throw new Error(text || '서버에서 응답을 받지 못했습니다.');
+            }
+
             if (!res.ok) {
                 throw new Error(data.error || '프로필 수정에 실패했습니다.');
             }
@@ -82,7 +133,12 @@ const ProfileEdit = () => {
             alert('프로필이 성공적으로 수정되었습니다.');
             navigate('/mypage');
         } catch (err) {
-            setError(err.message);
+            console.error("Profile update error:", err);
+            let message = err.message;
+            if (message.includes('Unexpected end of JSON input')) {
+                message = '서버로부터 빈 응답을 받았습니다. 이미지 크기가 너무 크거나 서버 일시적 오류일 수 있습니다.';
+            }
+            setError(message);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } finally {
             setLoading(false);
