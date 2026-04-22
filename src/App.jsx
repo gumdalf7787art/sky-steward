@@ -13,6 +13,7 @@ import BusinessRegister from './pages/BusinessRegister';
 import BusinessEdit from './pages/BusinessEdit';
 import BusinessManage from './pages/BusinessManage';
 import ChurchRegister from './pages/ChurchRegister';
+import BusinessDetail from './pages/BusinessDetail';
 // import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/mypage/business-edit/:businessId" element={<BusinessEdit />} />
             <Route path="/mypage/business-manage" element={<BusinessManage />} />
             <Route path="/mypage/church-register" element={<ChurchRegister />} />
+            <Route path="/business/:id" element={<BusinessDetail />} />
           </Routes>
         </div>
       </BrowserRouter>

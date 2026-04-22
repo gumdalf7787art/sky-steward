@@ -132,7 +132,10 @@ const Home = () => {
           
           <div className="space-y-4">
             {/* Business Card 1 */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow">
+            <div 
+              onClick={() => navigate('/business/sample-biz-bakery')}
+              className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+            >
               <div className="h-40 w-full relative">
                 <img alt="Cafe interior" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7dusOH9hUFr3oPfsKxNvuSyTeiDGrh7bikSBXpCRDiteKWfCyGZq-c8_kSiNfQt2KWN8b-8QpXIa1DHyP0dn5QEw2yFLu9cTmDSECGyIhLFAia_-F-1wAuim4fLFPyw7YwRQk50-6MGCmcFER9epQSChF4pbQiusxCPFa-POI4QEuWyLXCsG7gqB7aa_RHs3vDVXQlf329hwr3wagbjBeXvSrM-4Gx8vdi2o0M0CDF67FDjUZvUQW-Fynz8fmQDb_WXQn80WL-d4d"/>
                 <div className="absolute top-3 left-3 bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-label-lg font-bold">식당/카페</div>
@@ -157,7 +160,10 @@ const Home = () => {
             </div>
 
             {/* Business Card 2 */}
-            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow">
+            <div 
+              onClick={() => navigate('/business/sample-biz-math')}
+              className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+            >
               <div className="h-40 w-full relative">
                 <img alt="Tutoring classroom" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6xOEl7DxQaEZqcJI-GcuhzbSKEQjpOIH4mRNhfLW3vslxEe-UzliiEcG9Z9KWBVmXPqV0QyQxdqnpfYPhEeNR9OkwpXA-xSWuc4HopJaXf730sUTVAfswP6uhWmpK1svH_eKJYpieifqd6O6pcgWk2Pz3Bc6eF_iEnca0JMdG6vPQAJCj2kyRbqks9N7liUy3ITiNmW5BHZ3GZeNmYl9cA9nXMkdR-YL_KyfPB1dhRTbdqnsn51MAlorIyJS3ZmLDXHzbz_w7b-3z"/>
                 <div className="absolute top-3 left-3 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-lg font-bold">학원/교육</div>
@@ -187,21 +193,25 @@ const Home = () => {
             {/* Additional Cards */}
             {[
               {
+                id: 'biz-1',
                 cat: '헤어/뷰티', bg: 'bg-pink-500', name: '사랑 헤어살롱', church: '빛가온교회',
                 loc: '서초구 방배로', tag: '#천연염색',
                 img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBHY02ixP4AbP_jMJFLbgZu0GPTfUjig3tf4nhvfq4j-hzgIaTNB_1xdGjh54I4ITdVukS8FnspgkzpZpMOJerXuoPbU-lpeM3sHSRdnIPwUc0vkzeoKEbtVAJqz2fSBrLW1txesPOPOP1Koug8JS4ReMKJKf6DzLu1Lw6JjOPKUlpj_xDbqm9Csn_viPAw-IDjxB02ImhKBPFtjZ4YC9KtAYMDpBhHD1o52PUSrCgfbpjv8K9ANUCzu9UnGFjcknywFjF5S03vln9s'
               },
               {
+                id: 'biz-2',
                 cat: '마트/식자재', bg: 'bg-green-600', name: '믿음 신선마트', church: '빛가온교회',
                 loc: '관악구 신림동', tag: '#유기농',
                 img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCm2YFYBJ8krGFEvaoHJ2-Fkd__ZZkKNErC4ceA6Q8c-eoNxIPlczkvxv6GIPw1UUMGCdrwMDxWKDOErbGISwgGgQHmGuTglu_KJnvvgKsepDoppNcrEYUDjV_Dvl2NmG3_p1-S2k8rm-Z7P0zEmDC1xVF0AIO4W8PRBS36leHBHtzvx1pro2G12MjugLfgnyUuupBBs9fPEvHPdeI6POAG3Hu5amsK3tJ-36kUXV57YMS8EVQHPFIWfNqhbcPgfit8AN6wGFDPo0qC'
               },
               {
+                id: 'biz-3',
                 cat: '병원/약국', bg: 'bg-error', name: '온유 내과의원', church: '빛가온교회',
                 loc: '강남구 역삼로', tag: '#검진센터',
                 img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBuLweLRNAU_uq8a7fRyIBia_cWhjbQY2HDB-jXe1DJcDefD6OrFCfulfdJ-q3ncsVkbblhBQKKosysLZX5jHp1708_qFoiakvpiAEe9TeqZ-lLh7f06Av55rFrcCVp9syaefMfAi3l1dpc2hjn8zJsY3Ycufkv59NCfeusqC4FjYjSwzSYLSC1fxPlYJ8maUsJc1uPESzgsZegSj97-eGYFpXukor7q52XowZKn8Qb9I5SXPgHALcW_2yQnPeXzhKEbL9S67aYASfJ'
               },
               {
+                id: 'biz-4',
                 cat: '인테리어', bg: 'bg-orange-600', name: '소망 인테리어', church: '빛가온교회',
                 loc: '동작구 상도로', tag: '#리모델링',
                 img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBeiY7DFH4cjLAU8oT2zwfogpDgD4uBAADuwpAI-ueosl45X1jdFdbMdkodRr4oLIq4_X8QN0z7ICxwNV5_iIcTV6rAodmeno29gzAZnJv2KJqf35Iei7mrTFig9iwScgOP_m0tukid3fi7nUq1pXmCPleg-l1k_Y56Px6JTYXjOaiAo3Ieatr0HPE91sUmhVhRBicaw0NiicjysY5g5O-wDoNqjjecgY7gJFJjnH6aGEO1_e3XmxdMhJKYTTULSBYzkKiAU25dxqE3'

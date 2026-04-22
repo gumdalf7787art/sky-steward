@@ -52,33 +52,33 @@ const CategoryList = () => {
     setSelectedDistrict('전체'); // Reset sub-district
   };
 
-  // Mock Data for Horizontal Cards
+  // Mock Data for Horizontal Cards (Updating with real IDs for testing)
   const mockBusinesses = [
     {
-      id: 1,
+      id: 'sample-biz-bakery',
       name: '은혜로운 베이커리',
       church: '빛가온교회',
-      location: '서울 서초구 서초대로 123',
+      location: '서울 서초구 서초대로 321',
       region: '서울',
       tags: ['#천연발효', '#단체주문환영'],
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB7dusOH9hUFr3oPfsKxNvuSyTeiDGrh7bikSBXpCRDiteKWfCyGZq-c8_kSiNfQt2KWN8b-8QpXIa1DHyP0dn5QEw2yFLu9cTmDSECGyIhLFAia_-F-1wAuim4fLFPyw7YwRQk50-6MGCmcFER9epQSChF4pbQiusxCPFa-POI4QEuWyLXCsG7gqB7aa_RHs3vDVXQlf329hwr3wagbjBeXvSrM-4Gx8vdi2o0M0CDF67FDjUZvUQW-Fynz8fmQDb_WXQn80WL-d4d'
     },
     {
-      id: 2,
-      name: '소망의 뜰 한정식',
+      id: '7bbb8867-d638-4007-b1b0-315bf1955a96',
+      name: '피지오컴퍼니3',
       church: '빛가온교회',
       location: '경기 성남시 분당구 수내동',
       region: '경기',
-      tags: ['#상견례', '#룸완비', '#가족모임'],
+      tags: ['#재활전문', '#체형교정'],
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDCWb8M9Wc7b-_fU8hKzHw-KkZ7Q_rR5N-qXlZ6zQhKqC5D8j4L-x1kC9H8zY8T0J6G-O2Fw5vW8xUqL7N_mX2GZ6H4W_qT8xUqL7N_mX2GZ6H4W_qT8xUqL7N_mX2GZ6H4' 
     },
     {
-      id: 3,
-      name: '믿음 커피로스터스',
-      church: '사랑누리교회',
-      location: '서울 마포구 홍익로 45',
+      id: 'sample-biz-math',
+      name: '하늘 꿈 수학학원',
+      church: '빛가온교회',
+      location: '서울 위례대로 777',
       region: '서울',
-      tags: ['#핸드드립', '#스페셜티', '#주차가능'],
+      tags: ['#초중고전문', '#1:1코칭'],
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBHY02ixP4AbP_jMJFLbgZu0GPTfUjig3tf4nhvfq4j-hzgIaTNB_1xdGjh54I4ITdVukS8FnspgkzpZpMOJerXuoPbU-lpeM3sHSRdnIPwUc0vkzeoKEbtVAJqz2fSBrLW1txesPOPOP1Koug8JS4ReMKJKf6DzLu1Lw6JjOPKUlpj_xDbqm9Csn_viPAw-IDjxB02ImhKBPFtjZ4YC9KtAYMDpBhHD1o52PUSrCgfbpjv8K9ANUCzu9UnGFjcknywFjF5S03vln9s'
     }
   ];
@@ -141,7 +141,11 @@ const CategoryList = () => {
         {/* Horizontal Business List */}
         <div className="px-margin-mobile flex flex-col gap-4">
           {filteredBusinesses.map((biz) => (
-            <div key={biz.id} className="flex bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all h-[110px]">
+            <div 
+              key={biz.id} 
+              onClick={() => navigate(`/business/${biz.id}`)}
+              className="flex bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all h-[110px]"
+            >
               
               {/* Left Image Square */}
               <div className="w-[110px] min-w-[110px] h-full relative bg-gray-200 flex-shrink-0">

@@ -46,3 +46,28 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     FOREIGN KEY (business_id) REFERENCES businesses(id),
     UNIQUE(user_id, business_id)
 );
+
+-- Reviews table
+CREATE TABLE IF NOT EXISTS reviews (
+    id TEXT PRIMARY KEY,
+    business_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (business_id) REFERENCES businesses(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Menus table
+CREATE TABLE IF NOT EXISTS menus (
+    id TEXT PRIMARY KEY,
+    business_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    price TEXT, -- Storing as text for flexibility (e.g., "15,000원")
+    description TEXT,
+    image_key TEXT,
+    is_recommended INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (business_id) REFERENCES businesses(id)
+);
