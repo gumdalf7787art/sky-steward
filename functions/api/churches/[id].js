@@ -13,7 +13,20 @@ export async function onRequestGet(context) {
             return new Response(JSON.stringify({ error: "교회를 찾을 수 없습니다." }), { status: 404 });
         }
 
-        return new Response(JSON.stringify({ success: true, church }), {
+        // Fetch businesses belonging to this church
+        const businesses = await env.DB.prepare(`
+            SELECT b.*, c.name as church_name 
+            FROM businesses b 
+            LEFT JOIN churches c ON b.church_id = c.id 
+            WHERE b.church_id = ?
+            ORDER BY b.created_at DESC
+        `).bind(churchId).all();
+
+        return new Response(JSON.stringify({ 
+            success: true, 
+            church,
+            businesses: businesses.results 
+        }), {
             headers: { "Content-Type": "application/json" }
         });
     } catch (err) {

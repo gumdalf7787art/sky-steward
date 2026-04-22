@@ -85,7 +85,7 @@ const Search = () => {
 
     const ChurchCard = ({ church }) => (
         <div 
-            onClick={() => navigate(`/churches/detail?id=${church.id}`)}
+            onClick={() => navigate(`/church/${church.id}`)}
             className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
         >
             <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center flex-shrink-0">
