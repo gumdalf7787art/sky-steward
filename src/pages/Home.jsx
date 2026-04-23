@@ -6,12 +6,31 @@ import BottomNav from '../components/BottomNav';
 const Home = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [recommendedBusinesses, setRecommendedBusinesses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
+  };
+
+  const categoryMap = {
+    'restaurant': { icon: 'restaurant', label: '식당/카페', bgCls: 'bg-tertiary-fixed/40', textCls: 'text-tertiary', fill: 1, chipBg: 'bg-tertiary', chipText: 'text-on-tertiary' },
+    'mart': { icon: 'shopping_cart', label: '마트/식자재', bgCls: 'bg-green-100', textCls: 'text-green-700', fill: 1, chipBg: 'bg-green-600', chipText: 'text-white' },
+    'beauty': { icon: 'content_cut', label: '헤어/뷰티', bgCls: 'bg-pink-100', textCls: 'text-pink-600', fill: 1, chipBg: 'bg-pink-500', chipText: 'text-white' },
+    'health': { icon: 'fitness_center', label: '스포츠/건강', bgCls: 'bg-blue-100', textCls: 'text-blue-700', fill: 1, chipBg: 'bg-blue-600', chipText: 'text-white' },
+    'education': { icon: 'school', label: '학원/교육', bgCls: 'bg-secondary-fixed/40', textCls: 'text-secondary', fill: 1, chipBg: 'bg-secondary', chipText: 'text-on-secondary' },
+    'medical': { icon: 'medical_services', label: '병원/약국', bgCls: 'bg-error-container', textCls: 'text-on-error-container', fill: 1, chipBg: 'bg-error', chipText: 'text-white' },
+    'realestate': { icon: 'home_work', label: '부동산', bgCls: 'bg-primary-fixed/40', textCls: 'text-primary', fill: 1, chipBg: 'bg-primary', chipText: 'text-white' },
+    'law': { icon: 'gavel', label: '법률/세무', bgCls: 'bg-indigo-100', textCls: 'text-indigo-700', fill: 1, chipBg: 'bg-indigo-600', chipText: 'text-white' },
+    'car': { icon: 'directions_car', label: '자동차/정비', bgCls: 'bg-slate-200', textCls: 'text-slate-700', fill: 1, chipBg: 'bg-slate-600', chipText: 'text-white' },
+    'interior': { icon: 'build', label: '인테리어/수리', bgCls: 'bg-orange-100', textCls: 'text-orange-700', fill: 1, chipBg: 'bg-orange-600', chipText: 'text-white' },
+    'welfare': { icon: 'volunteer_activism', label: '요양/복지', bgCls: 'bg-teal-100', textCls: 'text-teal-700', fill: 1, chipBg: 'bg-teal-600', chipText: 'text-white' },
+    'shopping': { icon: 'shopping_bag', label: '쇼핑/온라인', bgCls: 'bg-amber-100', textCls: 'text-amber-700', fill: 1, chipBg: 'bg-amber-600', chipText: 'text-white' },
+    'marketing': { icon: 'print', label: '인쇄/마케팅', bgCls: 'bg-purple-100', textCls: 'text-purple-700', fill: 1, chipBg: 'bg-purple-600', chipText: 'text-white' },
+    'finance': { icon: 'account_balance', label: '금융/보험', bgCls: 'bg-sky-100', textCls: 'text-sky-700', fill: 1, chipBg: 'bg-sky-600', chipText: 'text-white' },
   };
 
   const banners = [
@@ -42,6 +61,21 @@ const Home = () => {
   ];
 
   useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const res = await fetch('/api/business/random');
+        const data = await res.json();
+        if (data.success) {
+          setRecommendedBusinesses(data.businesses);
+        }
+      } catch (err) {
+        console.error("Failed to fetch recommended businesses", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRecommended();
+
     const timer = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
     }, 4000);
@@ -153,121 +187,102 @@ const Home = () => {
             <h3 className="font-headline-md text-headline-md text-primary">추천 업체</h3>
           </div>
           
-          <div className="space-y-4">
-            {/* Business Card 1 */}
-            <div 
-              onClick={() => navigate('/business/sample-biz-bakery')}
-              className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
-            >
-              <div className="h-40 w-full relative">
-                <img alt="Cafe interior" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7dusOH9hUFr3oPfsKxNvuSyTeiDGrh7bikSBXpCRDiteKWfCyGZq-c8_kSiNfQt2KWN8b-8QpXIa1DHyP0dn5QEw2yFLu9cTmDSECGyIhLFAia_-F-1wAuim4fLFPyw7YwRQk50-6MGCmcFER9epQSChF4pbQiusxCPFa-POI4QEuWyLXCsG7gqB7aa_RHs3vDVXQlf329hwr3wagbjBeXvSrM-4Gx8vdi2o0M0CDF67FDjUZvUQW-Fynz8fmQDb_WXQn80WL-d4d"/>
-                <div className="absolute top-3 left-3 bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-label-lg font-bold">식당/카페</div>
-              </div>
-              <div className="p-md">
-                <div className="flex justify-between items-start mb-xs">
-                  <div>
-                    <h4 className="font-headline-md text-headline-md text-on-surface">
-                      은혜로운 베이커리
-                      <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">(이은혜 대표님)</span>
-                    </h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
-                  </div>
-                  <span className="material-symbols-outlined text-outline">favorite</span>
-                </div>
-                <div className="flex items-center gap-1 text-outline mb-sm">
-                  <span className="material-symbols-outlined text-[18px]">location_on</span>
-                  <span className="text-label-lg">서울시 서초구 서초대로 123</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#천연발효</span>
-                  <span className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#단체주문환영</span>
-                </div>
-              </div>
+          {isLoading ? (
+            <div className="flex justify-center py-10">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
+          ) : recommendedBusinesses.length > 0 ? (
+            <>
+              {/* Big Cards (Top 2) */}
+              <div className="space-y-4">
+                {recommendedBusinesses.slice(0, 2).map((biz) => {
+                  const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
+                  const imageKeys = JSON.parse(biz.images || '[]');
+                  const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800';
+                  const keywords = JSON.parse(biz.keywords || '[]');
 
-            {/* Business Card 2 */}
-            <div 
-              onClick={() => navigate('/business/sample-biz-math')}
-              className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
-            >
-              <div className="h-40 w-full relative">
-                <img alt="Tutoring classroom" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6xOEl7DxQaEZqcJI-GcuhzbSKEQjpOIH4mRNhfLW3vslxEe-UzliiEcG9Z9KWBVmXPqV0QyQxdqnpfYPhEeNR9OkwpXA-xSWuc4HopJaXf730sUTVAfswP6uhWmpK1svH_eKJYpieifqd6O6pcgWk2Pz3Bc6eF_iEnca0JMdG6vPQAJCj2kyRbqks9N7liUy3ITiNmW5BHZ3GZeNmYl9cA9nXMkdR-YL_KyfPB1dhRTbdqnsn51MAlorIyJS3ZmLDXHzbz_w7b-3z"/>
-                <div className="absolute top-3 left-3 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-lg font-bold">학원/교육</div>
+                  return (
+                    <div 
+                      key={biz.id}
+                      onClick={() => navigate(`/business/${biz.id}`)}
+                      className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+                    >
+                      <div className="h-40 w-full relative">
+                        <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
+                        <div className={`absolute top-3 left-3 ${cat.chipBg} ${cat.chipText} px-3 py-1 rounded-full text-label-lg font-bold`}>{cat.label}</div>
+                      </div>
+                      <div className="p-md">
+                        <div className="flex justify-between items-start mb-xs">
+                          <div>
+                            <h4 className="font-headline-md text-headline-md text-on-surface">
+                              {biz.name}
+                              <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">({biz.ceo_name} 대표님)</span>
+                            </h4>
+                            <p className="text-body-md text-primary font-semibold">{biz.church_name || '우리교회'}</p>
+                          </div>
+                          <span className="material-symbols-outlined text-outline">favorite</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-outline mb-sm">
+                          <span className="material-symbols-outlined text-[18px]">location_on</span>
+                          <span className="text-label-lg truncate">{biz.address}</span>
+                        </div>
+                        <div className="flex gap-2 flex-wrap">
+                          {keywords.slice(0, 3).map((kw, i) => (
+                            <span key={i} className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#{kw}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="p-md">
-                <div className="flex justify-between items-start mb-xs">
-                  <div>
-                    <h4 className="font-headline-md text-headline-md text-on-surface">
-                      하늘 꿈 수학학원
-                      <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">(박수학 대표님)</span>
-                    </h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
-                  </div>
-                  <span className="material-symbols-outlined text-outline">favorite</span>
+
+              {/* Grid Cards (Next 4) */}
+              {recommendedBusinesses.length > 2 && (
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  {recommendedBusinesses.slice(2, 6).map((biz) => {
+                    const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
+                    const imageKeys = JSON.parse(biz.images || '[]');
+                    const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400';
+                    const keywords = JSON.parse(biz.keywords || '[]');
+
+                    return (
+                      <div 
+                        key={biz.id} 
+                        onClick={() => navigate(`/business/${biz.id}`)}
+                        className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+                      >
+                        <div className="h-28 w-full relative">
+                          <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
+                          <div className={`absolute top-2 left-2 ${cat.chipBg} ${cat.chipText} px-2 py-0.5 rounded-full text-[10px] font-bold`}>{cat.label}</div>
+                        </div>
+                        <div className="p-3">
+                          <h4 className="text-body-md font-bold text-on-surface truncate">
+                            {biz.name}
+                            <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
+                          </h4>
+                          <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
+                          <div className="flex items-center gap-0.5 text-outline mb-2">
+                            <span className="material-symbols-outlined text-[14px]">location_on</span>
+                            <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>
+                          </div>
+                          <div className="flex gap-1 overflow-hidden">
+                            {keywords.slice(0, 1).map((kw, i) => (
+                              <span key={i} className="bg-surface-container px-1 py-0.5 rounded text-[9px] text-on-surface-variant">#{kw}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="flex items-center gap-1 text-outline mb-sm">
-                  <span className="material-symbols-outlined text-[18px]">location_on</span>
-                  <span className="text-label-lg">서울시 용산구 청파로 456</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#초중고전문</span>
-                  <span className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#1:1코칭</span>
-                </div>
-              </div>
+              )}
+            </>
+          ) : (
+            <div className="py-10 text-center text-slate-400 text-sm">
+              등록된 업체가 없습니다.
             </div>
-          </div>
-
-          {/* 2x2 Grid for Additional Businesses */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            {/* Additional Cards */}
-            {[
-              {
-                id: 'biz-1',
-                cat: '헤어/뷰티', bg: 'bg-pink-500', name: '사랑 헤어살롱', church: '빛가온교회',
-                loc: '서초구 방배로', tag: '#천연염색',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBHY02ixP4AbP_jMJFLbgZu0GPTfUjig3tf4nhvfq4j-hzgIaTNB_1xdGjh54I4ITdVukS8FnspgkzpZpMOJerXuoPbU-lpeM3sHSRdnIPwUc0vkzeoKEbtVAJqz2fSBrLW1txesPOPOP1Koug8JS4ReMKJKf6DzLu1Lw6JjOPKUlpj_xDbqm9Csn_viPAw-IDjxB02ImhKBPFtjZ4YC9KtAYMDpBhHD1o52PUSrCgfbpjv8K9ANUCzu9UnGFjcknywFjF5S03vln9s'
-              },
-              {
-                id: 'biz-2',
-                cat: '마트/식자재', bg: 'bg-green-600', name: '믿음 신선마트', church: '빛가온교회',
-                loc: '관악구 신림동', tag: '#유기농',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCm2YFYBJ8krGFEvaoHJ2-Fkd__ZZkKNErC4ceA6Q8c-eoNxIPlczkvxv6GIPw1UUMGCdrwMDxWKDOErbGISwgGgQHmGuTglu_KJnvvgKsepDoppNcrEYUDjV_Dvl2NmG3_p1-S2k8rm-Z7P0zEmDC1xVF0AIO4W8PRBS36leHBHtzvx1pro2G12MjugLfgnyUuupBBs9fPEvHPdeI6POAG3Hu5amsK3tJ-36kUXV57YMS8EVQHPFIWfNqhbcPgfit8AN6wGFDPo0qC'
-              },
-              {
-                id: 'biz-3',
-                cat: '병원/약국', bg: 'bg-error', name: '온유 내과의원', church: '빛가온교회',
-                loc: '강남구 역삼로', tag: '#검진센터',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBuLweLRNAU_uq8a7fRyIBia_cWhjbQY2HDB-jXe1DJcDefD6OrFCfulfdJ-q3ncsVkbblhBQKKosysLZX5jHp1708_qFoiakvpiAEe9TeqZ-lLh7f06Av55rFrcCVp9syaefMfAi3l1dpc2hjn8zJsY3Ycufkv59NCfeusqC4FjYjSwzSYLSC1fxPlYJ8maUsJc1uPESzgsZegSj97-eGYFpXukor7q52XowZKn8Qb9I5SXPgHALcW_2yQnPeXzhKEbL9S67aYASfJ'
-              },
-              {
-                id: 'biz-4',
-                cat: '인테리어', bg: 'bg-orange-600', name: '소망 인테리어', church: '빛가온교회',
-                loc: '동작구 상도로', tag: '#리모델링',
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBeiY7DFH4cjLAU8oT2zwfogpDgD4uBAADuwpAI-ueosl45X1jdFdbMdkodRr4oLIq4_X8QN0z7ICxwNV5_iIcTV6rAodmeno29gzAZnJv2KJqf35Iei7mrTFig9iwScgOP_m0tukid3fi7nUq1pXmCPleg-l1k_Y56Px6JTYXjOaiAo3Ieatr0HPE91sUmhVhRBicaw0NiicjysY5g5O-wDoNqjjecgY7gJFJjnH6aGEO1_e3XmxdMhJKYTTULSBYzkKiAU25dxqE3'
-              }
-            ].map((item, idx) => (
-              <div key={idx} className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow">
-                <div className="h-28 w-full relative">
-                  <img alt={item.cat} className="w-full h-full object-cover" src={item.img}/>
-                  <div className={`absolute top-2 left-2 ${item.bg} text-white px-2 py-0.5 rounded-full text-[10px] font-bold`}>{item.cat}</div>
-                </div>
-                <div className="p-3">
-                  <h4 className="text-body-md font-bold text-on-surface truncate">
-                    {item.name}
-                    <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">(대표님)</span>
-                  </h4>
-                  <p className="text-[11px] text-primary font-semibold mb-1">{item.church}</p>
-                  <div className="flex items-center gap-0.5 text-outline mb-2">
-                    <span className="material-symbols-outlined text-[14px]">location_on</span>
-                    <span className="text-[10px] truncate">{item.loc}</span>
-                  </div>
-                  <div className="flex gap-1">
-                    <span className="bg-surface-container px-1 py-0.5 rounded text-[9px] text-on-surface-variant">{item.tag}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          )}
         </section>
 
         {/* Footer Section */}
