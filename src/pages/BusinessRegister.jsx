@@ -61,7 +61,7 @@ const BusinessRegister = () => {
         biz_no: '',
         category: '',
         phone: '',
-        show_phone: true,
+        show_phone: false,
         address: '',
         address_detail: '',
         church_id: '',
@@ -317,6 +317,7 @@ const BusinessRegister = () => {
         const body = new FormData();
         Object.keys(formData).forEach(key => {
             if (key === 'keywords') body.append(key, JSON.stringify(formData[key]));
+            else if (key === 'show_phone') body.append(key, !formData[key]);
             else body.append(key, formData[key]);
         });
 

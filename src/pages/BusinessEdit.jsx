@@ -77,7 +77,7 @@ const BusinessEdit = () => {
         original_biz_no: '',
         category: '',
         phone: '',
-        show_phone: true,
+        show_phone: false,
         address: '',
         address_detail: '',
         church_id: '',
@@ -124,7 +124,7 @@ const BusinessEdit = () => {
                         original_biz_no: biz.biz_no || '',
                         category: biz.category || '',
                         phone: biz.phone || '',
-                        show_phone: biz.show_phone === 1,
+                        show_phone: biz.show_phone === 0,
                         address: biz.address || '',
                         address_detail: biz.address_detail || '',
                         church_id: biz.church_id || '',
@@ -362,6 +362,7 @@ const BusinessEdit = () => {
         body.append('id', businessId);
         Object.keys(formData).forEach(key => {
             if (key === 'keywords') body.append(key, JSON.stringify(formData[key]));
+            else if (key === 'show_phone') body.append(key, !formData[key]);
             else if (key !== 'original_biz_no') body.append(key, formData[key]);
         });
 
@@ -502,8 +503,8 @@ const BusinessEdit = () => {
                             <label className="text-xs font-bold text-slate-500 ml-1">연락처 *</label>
                             <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="010-0000-0000" />
                             <label className="flex items-center gap-2 mt-2 ml-1 cursor-pointer">
-                                <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded accent-primary" />
-                                <span className="text-xs font-bold text-slate-500">상세 페이지에 전화번호 노출</span>
+                                <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded-md accent-primary" />
+                                <span className="text-xs font-bold text-slate-500">전화번호 상세페이지 노출 안 함</span>
                             </label>
                         </div>
 
