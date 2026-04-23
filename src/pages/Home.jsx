@@ -120,9 +120,9 @@ const Home = () => {
               { id: 'car', icon: 'directions_car', label: '자동차/정비', bgCls: 'bg-slate-200', textCls: 'text-slate-700', fill: 1 },
               { id: 'interior', icon: 'build', label: '인테리어/수리', bgCls: 'bg-orange-100', textCls: 'text-orange-700', fill: 1 },
               { id: 'welfare', icon: 'volunteer_activism', label: '요양/복지', bgCls: 'bg-teal-100', textCls: 'text-teal-700', fill: 1 },
-              { id: 'shopping', icon: 'shopping_bag', label: '쇼핑', bgCls: 'bg-amber-100', textCls: 'text-amber-700', fill: 1 },
+              { id: 'shopping', icon: 'shopping_bag', label: '쇼핑/온라인', bgCls: 'bg-amber-100', textCls: 'text-amber-700', fill: 1 },
               { id: 'marketing', icon: 'print', label: '인쇄/마케팅', bgCls: 'bg-purple-100', textCls: 'text-purple-700', fill: 1 },
-              { id: 'online', icon: 'language', label: '온라인쇼핑', bgCls: 'bg-sky-100', textCls: 'text-sky-700', fill: 1 },
+              { id: 'finance', icon: 'account_balance', label: '금융/보험', bgCls: 'bg-sky-100', textCls: 'text-sky-700', fill: 1 },
               { id: 'all', icon: 'grid_view', label: '전체보기', bgCls: 'bg-gray-200', textCls: 'text-gray-600', fill: 1 },
             ].map((cat, idx) => {
               if (cat.id === 'all') {

@@ -31,6 +31,7 @@ const CategoryExplorer = () => {
         { id: 'cafe', label: '카페/디저트', icon: 'local_cafe' },
         { id: 'mart', label: '마트/식자재', icon: 'shopping_cart' },
         { id: 'beauty', label: '헤어/뷰티', icon: 'content_cut' },
+        { id: 'shopping', label: '쇼핑/온라인', icon: 'shopping_bag' },
         { id: 'fashion', label: '의류/패션', icon: 'checkroom' },
         { id: 'laundry', label: '세탁/수선', icon: 'local_laundry_service' },
       ]
@@ -55,6 +56,7 @@ const CategoryExplorer = () => {
       bg: "bg-indigo-50",
       items: [
         { id: 'education', label: '학원/교육', icon: 'school' },
+        { id: 'finance', label: '금융/보험', icon: 'account_balance' },
         { id: 'law', label: '법률/회계/세무', icon: 'gavel' },
         { id: 'marketing', label: '관리/마케팅', icon: 'campaign' },
         { id: 'it-service', label: 'IT/컴퓨터', icon: 'desktop_windows' },
