@@ -538,6 +538,29 @@ const BusinessEdit = () => {
                         </div>
                     </div>
                     
+                    {/* SNS & Website Section */}
+                    <div className="space-y-5">
+                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">SNS 및 웹사이트 (선택사항)</h3>
+                        <div className="space-y-3">
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">language</span>
+                                <input name="website" type="url" value={formData.website} onChange={handleChange} className="w-full pl-12 pr-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="홈페이지 주소 (https://...)" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">video_library</span>
+                                <input name="youtube" type="url" value={formData.youtube} onChange={handleChange} className="w-full pl-12 pr-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="유튜브 채널 주소" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">rss_feed</span>
+                                <input name="blog" type="url" value={formData.blog} onChange={handleChange} className="w-full pl-12 pr-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="블로그 주소" />
+                            </div>
+                            <div className="relative">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">photo_camera</span>
+                                <input name="instagram" type="text" value={formData.instagram} onChange={handleChange} className="w-full pl-12 pr-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="인스타그램 ID 또는 주소" />
+                            </div>
+                        </div>
+                    </div>
+                    
                     {/* Keywords Section - RESTORED and FIXED with Add Button */}
                     <div className="space-y-5">
                         <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">성도 검색 키워드</h3>
