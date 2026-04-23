@@ -30,7 +30,7 @@ const BusinessDetail = () => {
 
     const fetchDetail = useCallback(async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sky_token');
             const headers = {};
             if (token) headers['Authorization'] = `Bearer ${token}`;
 
@@ -55,7 +55,7 @@ const BusinessDetail = () => {
         }
 
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sky_token');
             const res = await fetch('/api/bookmarks/toggle', {
                 method: 'POST',
                 headers: {

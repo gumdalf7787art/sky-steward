@@ -80,7 +80,7 @@ const MyPage = () => {
                 <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
               </Link>
               
-              <button className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
+              <Link to="/favorites" className="w-full px-5 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors text-left">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center">
                     <span className="material-symbols-outlined font-light">favorite</span>
@@ -88,7 +88,7 @@ const MyPage = () => {
                   <span className="text-[16px] font-bold text-slate-800">관심 리스트</span>
                 </div>
                 <span className="material-symbols-outlined text-slate-300 text-[20px]">chevron_right</span>
-              </button>
+              </Link>
             </div>
           </div>
 

@@ -13,7 +13,7 @@ const ChurchDetail = () => {
 
     const fetchChurchDetail = useCallback(async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sky_token');
             const headers = {};
             if (token) headers['Authorization'] = `Bearer ${token}`;
 
@@ -173,7 +173,7 @@ const ChurchDetail = () => {
                                                 <button 
                                                     onClick={async (e) => { 
                                                         e.stopPropagation(); 
-                                                        const token = localStorage.getItem('token');
+                                                        const token = localStorage.getItem('sky_token');
                                                         if (!token) {
                                                             if (confirm("관심 업체로 등록하려면 로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
                                                                 navigate('/login');

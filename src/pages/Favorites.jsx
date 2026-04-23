@@ -11,7 +11,7 @@ const Favorites = () => {
 
     const fetchBookmarks = async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sky_token');
             if (!token) {
                 setError('로그인이 필요한 서비스입니다.');
                 setLoading(false);
@@ -44,7 +44,7 @@ const Favorites = () => {
     const toggleBookmark = async (e, businessId) => {
         e.stopPropagation();
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sky_token');
             if (!token) {
                 navigate('/login');
                 return;
