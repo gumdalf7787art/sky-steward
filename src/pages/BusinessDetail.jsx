@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { authState } from '../atoms/auth';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
+import FavoriteButton from '../components/FavoriteButton';
 
 const BusinessDetail = () => {
     const { id } = useParams();
@@ -208,16 +209,14 @@ const BusinessDetail = () => {
                 <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
                     <span className="material-symbols-outlined text-slate-800">arrow_back</span>
                 </button>
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                     <button 
                         onClick={handleShare}
                         className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800"
                     >
                         <span className="material-symbols-outlined">share</span>
                     </button>
-                    <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800">
-                        <span className="material-symbols-outlined">favorite</span>
-                    </button>
+                    <FavoriteButton businessId={id} iconSize="24px" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100" />
                 </div>
             </div>
 

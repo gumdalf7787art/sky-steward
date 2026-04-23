@@ -16,7 +16,7 @@ import ChurchRegister from './pages/ChurchRegister';
 import ChurchManage from './pages/ChurchManage';
 import BusinessDetail from './pages/BusinessDetail';
 import ChurchDetail from './pages/ChurchDetail';
-import Search from './pages/Search';
+import Favorites from './pages/Favorites';
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/favorites" element={<div>관심업체 페이지 (준비 중)</div>} />
+            <Route path="/favorites" element={<Favorites />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/category/:categoryId" element={<CategoryList />} />

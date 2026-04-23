@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import FavoriteButton from '../components/FavoriteButton';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
@@ -160,7 +161,7 @@ const Home = () => {
                     </h4>
                     <p className="text-body-md text-primary font-semibold">빛가온교회</p>
                   </div>
-                  <span className="material-symbols-outlined text-outline">favorite</span>
+                  <FavoriteButton businessId="sample-biz-bakery" />
                 </div>
                 <div className="flex items-center gap-1 text-outline mb-sm">
                   <span className="material-symbols-outlined text-[18px]">location_on</span>
@@ -191,7 +192,7 @@ const Home = () => {
                     </h4>
                     <p className="text-body-md text-primary font-semibold">빛가온교회</p>
                   </div>
-                  <span className="material-symbols-outlined text-outline">favorite</span>
+                  <FavoriteButton businessId="sample-biz-math" />
                 </div>
                 <div className="flex items-center gap-1 text-outline mb-sm">
                   <span className="material-symbols-outlined text-[18px]">location_on</span>
@@ -239,11 +240,13 @@ const Home = () => {
                   <img alt={item.cat} className="w-full h-full object-cover" src={item.img}/>
                   <div className={`absolute top-2 left-2 ${item.bg} text-white px-2 py-0.5 rounded-full text-[10px] font-bold`}>{item.cat}</div>
                 </div>
-                <div className="p-3">
-                  <h4 className="text-body-md font-bold text-on-surface truncate">
-                    {item.name}
-                    <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">(대표님)</span>
-                  </h4>
+                  <div className="flex justify-between items-start mb-1">
+                    <h4 className="text-body-md font-bold text-on-surface truncate flex-1">
+                      {item.name}
+                      <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">(대표님)</span>
+                    </h4>
+                    <FavoriteButton businessId={item.id} />
+                  </div>
                   <p className="text-[11px] text-primary font-semibold mb-1">{item.church}</p>
                   <div className="flex items-center gap-0.5 text-outline mb-2">
                     <span className="material-symbols-outlined text-[14px]">location_on</span>
