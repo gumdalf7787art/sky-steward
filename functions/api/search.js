@@ -15,27 +15,39 @@ export async function onRequestGet({ request, env }) {
         const strippedQuery = query.replace(/\s+/g, '');
         const searchTerm = `%${strippedQuery}%`;
 
+        // optional: get userId from token
+        let userId = null;
+        const authHeader = request.headers.get("Authorization");
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+            const { verifyJWT } = await import("../utils/jwt");
+            const user = await verifyJWT(authHeader.split(" ")[1]);
+            if (user) userId = user.id;
+        }
+
         // 1. Search by Business Name (Whitespace insensitive)
         const byName = await env.DB.prepare(`
-            SELECT b.*, c.name as church_name 
+            SELECT b.*, c.name as church_name, 
+                   (SELECT 1 FROM bookmarks WHERE user_id = ? AND business_id = b.id) as isBookmarked
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
             WHERE REPLACE(b.name, ' ', '') LIKE ? OR REPLACE(b.ceo_name, ' ', '') LIKE ?
             ORDER BY b.created_at DESC
-        `).bind(searchTerm, searchTerm).all();
+        `).bind(userId, searchTerm, searchTerm).all();
 
         // 2. Search by Church Name (Whitespace insensitive)
         const byChurch = await env.DB.prepare(`
-            SELECT b.*, c.name as church_name 
+            SELECT b.*, c.name as church_name,
+                   (SELECT 1 FROM bookmarks WHERE user_id = ? AND business_id = b.id) as isBookmarked
             FROM businesses b 
             JOIN churches c ON b.church_id = c.id 
             WHERE REPLACE(c.name, ' ', '') LIKE ?
             ORDER BY b.created_at DESC
-        `).bind(searchTerm).all();
+        `).bind(userId, searchTerm).all();
 
         // 3. Search by Keyword (Description, Category, Keywords, OR Church Name)
         const byKeyword = await env.DB.prepare(`
-            SELECT b.*, c.name as church_name 
+            SELECT b.*, c.name as church_name,
+                   (SELECT 1 FROM bookmarks WHERE user_id = ? AND business_id = b.id) as isBookmarked
             FROM businesses b 
             LEFT JOIN churches c ON b.church_id = c.id 
             WHERE (
@@ -46,7 +58,7 @@ export async function onRequestGet({ request, env }) {
                 REPLACE(b.ceo_name, ' ', '') LIKE ?
             )
             ORDER BY b.created_at DESC
-        `).bind(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm).all();
+        `).bind(userId, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm).all();
 
         // 4. Search Churches themselves (Whitespace insensitive)
         const byChurchList = await env.DB.prepare(`

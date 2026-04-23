@@ -16,6 +16,7 @@ import ChurchRegister from './pages/ChurchRegister';
 import ChurchManage from './pages/ChurchManage';
 import BusinessDetail from './pages/BusinessDetail';
 import ChurchDetail from './pages/ChurchDetail';
+import Search from './pages/Search';
 import Favorites from './pages/Favorites';
 
 function App() {

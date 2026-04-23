@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import FavoriteButton from '../components/FavoriteButton';
 
 const Search = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -28,7 +27,11 @@ const Search = () => {
         }
         setLoading(true);
         try {
-            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+            const token = localStorage.getItem('token');
+            const headers = {};
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, { headers });
             const json = await res.json();
             if (json.success) {
                 setResults(json.results);
@@ -95,7 +98,47 @@ const Search = () => {
                             {biz.name}
                             {biz.ceo_name && <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">({biz.ceo_name} 대표님)</span>}
                         </h4>
-                        <FavoriteButton businessId={biz.id} />
+                        <button 
+                            onClick={async (e) => { 
+                                e.stopPropagation(); 
+                                const token = localStorage.getItem('token');
+                                if (!token) {
+                                    if (confirm("관심 업체로 등록하려면 로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                                        navigate('/login');
+                                    }
+                                    return;
+                                }
+
+                                try {
+                                    const res = await fetch('/api/bookmarks/toggle', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${token}`
+                                        },
+                                        body: JSON.stringify({ businessId: biz.id })
+                                    });
+                                    const data = await res.json();
+                                    if (data.success) {
+                                        // Update state locally
+                                        setResults(prev => {
+                                            const newResults = { ...prev };
+                                            ['byName', 'byChurch', 'byKeyword'].forEach(key => {
+                                                newResults[key] = newResults[key].map(item => 
+                                                    item.id === biz.id ? { ...item, isBookmarked: data.bookmarked } : item
+                                                );
+                                            });
+                                            return newResults;
+                                        });
+                                    }
+                                } catch (err) {
+                                    console.error("Failed to toggle bookmark", err);
+                                }
+                            }} 
+                            className={`hover:scale-110 transition-transform ${biz.isBookmarked ? 'text-rose-500' : 'text-outline hover:text-primary'}`}
+                        >
+                            <span className={`material-symbols-outlined text-[20px] ${biz.isBookmarked ? 'fill-1' : ''}`}>favorite</span>
+                        </button>
                     </div>
                     
                     <p className="text-[12px] text-primary font-semibold mb-1 truncate">

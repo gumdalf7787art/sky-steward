@@ -8,6 +8,15 @@ export async function onRequestGet(context) {
         return new Response(JSON.stringify({ error: "사업체 ID가 필요합니다." }), { status: 400 });
     }
 
+    // optional: check for auth to see if bookmarked
+    let userId = null;
+    const authHeader = request.headers.get("Authorization");
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.split(" ")[1];
+        const user = await verifyJWT(token);
+        if (user) userId = user.id;
+    }
+
     try {
         // 1. Fetch Business & Church Info
         const business = await env.DB.prepare(`
@@ -19,6 +28,15 @@ export async function onRequestGet(context) {
 
         if (!business) {
             return new Response(JSON.stringify({ error: "사업체를 찾을 수 없습니다." }), { status: 404 });
+        }
+
+        // Check if bookmarked
+        let isBookmarked = false;
+        if (userId) {
+            const bm = await env.DB.prepare("SELECT id FROM bookmarks WHERE user_id = ? AND business_id = ?")
+                .bind(userId, businessId)
+                .first();
+            if (bm) isBookmarked = true;
         }
 
         // 2. Fetch Menus
@@ -44,7 +62,7 @@ export async function onRequestGet(context) {
 
         return new Response(JSON.stringify({
             success: true,
-            business,
+            business: { ...business, isBookmarked },
             menus: menus.results,
             reviews: reviews.results,
             stats: {

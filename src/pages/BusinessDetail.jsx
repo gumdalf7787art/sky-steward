@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { authState } from '../atoms/auth';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import FavoriteButton from '../components/FavoriteButton';
 
 const BusinessDetail = () => {
     const { id } = useParams();
@@ -31,7 +30,11 @@ const BusinessDetail = () => {
 
     const fetchDetail = useCallback(async () => {
         try {
-            const res = await fetch(`/api/business/${id}`);
+            const token = localStorage.getItem('token');
+            const headers = {};
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            const res = await fetch(`/api/business/${id}`, { headers });
             const json = await res.json();
             if (json.success) {
                 setData(json);
@@ -42,6 +45,39 @@ const BusinessDetail = () => {
             setLoading(false);
         }
     }, [id]);
+
+    const handleToggleBookmark = async () => {
+        if (!auth.isAuthenticated) {
+            if (confirm("관심 업체로 등록하려면 로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                navigate('/login');
+            }
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/bookmarks/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ businessId: id })
+            });
+            const json = await res.json();
+            if (json.success) {
+                setData(prev => ({
+                    ...prev,
+                    business: {
+                        ...prev.business,
+                        isBookmarked: json.bookmarked
+                    }
+                }));
+            }
+        } catch (err) {
+            console.error("Failed to toggle bookmark", err);
+        }
+    };
 
     useEffect(() => {
         fetchDetail();
@@ -209,14 +245,19 @@ const BusinessDetail = () => {
                 <button onClick={() => navigate(-1)} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
                     <span className="material-symbols-outlined text-slate-800">arrow_back</span>
                 </button>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2">
                     <button 
                         onClick={handleShare}
                         className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800"
                     >
                         <span className="material-symbols-outlined">share</span>
                     </button>
-                    <FavoriteButton businessId={id} iconSize="24px" className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100" />
+                    <button 
+                        onClick={handleToggleBookmark}
+                        className={`w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors ${data.business.isBookmarked ? 'text-rose-500' : 'text-slate-800'}`}
+                    >
+                        <span className={`material-symbols-outlined ${data.business.isBookmarked ? 'fill-1' : ''}`}>favorite</span>
+                    </button>
                 </div>
             </div>
 

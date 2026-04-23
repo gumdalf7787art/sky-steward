@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
-import FavoriteButton from '../components/FavoriteButton';
 
 const CategoryList = () => {
   const { categoryId } = useParams();
@@ -55,18 +54,25 @@ const CategoryList = () => {
     const fetchBusinesses = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/business/category?id=${categoryId}`);
+        const token = localStorage.getItem('token');
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch(`/api/business/category?id=${categoryId}`, { headers });
         const data = await res.json();
         if (data.success) {
             setBusinesses(data.businesses);
         }
       } catch (err) {
-        console.error("Failed to fetch businesses", err);
+        console.error("Failed to fetch category businesses", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchBusinesses();
+
+    if (categoryId) {
+      fetchBusinesses();
+    }
   }, [categoryId]);
 
   // Handle Province Change
@@ -160,7 +166,40 @@ const CategoryList = () => {
                     {biz.name}
                     {biz.ceo_name && <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">({biz.ceo_name} 대표님)</span>}
                   </h4>
-                  <FavoriteButton businessId={biz.id} />
+                  <button 
+                    onClick={async (e) => { 
+                      e.stopPropagation(); 
+                      const token = localStorage.getItem('token');
+                      if (!token) {
+                          if (confirm("관심 업체로 등록하려면 로그인이 필요합니다. 로그인 페이지로 이동할까요?")) {
+                              navigate('/login');
+                          }
+                          return;
+                      }
+
+                      try {
+                          const res = await fetch('/api/bookmarks/toggle', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Bearer ${token}`
+                              },
+                              body: JSON.stringify({ businessId: biz.id })
+                          });
+                          const data = await res.json();
+                          if (data.success) {
+                              setBusinesses(prev => prev.map(item => 
+                                  item.id === biz.id ? { ...item, isBookmarked: data.bookmarked } : item
+                              ));
+                          }
+                      } catch (err) {
+                          console.error("Failed to toggle bookmark", err);
+                      }
+                    }} 
+                    className={`hover:scale-110 transition-transform ${biz.isBookmarked ? 'text-rose-500' : 'text-outline hover:text-primary'}`}
+                  >
+                    <span className={`material-symbols-outlined text-[20px] ${biz.isBookmarked ? 'fill-1' : ''}`}>favorite</span>
+                  </button>
                 </div>
                 
                 <p className="text-[12px] text-primary font-semibold mb-1 truncate">

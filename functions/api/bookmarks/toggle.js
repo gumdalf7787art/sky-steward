@@ -16,32 +16,31 @@ export async function onRequestPost(context) {
     }
 
     try {
-        const { business_id } = await request.json();
-        if (!business_id) {
-            return new Response(JSON.stringify({ error: "business_id is required" }), { status: 400 });
+        const { businessId } = await request.json();
+        if (!businessId) {
+            return new Response(JSON.stringify({ error: "Business ID is required" }), { status: 400 });
         }
 
         // Check if already bookmarked
         const existing = await env.DB.prepare("SELECT id FROM bookmarks WHERE user_id = ? AND business_id = ?")
-            .bind(user.id, business_id)
+            .bind(user.id, businessId)
             .first();
 
         if (existing) {
             // Remove bookmark
-            await env.DB.prepare("DELETE FROM bookmarks WHERE id = ?").bind(existing.id).run();
-            return new Response(JSON.stringify({ success: true, isBookmarked: false }), {
-                headers: { "Content-Type": "application/json" }
-            });
+            await env.DB.prepare("DELETE FROM bookmarks WHERE id = ?")
+                .bind(existing.id)
+                .run();
+            return new Response(JSON.stringify({ success: true, bookmarked: false, message: "관심 항목에서 삭제되었습니다." }));
         } else {
             // Add bookmark
-            const id = crypto.randomUUID();
+            const bookmarkId = crypto.randomUUID();
             await env.DB.prepare("INSERT INTO bookmarks (id, user_id, business_id) VALUES (?, ?, ?)")
-                .bind(id, user.id, business_id)
+                .bind(bookmarkId, user.id, businessId)
                 .run();
-            return new Response(JSON.stringify({ success: true, isBookmarked: true }), {
-                headers: { "Content-Type": "application/json" }
-            });
+            return new Response(JSON.stringify({ success: true, bookmarked: true, message: "관심 항목에 추가되었습니다." }));
         }
+
     } catch (err) {
         return new Response(JSON.stringify({ error: err.message }), { status: 500 });
     }
