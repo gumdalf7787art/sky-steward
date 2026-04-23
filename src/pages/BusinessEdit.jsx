@@ -254,8 +254,8 @@ const BusinessEdit = () => {
 
     const handleImageUpload = async (e) => {
         const files = Array.from(e.target.files);
-        if (images.length + files.length > 5) {
-            alert('이미지는 최대 5장까지 가능합니다.'); return;
+        if (images.length + files.length > 10) {
+            alert('이미지는 최대 10장까지 가능합니다.'); return;
         }
         for (const file of files) {
             const optimized = await optimizeImage(file);
@@ -415,6 +415,25 @@ const BusinessEdit = () => {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Image Upload Section - Moved to Top */}
+                    <div className="space-y-5">
+                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">사업체 이미지 (최대 10장)</h3>
+                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                            <label className="w-24 h-24 flex-shrink-0 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-100 transition-colors">
+                                <span className="material-symbols-outlined text-slate-300">add_a_photo</span>
+                                <span className="text-[10px] font-bold text-slate-400 mt-1">{images.length}/10</span>
+                                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
+                            </label>
+                            {images.map((img, idx) => (
+                                <div key={img.id} className="w-24 h-24 flex-shrink-0 relative rounded-2xl overflow-hidden border border-slate-100 group">
+                                    <img src={img.preview} className="w-full h-full object-cover" />
+                                    <button type="button" onClick={() => removeImage(idx)} className="absolute top-1 right-1 w-6 h-6 bg-black/50 text-white rounded-full flex items-center justify-center"><span className="material-symbols-outlined text-[14px]">close</span></button>
+                                    <button type="button" onClick={() => setMainImage(idx)} className={`absolute bottom-0 w-full py-1 text-[9px] font-black uppercase text-white ${img.isMain ? 'bg-primary' : 'bg-black/30'}`}>{img.isMain ? '대표' : '설정'}</button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     {/* Basic Info Section */}
                     <div className="space-y-5">
                         <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">기본 정보</h3>
@@ -511,24 +530,6 @@ const BusinessEdit = () => {
                         </div>
                     </div>
 
-                    {/* Image Upload Section */}
-                    <div className="space-y-5">
-                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">사업체 이미지 (최대 5장)</h3>
-                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                            <label className="w-24 h-24 flex-shrink-0 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-100 transition-colors">
-                                <span className="material-symbols-outlined text-slate-300">add_a_photo</span>
-                                <span className="text-[10px] font-bold text-slate-400 mt-1">{images.length}/5</span>
-                                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
-                            </label>
-                            {images.map((img, idx) => (
-                                <div key={img.id} className="w-24 h-24 flex-shrink-0 relative rounded-2xl overflow-hidden border border-slate-100 group">
-                                    <img src={img.preview} className="w-full h-full object-cover" />
-                                    <button type="button" onClick={() => removeImage(idx)} className="absolute top-1 right-1 w-6 h-6 bg-black/50 text-white rounded-full flex items-center justify-center"><span className="material-symbols-outlined text-[14px]">close</span></button>
-                                    <button type="button" onClick={() => setMainImage(idx)} className={`absolute bottom-0 w-full py-1 text-[9px] font-black uppercase text-white ${img.isMain ? 'bg-primary' : 'bg-black/30'}`}>{img.isMain ? '대표' : '설정'}</button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
 
                     {/* Menu Management Section */}
                     <div className="space-y-5">
