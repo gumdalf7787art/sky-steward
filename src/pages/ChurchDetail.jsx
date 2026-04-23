@@ -121,43 +121,75 @@ const ChurchDetail = () => {
                         <span className="text-xs font-black text-slate-300 bg-slate-100 px-2 py-1 rounded-full">{businesses.length}</span>
                     </div>
 
-                    <div className="grid gap-4">
+                    <div className="flex flex-col gap-4">
                         {businesses.length > 0 ? (
-                            businesses.map((biz) => (
-                                <div 
-                                    key={biz.id}
-                                    onClick={() => navigate(`/business/${biz.id}`)}
-                                    className="bg-white border border-slate-200 rounded-3xl p-4 flex gap-4 cursor-pointer hover:shadow-xl hover:border-transparent transition-all active:scale-[0.98] group"
-                                >
-                                    <div className="w-20 h-20 bg-slate-50 rounded-2xl overflow-hidden flex-shrink-0 border border-slate-50">
-                                        {biz.images ? (
+                            businesses.map((biz) => {
+                                // Image parsing logic
+                                let firstImage = null;
+                                if (biz.images) {
+                                    try {
+                                        const imagesArr = typeof biz.images === 'string' ? JSON.parse(biz.images) : biz.images;
+                                        if (Array.isArray(imagesArr) && imagesArr.length > 0) {
+                                            firstImage = imagesArr[0];
+                                        }
+                                    } catch (e) { console.error(e); }
+                                }
+
+                                // Keywords parsing logic
+                                let keywordList = [];
+                                if (biz.keywords) {
+                                    try {
+                                        keywordList = typeof biz.keywords === 'string' ? JSON.parse(biz.keywords) : biz.keywords;
+                                    } catch (e) { console.error(e); }
+                                }
+
+                                return (
+                                    <div 
+                                        key={biz.id} 
+                                        onClick={() => navigate(`/business/${biz.id}`)}
+                                        className="flex bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all h-[110px]"
+                                    >
+                                        {/* Left Image Square */}
+                                        <div className="w-[110px] min-w-[110px] h-full relative bg-gray-200 flex-shrink-0">
                                             <img 
-                                                src={`/api/media/${JSON.parse(biz.images)[0]}`} 
-                                                className="w-full h-full object-cover" 
+                                                src={firstImage ? `/api/media/${firstImage}` : 'https://via.placeholder.com/150?text=No+Image'} 
                                                 alt={biz.name} 
+                                                className="w-full h-full object-cover"
+                                                onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image' }}
                                             />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center text-slate-200">
-                                                <span className="material-symbols-outlined text-[32px]">image</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="flex flex-col justify-center overflow-hidden">
-                                        <div className="flex items-center gap-1.5 mb-1">
-                                            <span className="text-[10px] font-black text-primary bg-primary/5 px-2 py-0.5 rounded-md">{biz.category}</span>
                                         </div>
-                                        <h4 className="font-black text-slate-800 truncate group-hover:text-primary transition-colors">
-                                            {biz.name} {biz.ceo_name && <span className="text-[11px] text-slate-400 font-bold ml-1">({biz.ceo_name} 대표님)</span>}
-                                        </h4>
-                                        <p className="text-[12px] text-slate-400 font-medium truncate mt-0.5">
-                                            {biz.address} {biz.address_detail || ''}
-                                        </p>
+
+                                        {/* Right Content Area */}
+                                        <div className="flex flex-col justify-center p-3 w-full overflow-hidden">
+                                            <div className="flex justify-between items-start mb-0.5">
+                                                <h4 className="font-headline-md text-body-lg text-on-surface truncate font-bold">{biz.name}</h4>
+                                                <button onClick={(e) => { e.stopPropagation(); }} className="text-outline hover:text-primary">
+                                                    <span className="material-symbols-outlined text-[20px]">bookmark_border</span>
+                                                </button>
+                                            </div>
+                                            
+                                            <p className="text-[12px] text-primary font-semibold mb-1 truncate">
+                                                {church.name} {biz.ceo_name && <span className="text-slate-400 font-medium ml-1">({biz.ceo_name} 대표님)</span>}
+                                            </p>
+                                            
+                                            <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">
+                                                <span className="material-symbols-outlined text-[14px]">location_on</span>
+                                                <span className="truncate">{biz.address} {biz.address_detail || ''}</span>
+                                            </div>
+                                            
+                                            {keywordList && Array.isArray(keywordList) && keywordList.length > 0 && (
+                                                <div className="flex gap-1 overflow-x-auto hide-scrollbar min-w-max">
+                                                    {keywordList.slice(0, 3).map((tag, idx) => (
+                                                        <span key={idx} className="bg-surface-container px-1.5 py-0.5 rounded text-[10px] text-on-surface-variant whitespace-nowrap">
+                                                            #{tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="ml-auto flex items-center">
-                                        <span className="material-symbols-outlined text-slate-200 group-hover:text-primary/40 transition-colors">chevron_right</span>
-                                    </div>
-                                </div>
-                            ))
+                                );
+                            })
                         ) : (
                             <div className="py-20 text-center bg-white rounded-[2rem] border border-slate-100 border-dashed space-y-3">
                                 <span className="material-symbols-outlined text-slate-100 text-[64px]">storefront</span>

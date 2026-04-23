@@ -58,33 +58,66 @@ const Search = () => {
         }));
     };
 
-    const BusinessCard = ({ biz }) => (
-        <div 
-            onClick={() => navigate(`/business/${biz.id}`)}
-            className="bg-white border border-slate-200 rounded-2xl p-4 flex gap-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
-        >
-            <div className="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden flex-shrink-0">
-                {biz.images ? (
-                    <img src={`/api/media/${JSON.parse(biz.images)[0]}`} className="w-full h-full object-cover" alt={biz.name} />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-300">
-                        <span className="material-symbols-outlined text-[32px]">image</span>
+    const BusinessCard = ({ biz }) => {
+        // Image parsing logic to handle both array and JSON string formats
+        let firstImage = null;
+        if (biz.images) {
+            try {
+                const imagesArr = typeof biz.images === 'string' ? JSON.parse(biz.images) : biz.images;
+                if (Array.isArray(imagesArr) && imagesArr.length > 0) {
+                    firstImage = imagesArr[0];
+                }
+            } catch (e) {
+                console.error("Failed to parse images", e);
+            }
+        }
+
+        return (
+            <div 
+                onClick={() => navigate(`/business/${biz.id}`)}
+                className="flex bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-all h-[110px]"
+            >
+                {/* Left Image Square */}
+                <div className="w-[110px] min-w-[110px] h-full relative bg-gray-200 flex-shrink-0">
+                    <img 
+                        src={firstImage ? `/api/media/${firstImage}` : 'https://via.placeholder.com/150?text=No+Image'} 
+                        alt={biz.name} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=No+Image' }}
+                    />
+                </div>
+
+                {/* Right Content Area */}
+                <div className="flex flex-col justify-center p-3 w-full overflow-hidden">
+                    <div className="flex justify-between items-start mb-0.5">
+                        <h4 className="font-headline-md text-body-lg text-on-surface truncate font-bold">{biz.name}</h4>
+                        <button onClick={(e) => { e.stopPropagation(); }} className="text-outline hover:text-primary">
+                            <span className="material-symbols-outlined text-[20px]">bookmark_border</span>
+                        </button>
                     </div>
-                )}
+                    
+                    <p className="text-[12px] text-primary font-semibold mb-1 truncate">
+                        {biz.church_name} {biz.ceo_name && <span className="text-slate-400 font-medium ml-1">({biz.ceo_name} 대표님)</span>}
+                    </p>
+                    
+                    <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">
+                        <span className="material-symbols-outlined text-[14px]">location_on</span>
+                        <span className="truncate">{biz.address} {biz.address_detail || ''}</span>
+                    </div>
+                    
+                    {biz.keywords && (
+                        <div className="flex gap-1 overflow-x-auto hide-scrollbar min-w-max">
+                            {(typeof biz.keywords === 'string' ? JSON.parse(biz.keywords) : biz.keywords)?.slice(0, 3).map((tag, idx) => (
+                                <span key={idx} className="bg-surface-container px-1.5 py-0.5 rounded text-[10px] text-on-surface-variant whitespace-nowrap">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
-            <div className="flex flex-col justify-center overflow-hidden">
-                <span className="text-[10px] font-black text-primary bg-primary/5 px-2 py-0.5 rounded-md w-fit mb-1">{biz.category}</span>
-                <h4 className="font-black text-slate-800 truncate">{biz.name}</h4>
-                <p className="text-[12px] text-slate-500 font-medium flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">church</span>
-                    {biz.church_name} {biz.ceo_name && <span className="text-slate-400 font-bold ml-1">({biz.ceo_name} 대표님)</span>}
-                </p>
-                <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
-                    {biz.address} {biz.address_detail || ''}
-                </p>
-            </div>
-        </div>
-    );
+        );
+    };
 
     const ChurchCard = ({ church }) => {
         const churchImages = church.images ? JSON.parse(church.images) : [];
@@ -122,7 +155,7 @@ const Search = () => {
                     <span className={`material-symbols-outlined text-[20px] ${categoryKey === 'byName' ? 'text-blue-500' : (categoryKey === 'byChurch' || categoryKey === 'byChurchList') ? 'text-primary' : 'text-amber-500'}`}>{icon}</span>
                     <h3 className="text-sm font-black text-slate-800">{title} <span className="text-slate-300 ml-1">{data.length}</span></h3>
                 </div>
-                <div className="grid gap-3">
+                <div className="flex flex-col gap-4">
                     {displayed.map(item => (
                         type === 'business' 
                             ? <BusinessCard key={item.id} biz={item} /> 
