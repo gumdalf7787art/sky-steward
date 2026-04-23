@@ -116,6 +116,7 @@ const BusinessEdit = () => {
 
                 if (data.success) {
                     const biz = data.business;
+                    // Map basic info
                     setFormData({
                         name: biz.name || '',
                         ceo_name: biz.ceo_name || '',
@@ -139,37 +140,41 @@ const BusinessEdit = () => {
 
                     if (biz.church_name) setChurchSearch(biz.church_name);
 
-                    // Handle existing business images
+                    // Map existing main images
                     if (biz.images) {
-                        const keys = JSON.parse(biz.images);
-                        const existingImages = keys.map((key, idx) => ({
-                            id: `existing-${idx}`,
-                            preview: `/api/media/${key}`,
-                            file: null,
-                            isMain: idx === 0,
-                            isExisting: true,
-                            key: key
-                        }));
-                        setImages(existingImages);
+                        try {
+                            const keys = typeof biz.images === 'string' ? JSON.parse(biz.images) : biz.images;
+                            const existingImages = keys.map((key, idx) => ({
+                                id: `existing-${idx}-${Date.now()}`,
+                                preview: key.startsWith('http') ? key : `/api/media/${key}`,
+                                file: null,
+                                isMain: idx === 0,
+                                isExisting: true,
+                                key: key
+                            }));
+                            setImages(existingImages);
+                        } catch (e) {
+                            console.error("Images parse error:", e);
+                        }
                     }
 
-                    // Handle menu board image
+                    // Map existing menu board
                     if (biz.menu_board_image) {
                         setMenuBoardImage({
-                            preview: `/api/media/${biz.menu_board_image}`,
+                            preview: biz.menu_board_image.startsWith('http') ? biz.menu_board_image : `/api/media/${biz.menu_board_image}`,
                             file: null,
                             isExisting: true,
                             key: biz.menu_board_image
                         });
                     }
 
-                    // Handle individual menus
-                    if (data.menus) {
+                    // Map individual menus
+                    if (data.menus && Array.isArray(data.menus)) {
                         const existingMenus = data.menus.map((m) => ({
                             name: m.name || '',
                             price: m.price || '',
                             description: m.description || '',
-                            preview: m.image_key ? `/api/media/${m.image_key}` : null,
+                            preview: m.image_key ? (m.image_key.startsWith('http') ? m.image_key : `/api/media/${m.image_key}`) : null,
                             file: null,
                             isExisting: true,
                             existingKey: m.image_key,
@@ -181,6 +186,7 @@ const BusinessEdit = () => {
                     setError(data.error || '업체 정보를 불러오지 못했습니다.');
                 }
             } catch (err) {
+                console.error("Fetch error:", err);
                 setError('서버 통신 오류가 발생했습니다.');
             } finally {
                 setLoading(false);
