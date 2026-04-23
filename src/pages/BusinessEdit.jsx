@@ -311,14 +311,21 @@ const BusinessEdit = () => {
         setMenus(menus.filter((_, i) => i !== index));
     };
 
-    const handleAddKeyword = (e) => {
-        if (e.key === 'Enter' && keywordInput.trim()) {
-            e.preventDefault();
+    const addKeyword = () => {
+        const val = keywordInput.trim();
+        if (val) {
             if (formData.keywords.length >= 10) { alert('키워드는 최대 10개까지 가능합니다.'); return; }
-            if (!formData.keywords.includes(keywordInput.trim())) {
-                setFormData(prev => ({ ...prev, keywords: [...prev.keywords, keywordInput.trim()] }));
+            if (!formData.keywords.includes(val)) {
+                setFormData(prev => ({ ...prev, keywords: [...prev.keywords, val] }));
             }
             setKeywordInput('');
+        }
+    };
+
+    const handleAddKeyword = (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            addKeyword();
         }
     };
 
@@ -527,6 +534,44 @@ const BusinessEdit = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업체 소개</label>
                             <textarea name="description" value={formData.description} onChange={handleChange} className="w-full h-32 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" placeholder="성도님들께 사업체를 소개해 주세요" />
+                        </div>
+                    </div>
+                    
+                    {/* Keywords Section - RESTORED and FIXED with Add Button */}
+                    <div className="space-y-5">
+                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">성도 검색 키워드</h3>
+                        <p className="text-[11px] text-slate-400 font-bold ml-1 -mt-3 leading-relaxed italic">
+                            #식당 #카페 #미용실 처럼 성도들이 검색할만한 단어를 추가하세요.
+                        </p>
+                        <div className="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl bg-slate-50 border border-slate-100">
+                            {formData.keywords.map(kw => (
+                                <span key={kw} className="flex items-center gap-1 px-3 py-1 bg-white text-primary text-[12px] font-bold rounded-full border border-primary/20 shadow-sm">
+                                    #{kw}
+                                    <button type="button" onClick={() => removeKeyword(kw)} className="text-slate-300 hover:text-rose-500 transition-colors">
+                                        <span className="material-symbols-outlined text-[14px]">close</span>
+                                    </button>
+                                </span>
+                            ))}
+                            {formData.keywords.length === 0 && <span className="text-xs text-slate-300 py-1.5 px-1">키워드를 추가해주세요.</span>}
+                        </div>
+                        <div className="flex gap-2">
+                            <input 
+                                type="text" 
+                                value={keywordInput} 
+                                onChange={(e) => setKeywordInput(e.target.value)} 
+                                onKeyDown={handleAddKeyword} 
+                                disabled={formData.keywords.length >= 10} 
+                                className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능" : "키워드 입력"} 
+                            />
+                            <button 
+                                type="button" 
+                                onClick={addKeyword} 
+                                disabled={formData.keywords.length >= 10 || !keywordInput.trim()} 
+                                className="px-6 bg-slate-800 text-white rounded-2xl font-bold text-sm shadow-sm active:scale-95 transition-all disabled:bg-slate-200"
+                            >
+                                추가
+                            </button>
                         </div>
                     </div>
 

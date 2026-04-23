@@ -260,14 +260,18 @@ const BusinessRegister = () => {
         }
     };
 
+    const addKeyword = () => {
+        const val = keywordInput.trim();
+        if (val && formData.keywords.length < 10 && !formData.keywords.includes(val)) {
+            setFormData(prev => ({ ...prev, keywords: [...prev.keywords, val] }));
+            setKeywordInput('');
+        }
+    };
+
     const handleKeywordKeyDown = (e) => {
         if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
-            const val = keywordInput.trim();
-            if (val && formData.keywords.length < 10 && !formData.keywords.includes(val)) {
-                setFormData(prev => ({ ...prev, keywords: [...prev.keywords, val] }));
-                setKeywordInput('');
-            }
+            addKeyword();
         }
     };
 
@@ -490,7 +494,10 @@ const BusinessRegister = () => {
                                 ))}
                                 {formData.keywords.length === 0 && <span className="text-xs text-slate-300 py-1.5 px-2">키워드를 입력해주세요.</span>}
                             </div>
-                            <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} onKeyDown={handleKeywordKeyDown} disabled={formData.keywords.length >= 10} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능합니다" : "키워드 입력 후 엔터"} />
+                            <div className="flex gap-2">
+                                <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} onKeyDown={handleKeywordKeyDown} disabled={formData.keywords.length >= 10} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능합니다" : "키워드 입력"} />
+                                <button type="button" onClick={addKeyword} disabled={formData.keywords.length >= 10 || !keywordInput.trim()} className="px-5 bg-slate-800 text-white rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all disabled:bg-slate-200">추가</button>
+                            </div>
                         </div>
 
                         <div className="space-y-1.5">
