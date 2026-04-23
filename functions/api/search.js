@@ -54,11 +54,10 @@ export async function onRequestGet({ request, env }) {
                 REPLACE(b.description, ' ', '') LIKE ? OR 
                 REPLACE(b.category, ' ', '') LIKE ? OR 
                 REPLACE(b.keywords, ' ', '') LIKE ? OR 
-                REPLACE(c.name, ' ', '') LIKE ? OR
                 REPLACE(b.ceo_name, ' ', '') LIKE ?
             )
             ORDER BY b.created_at DESC
-        `).bind(userId, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm).all();
+        `).bind(userId, searchTerm, searchTerm, searchTerm, searchTerm).all();
 
         // 4. Search Churches themselves (Whitespace insensitive)
         const byChurchList = await env.DB.prepare(`
