@@ -25,3 +25,10 @@ dist-ssr
 
 # Cloudflare
 .wrangler
+
+# Build artifacts
+out.js
+out.css
+output.css
+build_*.txt
+build_*.log
