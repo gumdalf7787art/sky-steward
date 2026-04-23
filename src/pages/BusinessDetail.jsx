@@ -115,6 +115,32 @@ const BusinessDetail = () => {
         setShowReviewModal(true);
     };
 
+    const handleShare = async () => {
+        if (!data) return;
+        
+        const shareData = {
+            title: `하늘 청지기 - ${data.business.name}`,
+            text: `${data.business.name} | ${data.business.church_name || '청지기'} 소속 성도 업체 정보를 확인해 보세요!`,
+            url: window.location.href,
+        };
+
+        try {
+            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                await navigator.share(shareData);
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                alert("링크가 클립보드에 복사되었습니다.");
+            }
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                console.error("Error sharing", err);
+                // Fallback to clipboard if share fails
+                await navigator.clipboard.writeText(window.location.href);
+                alert("링크가 클립보드에 복사되었습니다.");
+            }
+        }
+    };
+
     const handleSubmitReview = async () => {
         if (!newComment.trim()) {
             alert("리뷰 내용을 입력해 주세요.");
@@ -183,7 +209,10 @@ const BusinessDetail = () => {
                     <span className="material-symbols-outlined text-slate-800">arrow_back</span>
                 </button>
                 <div className="flex gap-2">
-                    <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800">
+                    <button 
+                        onClick={handleShare}
+                        className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800"
+                    >
                         <span className="material-symbols-outlined">share</span>
                     </button>
                     <button className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800">
