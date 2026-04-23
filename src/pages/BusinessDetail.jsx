@@ -234,7 +234,7 @@ const BusinessDetail = () => {
     const images = data.business.images ? JSON.parse(data.business.images) : [];
     
     return (
-        <div className="bg-slate-50 min-h-screen pb-40 relative">
+        <div className="bg-slate-50 min-h-screen pb-24 relative">
             <Header />
             
             {/* Toast Notification */}
@@ -573,7 +573,7 @@ const BusinessDetail = () => {
                     </div>
 
                     {/* Review Writing Button (Static at the bottom of review section) */}
-                    <div className="pt-8 pb-12 flex justify-center">
+                    <div className="pt-8 pb-4 flex justify-center">
                         <button 
                             onClick={handleOpenReviewModal}
                             className="flex items-center gap-2 px-10 py-4 bg-primary text-white rounded-full font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all w-full max-w-[280px] justify-center"
