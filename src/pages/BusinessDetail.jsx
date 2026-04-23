@@ -152,13 +152,17 @@ const BusinessDetail = () => {
         setShowReviewModal(true);
     };
 
-    const handleShare = async () => {
+    const handleShare = async (e) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         if (!data) return;
         
         const shareData = {
             title: `하늘 청지기 - ${data.business.name}`,
             text: `${data.business.name} | ${data.business.church_name || '청지기'} 소속 성도 업체 정보를 확인해 보세요!`,
-            url: window.location.href,
+            url: window.location.origin + window.location.pathname,
         };
 
         try {
@@ -247,7 +251,8 @@ const BusinessDetail = () => {
                 </button>
                 <div className="flex gap-2">
                     <button 
-                        onClick={handleShare}
+                        type="button"
+                        onClick={(e) => handleShare(e)}
                         className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors text-slate-800"
                     >
                         <span className="material-symbols-outlined">share</span>
