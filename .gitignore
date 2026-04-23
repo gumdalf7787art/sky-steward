@@ -11,6 +11,15 @@ node_modules
 dist
 dist-ssr
 *.local
+.wrangler
+
+# Build artifacts
+out.js
+out.css
+output.css
+build_*.txt
+build_*.log
+build_*.err
 
 # Editor directories and files
 .vscode/*
