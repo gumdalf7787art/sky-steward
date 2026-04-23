@@ -375,17 +375,17 @@ const BusinessDetail = () => {
                         {/* Call Button Group */}
                         <div className="flex gap-2">
                             {data.business.show_phone === 1 && data.business.phone && (
-                                <a href={`tel:${data.business.phone}`} className="flex-[2] flex items-center justify-center gap-2 py-4 bg-slate-900 text-white rounded-2xl font-black shadow-xl shadow-slate-900/10 active:scale-[0.98] transition-all">
-                                    <span className="material-symbols-outlined text-[20px]">call</span>
+                                <a href={`tel:${data.business.phone}`} className="flex-1 flex items-center justify-center gap-2 py-3 bg-slate-900 text-white rounded-2xl font-black shadow-xl shadow-slate-900/10 active:scale-[0.98] transition-all text-sm">
+                                    <span className="material-symbols-outlined text-[18px]">call</span>
                                     전화 문의
                                 </a>
                             )}
                             <button 
                                 onClick={() => setShowMapModal(true)}
-                                className={`${(data.business.show_phone === 1 && data.business.phone) ? 'flex-1' : 'w-full'} flex items-center justify-center gap-2 py-4 bg-white border border-slate-100 text-slate-800 rounded-2xl font-black shadow-sm active:scale-[0.98] transition-all`}
+                                className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-100 text-slate-800 rounded-2xl font-black shadow-sm active:scale-[0.98] transition-all text-sm"
                             >
-                                <span className="material-symbols-outlined text-[20px]">near_me</span>
-                                길찾기
+                                <span className="material-symbols-outlined text-[18px]">near_me</span>
+                                위치확인 및 길찾기
                             </button>
                         </div>
 
