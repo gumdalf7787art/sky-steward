@@ -257,11 +257,11 @@ const ChurchManage = () => {
                         <div className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-5">
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">교회 이름</label>
-                                <input required type="text" value={editForm.name} onChange={(e) => setEditForm({...editForm, name: e.target.value})} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
+                                <input required type="text" value={editForm.name} onChange={(e) => setEditForm({...editForm, name: e.target.value})} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">교단/소속</label>
-                                <input required type="text" value={editForm.denomination} onChange={(e) => setEditForm({...editForm, denomination: e.target.value})} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
+                                <input required type="text" value={editForm.denomination} onChange={(e) => setEditForm({...editForm, denomination: e.target.value})} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">주소</label>
@@ -272,7 +272,7 @@ const ChurchManage = () => {
                                             readOnly
                                             type="text" 
                                             value={editForm.address} 
-                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
+                                            className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
                                             placeholder="주소를 검색하세요" 
                                         />
                                         <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
@@ -282,18 +282,18 @@ const ChurchManage = () => {
                                         type="text" 
                                         value={editForm.address_detail} 
                                         onChange={(e) => setEditForm({...editForm, address_detail: e.target.value})} 
-                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                        className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
                                         placeholder="상세 주소 (층, 호수 등)" 
                                     />
                                 </div>
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">연락처</label>
-                                <input required type="tel" value={editForm.phone} onChange={(e) => setEditForm({...editForm, phone: e.target.value})} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
+                                <input required type="tel" value={editForm.phone} onChange={(e) => setEditForm({...editForm, phone: e.target.value})} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">설명</label>
-                                <textarea rows="3" value={editForm.description} onChange={(e) => setEditForm({...editForm, description: e.target.value})} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" />
+                                <textarea rows="3" value={editForm.description} onChange={(e) => setEditForm({...editForm, description: e.target.value})} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" />
                             </div>
 
                             {/* Image Management */}

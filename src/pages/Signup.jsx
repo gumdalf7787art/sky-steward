@@ -121,7 +121,7 @@ const Signup = () => {
               type="email" 
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="user@example.com"
             />
           </div>
@@ -135,7 +135,7 @@ const Signup = () => {
               type="email" 
               value={formData.emailConfirm}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="위와 동일한 이메일을 입력해주세요"
             />
             {formData.emailConfirm && (
@@ -154,7 +154,7 @@ const Signup = () => {
               type="password" 
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="••••••••"
             />
             <p className="text-body-md text-outline mt-1.5 pl-1 text-[12px]">
@@ -171,7 +171,7 @@ const Signup = () => {
               type="password" 
               value={formData.passwordConfirm}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="위와 동일한 비밀번호를 입력해주세요"
             />
             {formData.passwordConfirm && (
@@ -190,7 +190,7 @@ const Signup = () => {
               type="text" 
               value={formData.nickname}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="홍길동"
             />
           </div>
@@ -203,7 +203,7 @@ const Signup = () => {
               type="tel" 
               value={formData.phone}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
               placeholder="010-1234-5678 (선택사항)"
             />
           </div>

@@ -235,7 +235,7 @@ const Search = () => {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         placeholder="업체명, 교회명, 키워드를 입력해 주세요"
-                        className="w-full pl-11 pr-4 py-4 bg-white border border-slate-100 rounded-2xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-[15px] font-medium"
+                        className="w-full pl-11 pr-4 py-4 bg-slate-100 border border-slate-300 rounded-2xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-[15px] font-medium"
                     />
                 </form>
 

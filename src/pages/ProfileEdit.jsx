@@ -209,7 +209,7 @@ const ProfileEdit = () => {
                                 type="password"
                                 value={formData.currentPassword}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
+                                className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
                                 placeholder="현재 사용중인 비밀번호"
                             />
                         </div>
@@ -220,7 +220,7 @@ const ProfileEdit = () => {
                                 type="password"
                                 value={formData.newPassword}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
+                                className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
                                 placeholder="새로운 비밀번호"
                             />
                         </div>
@@ -231,7 +231,7 @@ const ProfileEdit = () => {
                                 type="password"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
+                                className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all"
                                 placeholder="새 비밀번호를 다시 입력하세요"
                             />
                             {formData.confirmPassword && (

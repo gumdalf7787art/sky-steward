@@ -420,16 +420,16 @@ const BusinessRegister = () => {
                         {/* Basic Info */}
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">상호명 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="name" type="text" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="사업장 이름을 입력하세요" />
+                            <input required name="name" type="text" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="사업장 이름을 입력하세요" />
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">대표자명 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="ceo_name" type="text" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="대표자 성함을 입력하세요" />
+                            <input required name="ceo_name" type="text" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="대표자 성함을 입력하세요" />
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">연락처 <span className="text-rose-500 font-black">*</span></label>
                             <div className="flex flex-col gap-2">
-                                <input required name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 010-1234-5678" />
+                                <input required name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 010-1234-5678" />
                                 <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-400 select-none ml-1">
                                     <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded-md border-slate-300 text-primary focus:ring-primary/20" />
                                     전화번호 상세페이지 노출 안 함
@@ -439,7 +439,7 @@ const BusinessRegister = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업자등록번호 <span className="text-rose-500 font-black">*</span></label>
                             <div className="flex gap-2">
-                                <input required name="biz_no" type="text" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
+                                <input required name="biz_no" type="text" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
                                 <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || bizStatus.success} className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${bizStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95'}`}>{bizStatus.loading ? '...' : bizStatus.success ? '확인됨' : '중복확인'}</button>
                             </div>
                             {bizStatus.message && <p className={`text-[11px] font-bold mt-1.5 ml-1 ${bizStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>{bizStatus.message}</p>}
@@ -449,7 +449,7 @@ const BusinessRegister = () => {
                         <div className="space-y-1.5 relative" ref={searchRef}>
                             <label className="text-xs font-bold text-slate-500 ml-1">교회 선택</label>
                             <div className="relative">
-                                <input type="text" value={selectedChurch ? selectedChurch.name : churchSearch} onChange={(e) => { if (selectedChurch) setSelectedChurch(null); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 입력하여 검색하세요" />
+                                <input type="text" value={selectedChurch ? selectedChurch.name : churchSearch} onChange={(e) => { if (selectedChurch) setSelectedChurch(null); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 입력하여 검색하세요" />
                                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">{isSearchingChurches ? 'sync' : 'search'}</span>
                             </div>
                             {churchResults.length > 0 && !selectedChurch && (
@@ -468,7 +468,7 @@ const BusinessRegister = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">업종 선택 <span className="text-rose-500 font-black">*</span></label>
                             <div className="relative">
-                                <select name="category" value={formData.category} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none">
+                                <select name="category" value={formData.category} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none">
                                     <option value="">카테고리를 선택하세요</option>
                                     {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.label}</option>)}
                                 </select>
@@ -495,7 +495,7 @@ const BusinessRegister = () => {
                                 {formData.keywords.length === 0 && <span className="text-xs text-slate-300 py-1.5 px-2">키워드를 입력해주세요.</span>}
                             </div>
                             <div className="flex gap-2">
-                                <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} onKeyDown={handleKeywordKeyDown} disabled={formData.keywords.length >= 10} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능합니다" : "키워드 입력"} />
+                                <input type="text" value={keywordInput} onChange={(e) => setKeywordInput(e.target.value)} onKeyDown={handleKeywordKeyDown} disabled={formData.keywords.length >= 10} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능합니다" : "키워드 입력"} />
                                 <button type="button" onClick={addKeyword} disabled={formData.keywords.length >= 10 || !keywordInput.trim()} className="px-5 bg-slate-800 text-white rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all disabled:bg-slate-200">추가</button>
                             </div>
                         </div>
@@ -510,7 +510,7 @@ const BusinessRegister = () => {
                                         name="address" 
                                         type="text" 
                                         value={formData.address} 
-                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
+                                        className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none group-hover:border-primary transition-all text-slate-800 font-medium cursor-pointer" 
                                         placeholder="클릭하여 주소를 검색하세요" 
                                     />
                                     <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
@@ -521,7 +521,7 @@ const BusinessRegister = () => {
                                     type="text" 
                                     value={formData.address_detail} 
                                     onChange={handleChange} 
-                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                    className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
                                     placeholder="상세 주소를 입력하세요 (층, 호수 등)" 
                                 />
                             </div>
@@ -530,11 +530,11 @@ const BusinessRegister = () => {
                         {/* Extra Detail Info */}
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">영업시간</label>
-                            <input name="operating_hours" type="text" value={formData.operating_hours} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 평일 09:00~20:00 (토요일 휴무)" />
+                            <input name="operating_hours" type="text" value={formData.operating_hours} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 평일 09:00~20:00 (토요일 휴무)" />
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">주차정보</label>
-                            <input name="parking_info" type="text" value={formData.parking_info} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 건물 뒷편 주차장 이용 가능 (2시간 무료)" />
+                            <input name="parking_info" type="text" value={formData.parking_info} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 건물 뒷편 주차장 이용 가능 (2시간 무료)" />
                         </div>
 
                         {/* Menu Board Image */}
@@ -589,7 +589,7 @@ const BusinessRegister = () => {
                                 <span>사업체 설명</span>
                                 <span className={formData.description.length > 1000 ? 'text-rose-500' : 'text-slate-400'}>{formData.description.length}/1000</span>
                             </label>
-                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="업체에 대한 상세 설명을 적어주세요."></textarea>
+                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="업체에 대한 상세 설명을 적어주세요."></textarea>
                         </div>
 
                         <div className="pt-4 space-y-4 border-t border-slate-50">
@@ -597,26 +597,26 @@ const BusinessRegister = () => {
                             <div className="space-y-3">
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">language</span>
-                                    <input name="website" type="url" value={formData.website} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="홈페이지 주소" />
+                                    <input name="website" type="url" value={formData.website} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="홈페이지 주소" />
                                 </div>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">video_library</span>
-                                    <input name="youtube" type="url" value={formData.youtube} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="유튜브 채널 주소" />
+                                    <input name="youtube" type="url" value={formData.youtube} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="유튜브 채널 주소" />
                                 </div>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">rss_feed</span>
-                                    <input name="blog" type="url" value={formData.blog} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="블로그 주소" />
+                                    <input name="blog" type="url" value={formData.blog} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="블로그 주소" />
                                 </div>
                                 <div className="relative">
                                     <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-[20px]">photo_camera</span>
-                                    <input name="instagram" type="text" value={formData.instagram} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="인스타그램 ID 또는 주소" />
+                                    <input name="instagram" type="text" value={formData.instagram} onChange={handleChange} className="w-full pl-12 pr-5 py-3 bg-slate-100 border border-slate-300 rounded-xl outline-none focus:bg-white focus:border-primary transition-all text-slate-700 text-sm" placeholder="인스타그램 ID 또는 주소" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="flex gap-3 pt-6 pb-12">
-                        <button type="button" onClick={() => navigate(-1)} className="flex-1 py-5 bg-white text-slate-400 rounded-2xl font-bold hover:bg-slate-50 border border-slate-100 shadow-sm transition-all">취소</button>
+                        <button type="button" onClick={() => navigate(-1)} className="flex-1 py-5 bg-white text-slate-400 rounded-2xl font-bold hover:bg-slate-100 border border-slate-300 shadow-sm transition-all">취소</button>
                         <button type="submit" disabled={loading} className="flex-[2] py-5 bg-primary text-white rounded-2xl font-bold shadow-xl shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center disabled:opacity-50">
                             {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : '사업체 등록하기'}
                         </button>

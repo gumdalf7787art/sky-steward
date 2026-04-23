@@ -447,17 +447,17 @@ const BusinessEdit = () => {
                         
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업체 이름 *</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="사업체명을 입력하세요" />
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="사업체명을 입력하세요" />
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">대표자명 *</label>
-                                <input type="text" name="ceo_name" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="대표자 성함" />
+                                <input type="text" name="ceo_name" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="대표자 성함" />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-xs font-bold text-slate-500 ml-1">업종 선택 *</label>
-                                <select name="category" value={formData.category} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none">
+                                <select name="category" value={formData.category} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none">
                                     <option value="">선택하세요</option>
                                     {categories.map(c => <option key={c.id} value={c.label}>{c.label}</option>)}
                                 </select>
@@ -467,7 +467,7 @@ const BusinessEdit = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업자 등록번호 *</label>
                             <div className="flex gap-2">
-                                <input type="text" name="biz_no" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
+                                <input type="text" name="biz_no" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
                                 <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || (formData.biz_no === formData.original_biz_no)} className="px-6 bg-slate-800 text-white rounded-2xl font-bold text-sm disabled:bg-slate-200">
                                     {bizStatus.loading ? '확인 중' : '중복 확인'}
                                 </button>
@@ -478,7 +478,7 @@ const BusinessEdit = () => {
                         <div className="space-y-1.5 relative" ref={searchRef}>
                             <label className="text-xs font-bold text-slate-500 ml-1">교회 선택</label>
                             <div className="relative">
-                                <input type="text" value={churchSearch} onChange={(e) => { if (formData.church_id) setFormData(prev => ({ ...prev, church_id: '' })); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 검색하여 변경하세요" />
+                                <input type="text" value={churchSearch} onChange={(e) => { if (formData.church_id) setFormData(prev => ({ ...prev, church_id: '' })); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 검색하여 변경하세요" />
                                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">{isSearchingChurches ? 'sync' : 'search'}</span>
                             </div>
                             {churchResults.length > 0 && (
@@ -500,7 +500,7 @@ const BusinessEdit = () => {
                         
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">연락처 *</label>
-                            <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="010-0000-0000" />
+                            <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="010-0000-0000" />
                             <label className="flex items-center gap-2 mt-2 ml-1 cursor-pointer">
                                 <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded accent-primary" />
                                 <span className="text-xs font-bold text-slate-500">상세 페이지에 전화번호 노출</span>
@@ -510,10 +510,10 @@ const BusinessEdit = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업체 주소 *</label>
                             <div className="flex gap-2 mb-2">
-                                <input type="text" value={formData.address} readOnly className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-400 font-medium" placeholder="주소 검색을 이용하세요" />
+                                <input type="text" value={formData.address} readOnly className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl text-slate-400 font-medium" placeholder="주소 검색을 이용하세요" />
                                 <button type="button" onClick={openPostcode} className="px-6 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">주소 검색</button>
                             </div>
-                            <input type="text" id="address_detail" name="address_detail" value={formData.address_detail} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="나머지 주소를 입력하세요" />
+                            <input type="text" id="address_detail" name="address_detail" value={formData.address_detail} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="나머지 주소를 입력하세요" />
                         </div>
                     </div>
 
@@ -523,17 +523,17 @@ const BusinessEdit = () => {
                         
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">영업 시간</label>
-                            <input type="text" name="operating_hours" value={formData.operating_hours} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 평일 09:00 - 20:00 (일요일 휴무)" />
+                            <input type="text" name="operating_hours" value={formData.operating_hours} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 평일 09:00 - 20:00 (일요일 휴무)" />
                         </div>
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">주차 정보</label>
-                            <input type="text" name="parking_info" value={formData.parking_info} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 건물 내 무료 주차 가능" />
+                            <input type="text" name="parking_info" value={formData.parking_info} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 건물 내 무료 주차 가능" />
                         </div>
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업체 소개</label>
-                            <textarea name="description" value={formData.description} onChange={handleChange} className="w-full h-32 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" placeholder="성도님들께 사업체를 소개해 주세요" />
+                            <textarea name="description" value={formData.description} onChange={handleChange} className="w-full h-32 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" placeholder="성도님들께 사업체를 소개해 주세요" />
                         </div>
                     </div>
                     
@@ -543,7 +543,7 @@ const BusinessEdit = () => {
                         <p className="text-[11px] text-slate-400 font-bold ml-1 -mt-3 leading-relaxed italic">
                             #식당 #카페 #미용실 처럼 성도들이 검색할만한 단어를 추가하세요.
                         </p>
-                        <div className="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl bg-slate-50 border border-slate-100">
+                        <div className="flex flex-wrap gap-2 min-h-[44px] p-2 rounded-2xl bg-slate-100 border border-slate-300">
                             {formData.keywords.map(kw => (
                                 <span key={kw} className="flex items-center gap-1 px-3 py-1 bg-white text-primary text-[12px] font-bold rounded-full border border-primary/20 shadow-sm">
                                     #{kw}
@@ -561,7 +561,7 @@ const BusinessEdit = () => {
                                 onChange={(e) => setKeywordInput(e.target.value)} 
                                 onKeyDown={handleAddKeyword} 
                                 disabled={formData.keywords.length >= 10} 
-                                className="flex-1 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
+                                className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" 
                                 placeholder={formData.keywords.length >= 10 ? "최대 10개까지 가능" : "키워드 입력"} 
                             />
                             <button 

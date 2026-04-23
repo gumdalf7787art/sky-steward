@@ -82,7 +82,7 @@ const Login = () => {
               type="email" 
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" 
               placeholder="user@example.com"
             />
           </div>
@@ -96,7 +96,7 @@ const Login = () => {
               type="password" 
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" 
+              className="w-full px-4 py-3 bg-slate-100 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" 
               placeholder="••••••••"
             />
           </div>

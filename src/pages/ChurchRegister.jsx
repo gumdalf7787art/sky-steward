@@ -262,12 +262,12 @@ const ChurchRegister = () => {
                     <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm space-y-5">
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">교회명 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="name" type="text" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교회 이름을 입력하세요" />
+                            <input required name="name" type="text" value={formData.name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교회 이름을 입력하세요" />
                         </div>
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">교단 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="denomination" type="text" value={formData.denomination} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교단명을 입력하세요 (예: 예장통합)" />
+                            <input required name="denomination" type="text" value={formData.denomination} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교단명을 입력하세요 (예: 예장통합)" />
                         </div>
 
                         <div className="space-y-1.5">
@@ -281,7 +281,7 @@ const ChurchRegister = () => {
                                             name="address" 
                                             type="text" 
                                             value={formData.address} 
-                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none group-hover:border-amber-500 transition-all text-slate-800 font-medium cursor-pointer" 
+                                            className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none group-hover:border-amber-500 transition-all text-slate-800 font-medium cursor-pointer" 
                                             placeholder="주소를 검색하세요" 
                                         />
                                         <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">search</span>
@@ -301,7 +301,7 @@ const ChurchRegister = () => {
                                     type="text" 
                                     value={formData.address_detail} 
                                     onChange={handleChange} 
-                                    className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" 
+                                    className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" 
                                     placeholder="상세 주소를 입력하세요 (층, 호수 등)" 
                                 />
                             </div>
@@ -312,7 +312,7 @@ const ChurchRegister = () => {
 
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">연락처 <span className="text-rose-500 font-black">*</span></label>
-                            <input required name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교회 사무실 또는 담당자 번호" />
+                            <input required name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium" placeholder="교회 사무실 또는 담당자 번호" />
                         </div>
 
                         <div className="space-y-1.5 pt-2">
@@ -320,12 +320,12 @@ const ChurchRegister = () => {
                                 <span>교회 소개</span>
                                 <span className={formData.description.length > 1000 ? 'text-rose-500' : 'text-slate-400'}>{formData.description.length}/1000</span>
                             </label>
-                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="교회에 대해 상세히 소개해주세요."></textarea>
+                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-amber-500 transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="교회에 대해 상세히 소개해주세요."></textarea>
                         </div>
                     </div>
 
                     <div className="flex gap-3 pt-6 pb-12">
-                        <button type="button" onClick={() => navigate(-1)} className="flex-1 py-5 bg-white text-slate-400 rounded-2xl font-bold hover:bg-slate-50 border border-slate-100 shadow-sm transition-all">취소</button>
+                        <button type="button" onClick={() => navigate(-1)} className="flex-1 py-5 bg-white text-slate-400 rounded-2xl font-bold hover:bg-slate-100 border border-slate-300 shadow-sm transition-all">취소</button>
                         <button type="submit" disabled={loading} className="flex-[2] py-5 bg-amber-500 text-white rounded-2xl font-bold shadow-xl shadow-amber-500/20 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center disabled:opacity-50">
                             {loading ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : '교회 등록하기'}
                         </button>
