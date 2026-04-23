@@ -208,15 +208,15 @@ const BusinessDetail = () => {
                                 <>
                                     <button 
                                         onClick={() => setCurrentImageIndex(prev => (prev === 0 ? images.length - 1 : prev - 1))}
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/20 backdrop-blur-sm text-white rounded-full flex items-center justify-center transition-all hover:bg-black/40 active:scale-90 z-10"
                                     >
-                                        <span className="material-symbols-outlined">chevron_left</span>
+                                        <span className="material-symbols-outlined pointer-events-none">chevron_left</span>
                                     </button>
                                     <button 
                                         onClick={() => setCurrentImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1))}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/20 backdrop-blur-sm text-white rounded-full flex items-center justify-center transition-all hover:bg-black/40 active:scale-90 z-10"
                                     >
-                                        <span className="material-symbols-outlined">chevron_right</span>
+                                        <span className="material-symbols-outlined pointer-events-none">chevron_right</span>
                                     </button>
                                 </>
                             )}
