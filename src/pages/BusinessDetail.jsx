@@ -337,7 +337,7 @@ const BusinessDetail = () => {
                     onClick={() => scrollToSection(menuRef, 'menu')}
                     className={`flex-1 py-4 text-sm font-bold transition-all relative ${activeTab === 'menu' ? 'text-primary' : 'text-slate-400'}`}
                 >
-                    메뉴
+                    메뉴 및 정보
                     {activeTab === 'menu' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                 </button>
                 <button 
@@ -447,14 +447,14 @@ const BusinessDetail = () => {
                     <div className="flex justify-between items-end">
                         <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
                             <span className="material-symbols-outlined text-amber-500 text-[24px]">restaurant_menu</span>
-                            추천 메뉴
+                            추천 메뉴 및 정보
                         </h3>
                         {data.business.menu_board_image && (
                             <button 
                                 onClick={() => setShowMenuBoard(true)}
                                 className="text-[11px] font-black text-slate-400 border-b border-slate-200 pb-0.5"
                             >
-                                메뉴판 이미지 보기
+                                메뉴 및 안내 이미지 보기
                             </button>
                         )}
                     </div>
@@ -477,7 +477,7 @@ const BusinessDetail = () => {
                         ) : (
                             <div className="py-10 text-center bg-white rounded-3xl border border-slate-100 border-dashed">
                                 <span className="material-symbols-outlined text-slate-200 text-[48px] mb-2">menu_book</span>
-                                <p className="text-xs text-slate-400 font-bold">등록된 메뉴가 아직 없습니다.</p>
+                                <p className="text-xs text-slate-400 font-bold">등록된 정보가 아직 없습니다.</p>
                             </div>
                         )}
                     </div>
@@ -689,7 +689,7 @@ const BusinessDetail = () => {
                             />
                         </div>
                         <div className="p-6 text-center">
-                            <p className="text-[11px] font-bold text-slate-400 italic">메뉴 정보는 당사 사정에 따라 변경될 수 있습니다.</p>
+                            <p className="text-[11px] font-bold text-slate-400 italic">제공되는 정보는 업체 상황에 따라 변경될 수 있습니다.</p>
                         </div>
                     </div>
                 </div>

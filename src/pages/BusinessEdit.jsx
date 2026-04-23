@@ -579,8 +579,8 @@ const BusinessEdit = () => {
                     {/* Menu Management Section */}
                     <div className="space-y-5">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">추천 메뉴 관리</h3>
-                            <button type="button" onClick={addMenu} className="text-xs font-bold text-primary px-3 py-1 bg-primary/5 rounded-lg">+ 메뉴 추가</button>
+                            <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">추천 메뉴 및 정보 관리</h3>
+                            <button type="button" onClick={addMenu} className="text-xs font-bold text-primary px-3 py-1 bg-primary/5 rounded-lg">+ 항목 추가</button>
                         </div>
                         
                         <div className="space-y-4">
@@ -598,18 +598,18 @@ const BusinessEdit = () => {
                                             <input type="file" accept="image/*" onChange={(e) => handleMenuImageUpload(idx, e.target.files[0])} className="absolute inset-0 opacity-0 cursor-pointer" />
                                         </div>
                                         <div className="flex-1 space-y-2">
-                                            <input type="text" value={menu.name} onChange={(e) => updateMenu(idx, 'name', e.target.value)} placeholder="메뉴 이름" className="w-full px-3 py-2 bg-white rounded-xl text-sm font-bold border border-slate-100 outline-none focus:border-primary" />
+                                            <input type="text" value={menu.name} onChange={(e) => updateMenu(idx, 'name', e.target.value)} placeholder="항목 이름" className="w-full px-3 py-2 bg-white rounded-xl text-sm font-bold border border-slate-100 outline-none focus:border-primary" />
                                             <input type="text" value={menu.price} onChange={(e) => updateMenu(idx, 'price', e.target.value)} placeholder="가격 (예: 12,000원)" className="w-full px-3 py-2 bg-white rounded-xl text-sm font-bold border border-slate-100 outline-none focus:border-primary" />
                                         </div>
                                     </div>
-                                    <textarea value={menu.description} onChange={(e) => updateMenu(idx, 'description', e.target.value)} placeholder="메뉴 설명을 입력하세요" className="w-full h-16 px-3 py-2 bg-white rounded-xl text-xs font-medium border border-slate-100 outline-none focus:border-primary resize-none" />
+                                    <textarea value={menu.description} onChange={(e) => updateMenu(idx, 'description', e.target.value)} placeholder="항목 설명을 입력하세요" className="w-full h-16 px-3 py-2 bg-white rounded-xl text-xs font-medium border border-slate-100 outline-none focus:border-primary resize-none" />
                                     <button type="button" onClick={() => removeMenu(idx)} className="w-full text-[11px] font-bold text-rose-400 py-1">삭제하기</button>
                                 </div>
                             ))}
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">전체 메뉴판 이미지</label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">메뉴 및 안내 이미지</label>
                             <label className="w-full h-40 bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-100 transition-colors overflow-hidden relative">
                                 {menuBoardImage ? (
                                     <>
@@ -622,7 +622,7 @@ const BusinessEdit = () => {
                                 ) : (
                                     <>
                                         <span className="material-symbols-outlined text-slate-300">menu_book</span>
-                                        <span className="text-xs text-slate-400 font-bold mt-1">메뉴판 사진 올리기</span>
+                                        <span className="text-xs text-slate-400 font-bold mt-1">안내 사진 올리기</span>
                                     </>
                                 )}
                                 <input type="file" accept="image/*" onChange={handleMenuBoardUpload} className="hidden" />

@@ -42,7 +42,7 @@ const BusinessManage = () => {
     }, [auth, navigate]);
 
     const handleDelete = async (bizId, bizName) => {
-        if (!confirm(`'${bizName}' 업체를 정말 삭제하시겠습니까? 관련 데이터(메뉴, 리뷰 등)가 모두 삭제됩니다.`)) {
+        if (!confirm(`'${bizName}' 업체를 정말 삭제하시겠습니까? 관련 데이터(상세 정보, 리뷰 등)가 모두 삭제됩니다.`)) {
             return;
         }
 

@@ -539,13 +539,13 @@ const BusinessRegister = () => {
 
                         {/* Menu Board Image */}
                         <div className="pt-4 border-t border-slate-50">
-                            <label className="text-xs font-black text-slate-400 uppercase tracking-wider ml-1 mb-3 block">메뉴판 이미지</label>
+                            <label className="text-xs font-black text-slate-400 uppercase tracking-wider ml-1 mb-3 block">메뉴 / 안내 이미지</label>
                             <div className="flex items-center gap-4">
                                 <button type="button" onClick={() => document.getElementById('menu-board-img').click()} className="w-24 h-24 bg-white border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-300 hover:border-primary/50 transition-all overflow-hidden">
                                     {menuBoardImage ? <img src={menuBoardImage.preview} className="w-full h-full object-cover" /> : <><span className="material-symbols-outlined text-[24px]">menu_book</span><span className="text-[10px] font-bold mt-1">메뉴판</span></>}
                                 </button>
                                 <div className="flex-1">
-                                    <p className="text-[11px] font-bold text-slate-500 leading-relaxed italic">전체 메뉴가 담긴 메뉴판 이미지를 업로드해주세요.</p>
+                                    <p className="text-[11px] font-bold text-slate-500 leading-relaxed italic">전체 메뉴나 가격표, 안내 사항이 담긴 이미지를 업로드해주세요.</p>
                                     {menuBoardImage && <button type="button" onClick={() => setMenuBoardImage(null)} className="text-[10px] text-rose-500 font-bold mt-1">이미지 삭제</button>}
                                 </div>
                             </div>
@@ -555,7 +555,7 @@ const BusinessRegister = () => {
                         {/* Menu Management System */}
                         <div className="pt-4 border-t border-slate-50 space-y-4">
                             <div className="flex justify-between items-center px-1">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-wider">개별 메뉴 관리 (최대 10개)</label>
+                                <label className="text-xs font-black text-slate-400 uppercase tracking-wider">개별 메뉴 및 정보 관리 (최대 10개)</label>
                                 <span className={`text-[10px] font-bold ${menus.length >= 10 ? 'text-rose-500' : 'text-slate-400'}`}>{menus.length}/10</span>
                             </div>
                             <div className="space-y-4">
@@ -577,7 +577,7 @@ const BusinessRegister = () => {
                                 ))}
                                 {menus.length < 10 && (
                                     <button type="button" onClick={addMenuItem} className="w-full py-4 bg-white border-2 border-dashed border-slate-200 rounded-3xl text-sm font-bold text-slate-400 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-                                        <span className="material-symbols-outlined">add_circle</span> 메뉴 추가하기
+                                        <span className="material-symbols-outlined">add_circle</span> 항목 추가하기
                                     </button>
                                 )}
                             </div>
