@@ -22,7 +22,12 @@ export async function onRequestGet(context) {
     }
 
     try {
-        const business = await env.DB.prepare("SELECT * FROM businesses WHERE id = ?")
+        const business = await env.DB.prepare(`
+            SELECT b.*, c.name as church_name 
+            FROM businesses b
+            LEFT JOIN churches c ON b.church_id = c.id
+            WHERE b.id = ?
+        `)
             .bind(businessId)
             .first();
 
@@ -35,7 +40,15 @@ export async function onRequestGet(context) {
             return new Response(JSON.stringify({ error: "본인의 사업체만 조회할 수 있습니다." }), { status: 403 });
         }
 
-        return new Response(JSON.stringify({ success: true, business }), {
+        const menus = await env.DB.prepare("SELECT * FROM menus WHERE business_id = ? ORDER BY created_at ASC")
+            .bind(businessId)
+            .all();
+
+        return new Response(JSON.stringify({ 
+            success: true, 
+            business,
+            menus: menus.results || [] 
+        }), {
             headers: { "Content-Type": "application/json" }
         });
 
