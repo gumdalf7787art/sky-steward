@@ -6,10 +6,8 @@ const Header = () => {
     <header className="bg-slate-50 dark:bg-slate-900 shadow-sm dark:shadow-none border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
       <div className="flex justify-between items-center w-full px-5 py-3 max-w-7xl mx-auto">
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="w-8 h-8 bg-[#1A4173] rounded-lg flex items-center justify-center">
-            <span className="material-symbols-outlined text-white text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-              church
-            </span>
+          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center">
+            <img src="/favicon.png" alt="하늘 청지기 로고" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-xl font-bold text-[#1A4173] dark:text-blue-400 font-headline-md">하늘 청지기</h1>
         </Link>
