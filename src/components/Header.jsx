@@ -11,11 +11,6 @@ const Header = () => {
           </div>
           <h1 className="text-xl font-bold text-[#1A4173] dark:text-blue-400 font-headline-md">하늘 청지기</h1>
         </Link>
-        <button className="flex items-center justify-center">
-          <span className="material-symbols-outlined text-[#1A4173] dark:text-blue-400 text-2xl">
-            menu
-          </span>
-        </button>
       </div>
     </header>
   );
