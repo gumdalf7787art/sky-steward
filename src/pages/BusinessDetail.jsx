@@ -16,6 +16,8 @@ const BusinessDetail = () => {
     const [showMapModal, setShowMapModal] = useState(false);
     const [showMenuBoard, setShowMenuBoard] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
     
     // Review Modal States
     const [showReviewModal, setShowReviewModal] = useState(false);
@@ -157,28 +159,19 @@ const BusinessDetail = () => {
             e.preventDefault();
             e.stopPropagation();
         }
-        if (!data) return;
         
-        const shareData = {
-            title: `하늘 청지기 - ${data.business.name}`,
-            text: `${data.business.name} | ${data.business.church_name || '청지기'} 소속 성도 업체 정보를 확인해 보세요!`,
-            url: window.location.origin + window.location.pathname,
-        };
-
+        const url = window.location.origin + window.location.pathname;
+        
         try {
-            if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-                await navigator.share(shareData);
-            } else {
-                await navigator.clipboard.writeText(window.location.href);
-                alert("링크가 클립보드에 복사되었습니다.");
-            }
+            await navigator.clipboard.writeText(url);
+            setToastMessage("공유 링크가 복사되었습니다!");
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 2000);
         } catch (err) {
-            if (err.name !== 'AbortError') {
-                console.error("Error sharing", err);
-                // Fallback to clipboard if share fails
-                await navigator.clipboard.writeText(window.location.href);
-                alert("링크가 클립보드에 복사되었습니다.");
-            }
+            console.error("Failed to copy", err);
+            setToastMessage("링크 복사에 실패했습니다.");
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 2000);
         }
     };
 
@@ -243,6 +236,14 @@ const BusinessDetail = () => {
     return (
         <div className="bg-slate-50 min-h-screen pb-40 relative">
             <Header />
+            
+            {/* Toast Notification */}
+            <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform ${showToast ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'}`}>
+                <div className="bg-slate-900/90 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-white/10">
+                    <span className="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+                    <span className="text-xs font-bold tracking-tight">{toastMessage}</span>
+                </div>
+            </div>
             
             {/* Sticky Action Bar */}
             <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-3 flex items-center justify-between shadow-sm">
