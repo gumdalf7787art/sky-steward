@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS businesses (
     phone TEXT,
     show_phone INTEGER DEFAULT 1, -- 전화번호 노출 여부 (0: 숨김, 1: 노출)
     images JSON, -- Store R2 image keys as a JSON array
+    keywords JSON DEFAULT '[]', -- 키워드 (추가됨)
     description TEXT, -- 상세 설명 (추가됨)
     operating_hours TEXT, -- 영업 시간 (추가됨)
     parking_info TEXT, -- 주차 정보 (추가됨)
