@@ -337,7 +337,7 @@ const BusinessDetail = () => {
                     onClick={() => scrollToSection(menuRef, 'menu')}
                     className={`flex-1 py-4 text-sm font-bold transition-all relative ${activeTab === 'menu' ? 'text-primary' : 'text-slate-400'}`}
                 >
-                    메뉴
+                    메뉴 및 정보
                     {activeTab === 'menu' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></div>}
                 </button>
                 <button 
@@ -447,7 +447,7 @@ const BusinessDetail = () => {
                     <div className="flex justify-between items-end">
                         <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
                             <span className="material-symbols-outlined text-amber-500 text-[24px]">restaurant_menu</span>
-                            추천 메뉴
+                            추천 메뉴 및 정보
                         </h3>
                         {data.business.menu_board_image && (
                             <button 

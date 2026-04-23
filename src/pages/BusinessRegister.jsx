@@ -548,7 +548,7 @@ const BusinessRegister = () => {
                         {/* Menu Management System */}
                         <div className="pt-4 border-t border-slate-50 space-y-4">
                             <div className="flex justify-between items-center px-1">
-                                <label className="text-xs font-black text-slate-400 uppercase tracking-wider">개별 메뉴 관리 (최대 10개)</label>
+                                <label className="text-xs font-black text-slate-400 uppercase tracking-wider">개별 메뉴 및 정보 관리 (최대 10개)</label>
                                 <span className={`text-[10px] font-bold ${menus.length >= 10 ? 'text-rose-500' : 'text-slate-400'}`}>{menus.length}/10</span>
                             </div>
                             <div className="space-y-4">
@@ -570,7 +570,7 @@ const BusinessRegister = () => {
                                 ))}
                                 {menus.length < 10 && (
                                     <button type="button" onClick={addMenuItem} className="w-full py-4 bg-white border-2 border-dashed border-slate-200 rounded-3xl text-sm font-bold text-slate-400 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-                                        <span className="material-symbols-outlined">add_circle</span> 메뉴 추가하기
+                                        <span className="material-symbols-outlined">add_circle</span> 메뉴 및 정보 추가하기
                                     </button>
                                 )}
                             </div>
