@@ -154,8 +154,11 @@ const Home = () => {
               <div className="p-md">
                 <div className="flex justify-between items-start mb-xs">
                   <div>
-                    <h4 className="font-headline-md text-headline-md text-on-surface">은혜로운 베이커리</h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회 <span className="text-slate-400 font-medium ml-1">(이은혜 대표님)</span></p>
+                    <h4 className="font-headline-md text-headline-md text-on-surface">
+                      은혜로운 베이커리
+                      <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">(이은혜 대표님)</span>
+                    </h4>
+                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
                   </div>
                   <span className="material-symbols-outlined text-outline">favorite</span>
                 </div>
@@ -182,8 +185,11 @@ const Home = () => {
               <div className="p-md">
                 <div className="flex justify-between items-start mb-xs">
                   <div>
-                    <h4 className="font-headline-md text-headline-md text-on-surface">하늘 꿈 수학학원</h4>
-                    <p className="text-body-md text-primary font-semibold">빛가온교회 <span className="text-slate-400 font-medium ml-1">(박수학 대표님)</span></p>
+                    <h4 className="font-headline-md text-headline-md text-on-surface">
+                      하늘 꿈 수학학원
+                      <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">(박수학 대표님)</span>
+                    </h4>
+                    <p className="text-body-md text-primary font-semibold">빛가온교회</p>
                   </div>
                   <span className="material-symbols-outlined text-outline">favorite</span>
                 </div>
@@ -234,8 +240,11 @@ const Home = () => {
                   <div className={`absolute top-2 left-2 ${item.bg} text-white px-2 py-0.5 rounded-full text-[10px] font-bold`}>{item.cat}</div>
                 </div>
                 <div className="p-3">
-                  <h4 className="text-body-md font-bold text-on-surface truncate">{item.name}</h4>
-                  <p className="text-[11px] text-primary font-semibold mb-1">{item.church} (성도 대표님)</p>
+                  <h4 className="text-body-md font-bold text-on-surface truncate">
+                    {item.name}
+                    <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">(대표님)</span>
+                  </h4>
+                  <p className="text-[11px] text-primary font-semibold mb-1">{item.church}</p>
                   <div className="flex items-center gap-0.5 text-outline mb-2">
                     <span className="material-symbols-outlined text-[14px]">location_on</span>
                     <span className="text-[10px] truncate">{item.loc}</span>

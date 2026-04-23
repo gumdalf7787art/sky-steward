@@ -155,12 +155,15 @@ const CategoryList = () => {
               {/* Right Content Area */}
               <div className="flex flex-col justify-center p-3 w-full overflow-hidden">
                 <div className="flex justify-between items-start mb-0.5">
-                  <h4 className="font-headline-md text-body-lg text-on-surface truncate font-bold">{biz.name}</h4>
+                  <h4 className="font-headline-md text-body-lg text-on-surface truncate font-bold">
+                    {biz.name}
+                    {biz.ceo_name && <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">({biz.ceo_name} 대표님)</span>}
+                  </h4>
                   <button onClick={(e) => { e.stopPropagation(); }} className="text-outline hover:text-primary"><span className="material-symbols-outlined text-[20px]">bookmark_border</span></button>
                 </div>
                 
                 <p className="text-[12px] text-primary font-semibold mb-1 truncate">
-                  {biz.church_name} {biz.ceo_name && <span className="text-slate-400 font-medium ml-1">({biz.ceo_name} 대표님)</span>}
+                  {biz.church_name}
                 </p>
                 
                 <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">

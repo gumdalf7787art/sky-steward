@@ -322,7 +322,10 @@ const BusinessDetail = () => {
                                     {data.stats.avgRating.toFixed(1)}
                                 </span>
                             </div>
-                            <h2 className="text-2xl font-black text-slate-900 leading-tight">{data.business.name}</h2>
+                            <h2 className="text-2xl font-black text-slate-900 leading-tight">
+                                {data.business.name}
+                                {data.business.ceo_name && <span className="text-slate-400 font-medium text-[13px] ml-2 opacity-80">({data.business.ceo_name} 대표님)</span>}
+                            </h2>
                             <p className="text-primary font-black flex items-center gap-1 text-[13px] hover:underline cursor-pointer group">
                                 <span className="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">church</span>
                                 {data.business.church_name || "소속교회 정보 없음"}
@@ -355,7 +358,6 @@ const BusinessDetail = () => {
                                     <span className="material-symbols-outlined text-[16px]">church</span>
                                     <span>
                                         {data.business.church_name || "소속교회 정보 없음"}
-                                        {data.business.ceo_name && <span className="text-slate-400 font-medium ml-1">({data.business.ceo_name} 대표님)</span>}
                                     </span>
                                 </p>
                             <p className="text-sm text-slate-500 leading-relaxed font-medium">
