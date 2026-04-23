@@ -6,7 +6,66 @@ import BottomNav from '../components/BottomNav';
 const Home = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [expandedGroup, setExpandedGroup] = useState(null);
   const navigate = useNavigate();
+
+  const categoryGroups = [
+    {
+      title: "교회/기독서비스", icon: "church", color: "text-amber-600", bg: "bg-amber-50", border: "border-amber-200",
+      items: [
+        { id: 'church-facility', label: '교회시설/시공', icon: 'construction' },
+        { id: 'sacred-goods', label: '성구사/목공예', icon: 'chair' },
+        { id: 'christian-book', label: '기독교서점', icon: 'menu_book' },
+        { id: 'av-system', label: '음향/영상/LED', icon: 'settings_input_component' },
+        { id: 'mission-goods', label: '선교/전도용품', icon: 'redeem' },
+        { id: 'choir-robe', label: '성가복/가운', icon: 'styler' },
+      ]
+    },
+    {
+      title: "식음료/생활", icon: "restaurant", color: "text-rose-600", bg: "bg-rose-50", border: "border-rose-200",
+      items: [
+        { id: 'restaurant', label: '일반음식점', icon: 'restaurant' },
+        { id: 'cafe', label: '카페/디저트', icon: 'local_cafe' },
+        { id: 'mart', label: '마트/식자재', icon: 'shopping_cart' },
+        { id: 'beauty', label: '헤어/뷰티', icon: 'content_cut' },
+        { id: 'shopping', label: '쇼핑/온라인', icon: 'shopping_bag' },
+        { id: 'fashion', label: '의류/패션', icon: 'checkroom' },
+        { id: 'laundry', label: '세탁/수선', icon: 'local_laundry_service' },
+      ]
+    },
+    {
+      title: "의료/복지", icon: "medical_services", color: "text-teal-600", bg: "bg-teal-50", border: "border-teal-200",
+      items: [
+        { id: 'medical', label: '병원/의원', icon: 'medical_services' },
+        { id: 'pharmacy', label: '약국', icon: 'medication' },
+        { id: 'welfare', label: '요양/사회복지', icon: 'volunteer_activism' },
+        { id: 'funeral', label: '상조/장례', icon: 'church' },
+        { id: 'health', label: '스포츠/헬스', icon: 'fitness_center' },
+      ]
+    },
+    {
+      title: "교육/비즈니스", icon: "school", color: "text-indigo-600", bg: "bg-indigo-50", border: "border-indigo-200",
+      items: [
+        { id: 'education', label: '학원/교육', icon: 'school' },
+        { id: 'finance', label: '금융/보험', icon: 'account_balance' },
+        { id: 'law', label: '법률/회계/세무', icon: 'gavel' },
+        { id: 'marketing', label: '관리/마케팅', icon: 'campaign' },
+        { id: 'it-service', label: 'IT/컴퓨터', icon: 'desktop_windows' },
+        { id: 'print', label: '인쇄/출판', icon: 'print' },
+      ]
+    },
+    {
+      title: "시설/주거/차량", icon: "home_work", color: "text-emerald-600", bg: "bg-emerald-50", border: "border-emerald-200",
+      items: [
+        { id: 'interior', label: '인테리어/시공', icon: 'format_paint' },
+        { id: 'realestate', label: '부동산/임대', icon: 'home_work' },
+        { id: 'cleaning', label: '이사/청소/방역', icon: 'cleaning_services' },
+        { id: 'car', label: '자동차/정비', icon: 'directions_car' },
+        { id: 'flower', label: '꽃/조경', icon: 'local_florist' },
+      ]
+    }
+  ];
 
   const handleSearch = (e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
@@ -127,12 +186,20 @@ const Home = () => {
             ].map((cat, idx) => {
               if (cat.id === 'all') {
                 return (
-                  <Link to={`/category-explorer`} key={idx} className="flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105 transition-transform">
-                    <div className={`w-14 h-14 rounded-full ${cat.bgCls} flex items-center justify-center ${cat.textCls}`}>
-                      <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' ${cat.fill}` }}>{cat.icon}</span>
+                  <button 
+                    key={idx} 
+                    onClick={() => setShowAllCategories(!showAllCategories)}
+                    className="flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105 transition-transform"
+                  >
+                    <div className={`w-14 h-14 rounded-full ${showAllCategories ? 'bg-primary' : cat.bgCls} flex items-center justify-center ${showAllCategories ? 'text-white' : cat.textCls} transition-colors`}>
+                      <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' ${cat.fill}` }}>
+                        {showAllCategories ? 'close' : cat.icon}
+                      </span>
                     </div>
-                    <span className="text-[11px] font-medium text-center leading-tight">{cat.label}</span>
-                  </Link>
+                    <span className={`text-[11px] font-medium text-center leading-tight ${showAllCategories ? 'text-primary font-bold' : ''}`}>
+                      {showAllCategories ? '접기' : cat.label}
+                    </span>
+                  </button>
                 );
               }
               return (
@@ -144,6 +211,52 @@ const Home = () => {
                 </Link>
               );
             })}
+          </div>
+
+          {/* Expanded Category Dropdown */}
+          <div className={`overflow-hidden transition-all duration-500 ease-in-out ${showAllCategories ? 'max-h-[2000px] opacity-100 mt-5' : 'max-h-0 opacity-0'}`}>
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden">
+              <div className="p-4 bg-gradient-to-r from-primary/5 to-primary/10 border-b border-slate-100">
+                <h4 className="font-bold text-primary text-sm flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">category</span>
+                  전체 카테고리 사전
+                </h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">대분류를 눌러 세부 업종을 확인하세요</p>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {categoryGroups.map((group, gIdx) => (
+                  <div key={gIdx}>
+                    <button
+                      onClick={() => setExpandedGroup(expandedGroup === gIdx ? null : gIdx)}
+                      className={`w-full flex items-center justify-between px-4 py-3.5 hover:bg-slate-50 transition-colors ${expandedGroup === gIdx ? group.bg : ''}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-lg ${group.bg} ${group.color} flex items-center justify-center`}>
+                          <span className="material-symbols-outlined text-[18px]">{group.icon}</span>
+                        </div>
+                        <span className={`font-bold text-sm ${expandedGroup === gIdx ? group.color : 'text-slate-700'}`}>{group.title}</span>
+                        <span className="text-[10px] text-slate-300 font-medium">{group.items.length}개</span>
+                      </div>
+                      <span className={`material-symbols-outlined text-slate-400 text-[20px] transition-transform duration-300 ${expandedGroup === gIdx ? 'rotate-180' : ''}`}>expand_more</span>
+                    </button>
+                    <div className={`overflow-hidden transition-all duration-300 ease-in-out ${expandedGroup === gIdx ? 'max-h-[500px]' : 'max-h-0'}`}>
+                      <div className="grid grid-cols-3 gap-2 p-3 bg-slate-50/50">
+                        {group.items.map((item, iIdx) => (
+                          <Link
+                            key={iIdx}
+                            to={`/category/${item.id}`}
+                            className={`flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border ${group.border} hover:shadow-sm transition-all active:scale-[0.97]`}
+                          >
+                            <span className={`material-symbols-outlined ${group.color} text-[16px]`}>{item.icon}</span>
+                            <span className="text-[11px] font-medium text-slate-700 truncate">{item.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
