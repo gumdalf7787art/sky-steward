@@ -437,6 +437,36 @@ const BusinessDetail = () => {
                                 </div>
                             )}
                         </div>
+
+                        {/* SNS Links Section - NEW */}
+                        {(data.business.website || data.business.youtube || data.business.blog || data.business.instagram) && (
+                            <div className="flex flex-wrap gap-3 pt-2">
+                                {data.business.website && (
+                                    <a href={data.business.website.startsWith('http') ? data.business.website : `https://${data.business.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 bg-blue-50 text-blue-600 rounded-full text-xs font-black border border-blue-100 hover:bg-blue-100 transition-colors">
+                                        <span className="material-symbols-outlined text-[18px]">language</span>
+                                        홈페이지
+                                    </a>
+                                )}
+                                {data.business.instagram && (
+                                    <a href={data.business.instagram.startsWith('http') ? data.business.instagram : `https://instagram.com/${data.business.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 bg-rose-50 text-rose-600 rounded-full text-xs font-black border border-rose-100 hover:bg-rose-100 transition-colors">
+                                        <span className="material-symbols-outlined text-[18px]">photo_camera</span>
+                                        인스타그램
+                                    </a>
+                                )}
+                                {data.business.youtube && (
+                                    <a href={data.business.youtube.startsWith('http') ? data.business.youtube : `https://${data.business.youtube}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 rounded-full text-xs font-black border border-red-100 hover:bg-red-100 transition-colors">
+                                        <span className="material-symbols-outlined text-[18px]">play_circle</span>
+                                        유튜브
+                                    </a>
+                                )}
+                                {data.business.blog && (
+                                    <a href={data.business.blog.startsWith('http') ? data.business.blog : `https://${data.business.blog}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-black border border-emerald-100 hover:bg-emerald-100 transition-colors">
+                                        <span className="material-symbols-outlined text-[18px]">article</span>
+                                        블로그
+                                    </a>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </section>
 
