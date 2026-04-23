@@ -82,6 +82,7 @@ export async function onRequestPost(context) {
         }
 
         // 3. Insert business with all fields
+        await env.DB.prepare(`
             INSERT INTO businesses (
                 id, user_id, church_id, biz_no, name, category, address, address_detail, phone, 
                 images, ceo_name, show_phone, keywords, description,
