@@ -41,6 +41,33 @@ const BusinessManage = () => {
         fetchBusinesses();
     }, [auth, navigate]);
 
+    const handleDelete = async (bizId, bizName) => {
+        if (!confirm(`'${bizName}' 업체를 정말 삭제하시겠습니까? 관련 데이터(메뉴, 리뷰 등)가 모두 삭제됩니다.`)) {
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/business/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.token}`
+                },
+                body: JSON.stringify({ businessId: bizId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('업체가 성공적으로 삭제되었습니다.');
+                // Update local status
+                setBusinesses(prev => prev.filter(b => b.id !== bizId));
+            } else {
+                alert(data.error || '삭제 중 오류가 발생했습니다.');
+            }
+        } catch (err) {
+            alert('서버와 통신하는 중 오류가 발생했습니다.');
+        }
+    };
+
     return (
         <>
             <Header />
@@ -133,7 +160,10 @@ const BusinessManage = () => {
                                     >
                                         관리/수정
                                     </Link>
-                                    <button className="w-12 h-11 flex items-center justify-center bg-rose-50 text-rose-400 rounded-xl hover:bg-rose-100 transition-colors">
+                                    <button 
+                                        onClick={() => handleDelete(biz.id, biz.name)}
+                                        className="w-12 h-11 flex items-center justify-center bg-rose-50 text-rose-400 rounded-xl hover:bg-rose-100 transition-colors"
+                                    >
                                         <span className="material-symbols-outlined text-[20px]">delete</span>
                                     </button>
                                 </div>
