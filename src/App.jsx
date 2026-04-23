@@ -18,6 +18,7 @@ import BusinessDetail from './pages/BusinessDetail';
 import ChurchDetail from './pages/ChurchDetail';
 import Search from './pages/Search';
 import Favorites from './pages/Favorites';
+import CategoryExplorer from './pages/CategoryExplorer';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/mypage/church-manage" element={<ChurchManage />} />
             <Route path="/business/:id" element={<BusinessDetail />} />
             <Route path="/church/:id" element={<ChurchDetail />} />
+            <Route path="/category-explorer" element={<CategoryExplorer />} />
           </Routes>
         </div>
       </BrowserRouter>

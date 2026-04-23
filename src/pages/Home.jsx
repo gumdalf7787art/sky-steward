@@ -124,14 +124,26 @@ const Home = () => {
               { id: 'marketing', icon: 'print', label: '인쇄/마케팅', bgCls: 'bg-purple-100', textCls: 'text-purple-700', fill: 1 },
               { id: 'online', icon: 'language', label: '온라인쇼핑', bgCls: 'bg-sky-100', textCls: 'text-sky-700', fill: 1 },
               { id: 'all', icon: 'grid_view', label: '전체보기', bgCls: 'bg-gray-200', textCls: 'text-gray-600', fill: 1 },
-            ].map((cat, idx) => (
-              <Link to={`/category/${cat.id}`} key={idx} className="flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105 transition-transform">
-                <div className={`w-14 h-14 rounded-full ${cat.bgCls} flex items-center justify-center ${cat.textCls}`}>
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' ${cat.fill}` }}>{cat.icon}</span>
-                </div>
-                <span className="text-[11px] font-medium text-center leading-tight">{cat.label}</span>
-              </Link>
-            ))}
+            ].map((cat, idx) => {
+              if (cat.id === 'all') {
+                return (
+                  <Link to={`/category-explorer`} key={idx} className="flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105 transition-transform">
+                    <div className={`w-14 h-14 rounded-full ${cat.bgCls} flex items-center justify-center ${cat.textCls}`}>
+                      <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' ${cat.fill}` }}>{cat.icon}</span>
+                    </div>
+                    <span className="text-[11px] font-medium text-center leading-tight">{cat.label}</span>
+                  </Link>
+                );
+              }
+              return (
+                <Link to={`/category/${cat.id}`} key={idx} className="flex flex-col items-center gap-1.5 cursor-pointer hover:scale-105 transition-transform">
+                  <div className={`w-14 h-14 rounded-full ${cat.bgCls} flex items-center justify-center ${cat.textCls}`}>
+                    <span className="material-symbols-outlined" style={{ fontVariationSettings: `'FILL' ${cat.fill}` }}>{cat.icon}</span>
+                  </div>
+                  <span className="text-[11px] font-medium text-center leading-tight">{cat.label}</span>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
