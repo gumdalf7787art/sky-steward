@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import Home from './pages/Home';
 import ScrollToTop from './components/ScrollToTop';
+import AuthInitializer from './components/AuthInitializer';
 // 추후 페이지들이 추가될 예정입니다.
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -25,7 +26,8 @@ function App() {
     <RecoilRoot>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="bg-background text-on-background font-body-md min-h-screen pb-24">
+        <AuthInitializer />
+        <div className="bg-background text-on-background font-body-md min-h-screen pb-24 max-w-[640px] mx-auto shadow-2xl relative border-x border-slate-200 dark:border-slate-800">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />

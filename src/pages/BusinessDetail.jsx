@@ -268,7 +268,7 @@ const BusinessDetail = () => {
             </div>
 
             {/* 1. TOP: Image Swiper Section (Enhanced) */}
-            <div className="max-w-md mx-auto relative group">
+            <div className="w-full relative group">
                 <div className="aspect-[4/3] bg-slate-200 relative overflow-hidden">
                     {images.length > 0 ? (
                         <>
@@ -355,7 +355,7 @@ const BusinessDetail = () => {
                 </button>
             </div>
 
-            <main className="max-w-md mx-auto">
+            <main className="w-full">
                 {/* 3. CONTENT: Home Section */}
                 <section ref={homeRef} id="home" className="space-y-6 pt-6">
                     {/* Basic Info Card */}

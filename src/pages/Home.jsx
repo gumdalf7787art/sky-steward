@@ -85,7 +85,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <main className="max-w-7xl mx-auto">
+      <main className="w-full">
         {/* Search Bar Section */}
         <section className="px-margin-mobile pt-[17px] pb-[8px]">
           <div className="relative group">
@@ -287,7 +287,7 @@ const Home = () => {
 
         {/* Footer Section */}
         <section className="px-margin-mobile py-10 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full">
             <div className="flex flex-col space-y-2">
               <h4 className="text-body-lg font-bold text-slate-800 dark:text-slate-200">블루프라임</h4>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-label-lg text-slate-500 dark:text-slate-400">

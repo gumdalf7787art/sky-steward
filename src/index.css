@@ -9,7 +9,8 @@
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   body {
-    min-height: max(884px, 100dvh);
+    min-height: 100vh;
+    @apply bg-slate-100 dark:bg-slate-900;
   }
 }
 
