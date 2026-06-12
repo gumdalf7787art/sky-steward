@@ -422,6 +422,22 @@ const BusinessDetail = () => {
                                     </p>
                                 </div>
                             </div>
+
+                            {data.business.phone && (
+                                <div className="flex items-start gap-3">
+                                    <span className="material-symbols-outlined text-slate-400 mt-0.5">call</span>
+                                    <div className="space-y-0.5">
+                                        <p className="text-[13px] font-black text-slate-800">연락처</p>
+                                        <p className="text-[12px] text-slate-500 font-medium">
+                                            {data.business.show_phone === 1 ? (
+                                                <a href={`tel:${data.business.phone}`} className="hover:text-primary transition-colors">{data.business.phone}</a>
+                                            ) : (
+                                                <span className="text-slate-400 italic">비공개</span>
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                             
                             {data.business.operating_hours && (
                                 <div className="flex items-start gap-3">
