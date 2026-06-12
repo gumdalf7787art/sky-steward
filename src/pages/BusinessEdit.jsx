@@ -460,7 +460,7 @@ const BusinessEdit = () => {
                                 <label className="text-xs font-bold text-slate-500 ml-1">업종 선택 *</label>
                                 <select name="category" value={formData.category} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium appearance-none">
                                     <option value="">선택하세요</option>
-                                    {categories.map(c => <option key={c.id} value={c.label}>{c.label}</option>)}
+                                    {categories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
                                 </select>
                             </div>
                         </div>
