@@ -14,7 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleKakaoLogin = () => {
-    const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const clientId = '54aba65c523195665e84dfbfd648ff70';
     const redirectUri = `${window.location.origin}/auth/kakao/callback`;
     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
     window.location.href = kakaoAuthUrl;
