@@ -141,10 +141,7 @@ const BusinessManage = () => {
                                 </div>
                                 
                                 <div className="space-y-2 border-t border-slate-50 pt-4 mb-4">
-                                    <div className="flex items-center gap-2 text-[13px] text-slate-500">
-                                        <span className="material-symbols-outlined text-[16px] text-slate-300">badge</span>
-                                        <span>{biz.biz_no}</span>
-                                    </div>
+                                    {/* biz_no display removed */}
                                     {biz.address && (
                                         <div className="flex items-start gap-2 text-[13px] text-slate-500 leading-tight">
                                             <span className="material-symbols-outlined text-[16px] text-slate-300 mt-0.5">location_on</span>

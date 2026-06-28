@@ -19,7 +19,8 @@ export async function onRequestPost(context) {
         const formData = await request.formData();
         const name = formData.get("name");
         const ceoName = formData.get("ceo_name");
-        const bizNo = formData.get("biz_no");
+        // biz_no is no longer collected from UI, auto-generate to satisfy DB constraint
+        const bizNo = formData.get("biz_no") || `TEMP-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
         const category = formData.get("category");
         const phone = formData.get("phone");
         const showPhone = formData.get("show_phone") === "true" ? 1 : 0;

@@ -73,8 +73,6 @@ const BusinessEdit = () => {
     const [formData, setFormData] = useState({
         name: '',
         ceo_name: '',
-        biz_no: '',
-        original_biz_no: '',
         category: '',
         phone: '',
         show_phone: false,
@@ -91,7 +89,6 @@ const BusinessEdit = () => {
         parking_info: ''
     });
 
-    const [bizStatus, setBizStatus] = useState({ checked: true, loading: false, message: '', success: true });
     const [keywordInput, setKeywordInput] = useState('');
 
     useEffect(() => {
@@ -120,8 +117,6 @@ const BusinessEdit = () => {
                     setFormData({
                         name: biz.name || '',
                         ceo_name: biz.ceo_name || '',
-                        biz_no: biz.biz_no || '',
-                        original_biz_no: biz.biz_no || '',
                         category: biz.category || '',
                         phone: biz.phone || '',
                         show_phone: biz.show_phone === 0,
@@ -226,30 +221,6 @@ const BusinessEdit = () => {
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-        if (name === 'biz_no') {
-            const isOriginal = value === formData.original_biz_no;
-            setBizStatus({ checked: isOriginal, loading: false, message: '', success: isOriginal });
-        }
-    };
-
-    const handleBizCheck = async () => {
-        if (!formData.biz_no) return;
-        if (formData.biz_no === formData.original_biz_no) {
-            setBizStatus({ checked: true, loading: false, message: '기존에 등록된 번호입니다.', success: true });
-            return;
-        }
-        setBizStatus(prev => ({ ...prev, loading: true, message: '' }));
-        try {
-            const res = await fetch(`/api/business/check-duplicate?biz_no=${formData.biz_no}`);
-            const data = await res.json();
-            if (data.success) {
-                setBizStatus({ checked: true, loading: false, message: data.message, success: true });
-            } else {
-                setBizStatus({ checked: true, loading: false, message: data.error, success: false });
-            }
-        } catch (err) {
-            setBizStatus({ checked: false, loading: false, message: '서버 오류', success: false });
-        }
     };
 
     const handleImageUpload = async (e) => {
@@ -355,7 +326,6 @@ const BusinessEdit = () => {
         if (!formData.name || !formData.ceo_name || !formData.category) {
             setError('필수 항목을 모두 입력해주세요.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return;
         }
-        if (formData.biz_no && !bizStatus.success) { setError('사업자번호 중복 확인을 해주세요.'); return; }
         
         setSaving(true);
         const body = new FormData();
@@ -363,7 +333,7 @@ const BusinessEdit = () => {
         Object.keys(formData).forEach(key => {
             if (key === 'keywords') body.append(key, JSON.stringify(formData[key]));
             else if (key === 'show_phone') body.append(key, !formData[key]);
-            else if (key !== 'original_biz_no') body.append(key, formData[key]);
+            else body.append(key, formData[key]);
         });
 
         const sortedImages = [...images].sort((a, b) => (a.isMain ? -1 : b.isMain ? 1 : 0));
@@ -465,18 +435,6 @@ const BusinessEdit = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업자 등록번호</label>
-                            <div className="flex gap-2">
-                                <input type="text" name="biz_no" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
-                                <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || (formData.biz_no === formData.original_biz_no)} className="px-6 bg-slate-800 text-white rounded-2xl font-bold text-sm disabled:bg-slate-200">
-                                    {bizStatus.loading ? '확인 중' : '중복 확인'}
-                                </button>
-                            </div>
-                            {bizStatus.message && <p className={`text-[11px] ml-1 font-bold ${bizStatus.success ? 'text-emerald-500' : 'text-rose-500'}`}>{bizStatus.message}</p>}
-                        </div>
-
-
                     </div>
 
                     {/* Address Branding Section */}
@@ -492,6 +450,11 @@ const BusinessEdit = () => {
                             </label>
                         </div>
 
+                        <div className="space-y-1.5 pt-2">
+                            <label className="text-xs font-bold text-slate-500 ml-1">사업체 소개</label>
+                            <textarea name="description" value={formData.description} onChange={handleChange} className="w-full h-32 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" placeholder="성도님들께 사업체를 소개해 주세요" />
+                        </div>
+
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">사업체 주소</label>
                             <div className="flex gap-2 mb-2">
@@ -502,9 +465,15 @@ const BusinessEdit = () => {
                         </div>
                     </div>
 
-                    {/* Operational Details Section */}
                     <div className="space-y-5">
-                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">운영 상세 정보</h3>
+                        <div className="pt-8 mt-4 border-t-2 border-slate-100/60 relative">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-4">
+                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center whitespace-nowrap bg-slate-50 py-1 px-3 rounded-full border border-slate-100 shadow-sm">
+                                    ↑ 위 정보는 중요 / 아래는 추가 정보 ↓
+                                </span>
+                            </div>
+                        </div>
+                        <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1 mt-6">운영 상세 정보</h3>
                         
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">영업 시간</label>
@@ -514,11 +483,6 @@ const BusinessEdit = () => {
                         <div className="space-y-1.5">
                             <label className="text-xs font-bold text-slate-500 ml-1">주차 정보</label>
                             <input type="text" name="parking_info" value={formData.parking_info} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 건물 내 무료 주차 가능" />
-                        </div>
-
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업체 소개</label>
-                            <textarea name="description" value={formData.description} onChange={handleChange} className="w-full h-32 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none" placeholder="성도님들께 사업체를 소개해 주세요" />
                         </div>
                     </div>
                     

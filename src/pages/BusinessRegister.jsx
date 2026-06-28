@@ -58,7 +58,6 @@ const BusinessRegister = () => {
     const [formData, setFormData] = useState({
         name: '',
         ceo_name: '',
-        biz_no: '',
         category: '',
         phone: '',
         show_phone: false,
@@ -82,7 +81,6 @@ const BusinessRegister = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [keywordInput, setKeywordInput] = useState('');
-    const [bizStatus, setBizStatus] = useState({ checked: false, loading: false, message: '', success: false });
     
     const [churchSearch, setChurchSearch] = useState('');
     const [churchResults, setChurchResults] = useState([]);
@@ -244,20 +242,6 @@ const BusinessRegister = () => {
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-        if (name === 'biz_no') setBizStatus({ checked: false, loading: false, message: '', success: false });
-    };
-
-    const handleBizCheck = async () => {
-        if (!formData.biz_no) { alert('사업자번호를 입력해주세요.'); return; }
-        setBizStatus(prev => ({ ...prev, loading: true, message: '' }));
-        try {
-            const res = await fetch(`/api/business/check-duplicate?biz_no=${formData.biz_no}`);
-            const data = await res.json();
-            if (data.success) setBizStatus({ checked: true, loading: false, message: data.message, success: true });
-            else setBizStatus({ checked: true, loading: false, message: data.error, success: false });
-        } catch (err) {
-            setBizStatus({ checked: false, loading: false, message: '서버 오류가 발생했습니다.', success: false });
-        }
     };
 
     const addKeyword = () => {
@@ -310,8 +294,6 @@ const BusinessRegister = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
-
-        if (formData.biz_no && !bizStatus.success) { setError('사업자등록번호 중복 확인을 해주세요.'); return; }
 
         setLoading(true);
         const body = new FormData();
@@ -437,13 +419,12 @@ const BusinessRegister = () => {
                                 </label>
                             </div>
                         </div>
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업자등록번호</label>
-                            <div className="flex gap-2">
-                                <input name="biz_no" type="text" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
-                                <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || bizStatus.success} className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${bizStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95'}`}>{bizStatus.loading ? '...' : bizStatus.success ? '확인됨' : '중복확인'}</button>
-                            </div>
-                            {bizStatus.message && <p className={`text-[11px] font-bold mt-1.5 ml-1 ${bizStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>{bizStatus.message}</p>}
+                        <div className="space-y-1.5 pt-2">
+                            <label className="text-xs font-bold text-slate-500 ml-1 flex justify-between">
+                                <span>사업체 설명</span>
+                                <span className={formData.description.length > 1000 ? 'text-rose-500' : 'text-slate-400'}>{formData.description.length}/1000</span>
+                            </label>
+                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="업체에 대한 상세 설명을 적어주세요."></textarea>
                         </div>
 
 
@@ -511,7 +492,15 @@ const BusinessRegister = () => {
                         </div>
 
                         {/* Extra Detail Info */}
-                        <div className="space-y-1.5">
+                        <div className="pt-8 mt-4 border-t-2 border-slate-100/60 relative">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-4">
+                                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center whitespace-nowrap bg-slate-50 py-1 px-3 rounded-full border border-slate-100 shadow-sm">
+                                    ↑ 위 정보는 중요 / 아래는 추가 정보 ↓
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div className="space-y-1.5 mt-6">
                             <label className="text-xs font-bold text-slate-500 ml-1">영업시간</label>
                             <input name="operating_hours" type="text" value={formData.operating_hours} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 평일 09:00~20:00 (토요일 휴무)" />
                         </div>
@@ -566,14 +555,7 @@ const BusinessRegister = () => {
                             </div>
                         </div>
 
-                        {/* Description & Links */}
-                        <div className="space-y-1.5 pt-2">
-                            <label className="text-xs font-bold text-slate-500 ml-1 flex justify-between">
-                                <span>사업체 설명</span>
-                                <span className={formData.description.length > 1000 ? 'text-rose-500' : 'text-slate-400'}>{formData.description.length}/1000</span>
-                            </label>
-                            <textarea name="description" value={formData.description} onChange={handleChange} rows="5" maxLength="1000" className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium resize-none leading-relaxed" placeholder="업체에 대한 상세 설명을 적어주세요."></textarea>
-                        </div>
+                        {/* Removed Description (moved up) */}
 
                         <div className="pt-4 space-y-4 border-t border-slate-50">
                             <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider ml-1">나머지 링크 입력 (필수 아님)</h3>
