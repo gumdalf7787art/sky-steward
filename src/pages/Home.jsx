@@ -5,7 +5,7 @@ import BottomNav from '../components/BottomNav';
 
 const Home = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [recommendedBusinesses, setRecommendedBusinesses] = useState([]);
+  const [recentBusinesses, setRecentBusinesses] = useState([]);
   const [allBusinesses, setAllBusinesses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAllLoading, setIsAllLoading] = useState(true);
@@ -56,20 +56,20 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    const fetchRecommended = async () => {
+    const fetchRecent = async () => {
       try {
-        const res = await fetch('/api/business/random');
+        const res = await fetch('/api/business/recent');
         const data = await res.json();
         if (data.success) {
-          setRecommendedBusinesses(data.businesses.slice(0, 4));
+          setRecentBusinesses(data.businesses);
         }
       } catch (err) {
-        console.error("Failed to fetch recommended businesses", err);
+        console.error("Failed to fetch recent businesses", err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchRecommended();
+    fetchRecent();
 
     const fetchAll = async () => {
       try {
@@ -176,19 +176,19 @@ const Home = () => {
           </div>
         </section>
 
-        {/* Featured Businesses */}
+        {/* Recent Businesses */}
         <section className="px-margin-mobile py-xl">
           <div className="flex justify-between items-center mb-md">
-            <h3 className="font-headline-md text-headline-md text-primary">추천 업체</h3>
+            <h3 className="font-headline-md text-headline-md text-primary">최근 등록업체</h3>
           </div>
           
           {isLoading ? (
             <div className="flex justify-center py-10">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
-          ) : recommendedBusinesses.length > 0 ? (
+          ) : recentBusinesses.length > 0 ? (
             <div className="grid grid-cols-2 gap-4">
-              {recommendedBusinesses.map((biz) => {
+              {recentBusinesses.map((biz) => {
                 const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
                 const imageKeys = JSON.parse(biz.images || '[]');
                 const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400';
@@ -226,7 +226,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="py-10 text-center text-slate-400 text-sm">
-              등록된 추천 업체가 없습니다.
+              최근 등록된 업체가 없습니다.
             </div>
           )}
         </section>
