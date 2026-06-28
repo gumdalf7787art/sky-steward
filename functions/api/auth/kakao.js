@@ -9,8 +9,8 @@ export async function onRequestPost({ request, env }) {
             return new Response(JSON.stringify({ error: "인가 코드와 리다이렉트 URI가 필요합니다." }), { status: 400 });
         }
 
-        const clientId = env.KAKAO_CLIENT_ID;
-        // const clientSecret = env.KAKAO_CLIENT_SECRET; // Optional for Kakao login token req
+        const clientId = '54aba65c523195665e84dfbfd648ff70';
+        const clientSecret = '3hYu3S5xsBjknD6kby6P1zcQcJLVYFu5';
 
         // 1. 카카오 토큰 발급 요청
         const tokenParams = new URLSearchParams({
@@ -20,8 +20,8 @@ export async function onRequestPost({ request, env }) {
             code: code,
         });
 
-        if (env.KAKAO_CLIENT_SECRET) {
-            tokenParams.append('client_secret', env.KAKAO_CLIENT_SECRET);
+        if (clientSecret) {
+            tokenParams.append('client_secret', clientSecret);
         }
 
         const tokenResponse = await fetch('https://kauth.kakao.com/oauth/token', {
