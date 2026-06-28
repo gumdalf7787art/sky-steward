@@ -29,7 +29,7 @@ const Header = () => {
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
             <img src="/favicon.png" alt="하늘 청지기 로고" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-lg sm:text-xl font-bold text-white font-headline-md tracking-tight whitespace-nowrap">하늘 청지기</h1>
+          <h1 className="text-base sm:text-lg font-bold text-white font-headline-md tracking-tight whitespace-nowrap">빛가온교회 하늘청지기</h1>
         </Link>
         
         {/* Search Bar in Header */}
