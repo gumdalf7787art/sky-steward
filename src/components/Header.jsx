@@ -23,30 +23,30 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#1A4173] text-white shadow-md sticky top-0 z-50 pb-4 rounded-b-2xl">
-      <div className="flex justify-between items-center w-full px-5 py-4">
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white">
+    <header className="bg-[#1A4173] text-white shadow-md sticky top-0 z-50 rounded-b-xl">
+      <div className="flex justify-between items-center w-full px-4 py-3">
+        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity flex-shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
             <img src="/favicon.png" alt="하늘 청지기 로고" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-xl font-bold text-white font-headline-md tracking-tight">하늘 청지기</h1>
+          <h1 className="text-lg sm:text-xl font-bold text-white font-headline-md tracking-tight whitespace-nowrap">하늘 청지기</h1>
         </Link>
-      </div>
-      
-      {/* Search Bar in Header */}
-      <div className="px-5">
-        <div className="relative group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <span className="material-symbols-outlined text-white/70 group-focus-within:text-primary transition-colors">search</span>
+        
+        {/* Search Bar in Header */}
+        <div className="flex-1 ml-3 flex justify-end">
+          <div className="relative group w-full max-w-[200px]">
+            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+              <span className="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors text-[18px]">search</span>
+            </div>
+            <input 
+              className="w-full pl-9 pr-3 py-1.5 sm:py-2 bg-white rounded-xl shadow-inner focus:ring-2 focus:ring-white/50 text-slate-800 placeholder-slate-400 transition-all outline-none text-[13px] sm:text-sm font-medium" 
+              placeholder="업종, 업체명 검색" 
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
+            />
           </div>
-          <input 
-            className="w-full pl-11 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl shadow-inner focus:ring-2 focus:ring-white/50 focus:bg-white focus:text-slate-800 focus:placeholder-slate-400 transition-all outline-none text-white placeholder-white/70 text-sm font-medium" 
-            placeholder="업종, 업체명, 교회명 검색" 
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleSearch}
-          />
         </div>
       </div>
     </header>
