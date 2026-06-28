@@ -131,28 +131,28 @@ const Home = () => {
         </section>
 
         {/* Category Grid */}
-        <section className="px-margin-mobile pt-[17px] pb-lg bg-slate-100">
+        <section className="px-margin-mobile pt-[17px] pb-lg bg-slate-200">
           <div className="flex justify-between items-end mb-md">
             <h3 className="font-headline-md text-headline-md text-primary">업종별 찾기</h3>
           </div>
           <div className="grid gap-x-2 gap-y-5 grid-cols-5">
             {/* Category Items */}
             {[
-              { id: 'restaurant', icon: 'restaurant', label: '식당/카페', bgCls: 'bg-tertiary-fixed/40', textCls: 'text-tertiary', fill: 1 },
-              { id: 'mart', icon: 'shopping_cart', label: '마트/식자재', bgCls: 'bg-green-100', textCls: 'text-green-700', fill: 1 },
-              { id: 'beauty', icon: 'content_cut', label: '헤어/뷰티', bgCls: 'bg-pink-100', textCls: 'text-pink-600', fill: 1 },
-              { id: 'health', icon: 'fitness_center', label: '스포츠/건강', bgCls: 'bg-blue-100', textCls: 'text-blue-700', fill: 1 },
-              { id: 'education', icon: 'school', label: '학원/교육', bgCls: 'bg-secondary-fixed/40', textCls: 'text-secondary', fill: 1 },
-              { id: 'medical', icon: 'medical_services', label: '병원/약국', bgCls: 'bg-error-container', textCls: 'text-on-error-container', fill: 1 },
-              { id: 'realestate', icon: 'home_work', label: '부동산', bgCls: 'bg-primary-fixed/40', textCls: 'text-primary', fill: 1 },
-              { id: 'law', icon: 'gavel', label: '법률/세무', bgCls: 'bg-indigo-100', textCls: 'text-indigo-700', fill: 1 },
-              { id: 'car', icon: 'directions_car', label: '자동차/정비', bgCls: 'bg-slate-200', textCls: 'text-slate-700', fill: 1 },
-              { id: 'interior', icon: 'build', label: '인테리어/수리', bgCls: 'bg-orange-100', textCls: 'text-orange-700', fill: 1 },
-              { id: 'welfare', icon: 'volunteer_activism', label: '요양/복지', bgCls: 'bg-teal-100', textCls: 'text-teal-700', fill: 1 },
-              { id: 'shopping', icon: 'shopping_bag', label: '쇼핑/온라인', bgCls: 'bg-amber-100', textCls: 'text-amber-700', fill: 1 },
-              { id: 'marketing', icon: 'print', label: '인쇄/마케팅', bgCls: 'bg-purple-100', textCls: 'text-purple-700', fill: 1 },
-              { id: 'finance', icon: 'account_balance', label: '금융/보험', bgCls: 'bg-sky-100', textCls: 'text-sky-700', fill: 1 },
-              { id: 'all', icon: 'grid_view', label: '전체보기', bgCls: 'bg-gray-200', textCls: 'text-gray-600', fill: 1 },
+              { id: 'restaurant', icon: 'restaurant', label: '식당/카페', bgCls: 'bg-rose-500', textCls: 'text-white', fill: 1 },
+              { id: 'mart', icon: 'shopping_cart', label: '마트/식자재', bgCls: 'bg-green-600', textCls: 'text-white', fill: 1 },
+              { id: 'beauty', icon: 'content_cut', label: '헤어/뷰티', bgCls: 'bg-pink-500', textCls: 'text-white', fill: 1 },
+              { id: 'health', icon: 'fitness_center', label: '스포츠/건강', bgCls: 'bg-blue-600', textCls: 'text-white', fill: 1 },
+              { id: 'education', icon: 'school', label: '학원/교육', bgCls: 'bg-indigo-500', textCls: 'text-white', fill: 1 },
+              { id: 'medical', icon: 'medical_services', label: '병원/약국', bgCls: 'bg-red-500', textCls: 'text-white', fill: 1 },
+              { id: 'realestate', icon: 'home_work', label: '부동산', bgCls: 'bg-blue-700', textCls: 'text-white', fill: 1 },
+              { id: 'law', icon: 'gavel', label: '법률/세무', bgCls: 'bg-slate-700', textCls: 'text-white', fill: 1 },
+              { id: 'car', icon: 'directions_car', label: '자동차/정비', bgCls: 'bg-slate-600', textCls: 'text-white', fill: 1 },
+              { id: 'interior', icon: 'build', label: '인테리어/수리', bgCls: 'bg-orange-600', textCls: 'text-white', fill: 1 },
+              { id: 'welfare', icon: 'volunteer_activism', label: '요양/복지', bgCls: 'bg-teal-600', textCls: 'text-white', fill: 1 },
+              { id: 'shopping', icon: 'shopping_bag', label: '쇼핑/온라인', bgCls: 'bg-amber-500', textCls: 'text-white', fill: 1 },
+              { id: 'marketing', icon: 'print', label: '인쇄/마케팅', bgCls: 'bg-purple-600', textCls: 'text-white', fill: 1 },
+              { id: 'finance', icon: 'account_balance', label: '금융/보험', bgCls: 'bg-sky-600', textCls: 'text-white', fill: 1 },
+              { id: 'all', icon: 'grid_view', label: '전체보기', bgCls: 'bg-gray-800', textCls: 'text-white', fill: 1 },
             ].map((cat, idx) => {
               if (cat.id === 'all') {
                 return (
