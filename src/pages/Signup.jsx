@@ -16,6 +16,13 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const handleKakaoLogin = () => {
+    const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/auth/kakao/callback`;
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -90,7 +97,7 @@ const Signup = () => {
         {/* SNS Login Section */}
         <div className="mb-6">
           <div className="flex flex-col gap-3">
-            <button type="button" className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#FEE500] text-[#000000] rounded-xl font-bold shadow-sm relative">
+            <button type="button" onClick={handleKakaoLogin} className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#FEE500] text-[#000000] rounded-xl font-bold shadow-sm relative">
               <span className="material-symbols-outlined absolute left-4 text-[20px]">chat</span>
               카카오로 시작하기
             </button>

@@ -13,6 +13,13 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const handleKakaoLogin = () => {
+    const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/auth/kakao/callback`;
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -71,6 +78,30 @@ const Login = () => {
             {error}
           </div>
         )}
+
+        {/* SNS Login Section */}
+        <div className="mb-6">
+          <div className="flex flex-col gap-3">
+            <button type="button" onClick={handleKakaoLogin} className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#FEE500] text-[#000000] rounded-xl font-bold shadow-sm relative">
+              <span className="material-symbols-outlined absolute left-4 text-[20px]">chat</span>
+              카카오로 시작하기
+            </button>
+            <button type="button" className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#03C75A] text-white rounded-xl font-bold shadow-sm relative">
+              <span className="material-symbols-outlined absolute left-4 text-[20px]">eco</span>
+              네이버로 시작하기
+            </button>
+            <button type="button" className="w-full flex items-center justify-center gap-2 py-3.5 bg-white border border-outline-variant text-[#3C4043] rounded-xl font-bold shadow-sm relative">
+              <span className="material-symbols-outlined absolute left-4 text-[20px]">account_circle</span>
+              구글로 시작하기
+            </button>
+          </div>
+          
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-outline-variant"></div>
+            <span className="text-body-md text-on-surface-variant font-medium">또는 이메일로 로그인</span>
+            <div className="flex-1 h-px bg-outline-variant"></div>
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
