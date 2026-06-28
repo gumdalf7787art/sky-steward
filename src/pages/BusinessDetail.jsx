@@ -24,6 +24,7 @@ const BusinessDetail = () => {
     const [submittingReview, setSubmittingReview] = useState(false);
     const [newRating, setNewRating] = useState(5);
     const [newComment, setNewComment] = useState('');
+    const [editReviewId, setEditReviewId] = useState(null);
 
     // Refs for sequential scroll
     const homeRef = useRef(null);
@@ -151,7 +152,40 @@ const BusinessDetail = () => {
             }
             return;
         }
+        setEditReviewId(null);
+        setNewRating(5);
+        setNewComment('');
         setShowReviewModal(true);
+    };
+
+    const handleEditReview = (review) => {
+        setEditReviewId(review.id);
+        setNewRating(review.rating);
+        setNewComment(review.comment);
+        setShowReviewModal(true);
+    };
+
+    const handleDeleteReview = async (reviewId) => {
+        if (!confirm("정말로 이 리뷰를 삭제하시겠습니까?")) return;
+        
+        try {
+            const res = await fetch(`/api/reviews/${reviewId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${auth.token}`
+                }
+            });
+            const result = await res.json();
+            if (result.success) {
+                alert("리뷰가 삭제되었습니다.");
+                fetchDetail();
+            } else {
+                alert(result.error || "삭제에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error("Failed to delete review", err);
+            alert("서버 통신 오류가 발생했습니다.");
+        }
     };
 
     const handleShare = async (e) => {
@@ -183,8 +217,12 @@ const BusinessDetail = () => {
 
         setSubmittingReview(true);
         try {
-            const res = await fetch('/api/reviews', {
-                method: 'POST',
+            const isEdit = !!editReviewId;
+            const url = isEdit ? `/api/reviews/${editReviewId}` : '/api/reviews';
+            const method = isEdit ? 'PUT' : 'POST';
+            
+            const res = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${auth.token}`
@@ -559,7 +597,7 @@ const BusinessDetail = () => {
                                         <div className="flex items-center gap-2.5">
                                             <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center text-slate-300 font-black text-xs border border-slate-50 shadow-sm">
                                                 {review.user_image ? (
-                                                    <img src={`/api/media/${review.user_image}`} className="w-full h-full object-cover" />
+                                                    <img src={review.user_image.startsWith('data:image') ? review.user_image : `/api/media/${review.user_image}`} className="w-full h-full object-cover" />
                                                 ) : (review.user_nickname?.charAt(0) || "?")}
                                             </div>
                                             <div className="space-y-0.5">
@@ -571,7 +609,15 @@ const BusinessDetail = () => {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest">{new Date(review.created_at).toLocaleDateString()}</p>
+                                                <div className="flex items-center gap-2">
+                                                    <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest">{new Date(review.created_at).toLocaleDateString()}</p>
+                                                    {auth.isAuthenticated && auth.user && auth.user.id === review.user_id && (
+                                                        <div className="flex items-center gap-2 ml-2">
+                                                            <button onClick={() => handleEditReview(review)} className="text-[10px] text-slate-400 hover:text-primary font-bold">수정</button>
+                                                            <button onClick={() => handleDeleteReview(review.id)} className="text-[10px] text-slate-400 hover:text-rose-500 font-bold">삭제</button>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
