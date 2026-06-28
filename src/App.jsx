@@ -19,6 +19,7 @@ import Favorites from './pages/Favorites';
 import CategoryExplorer from './pages/CategoryExplorer';
 import KakaoCallback from './pages/KakaoCallback';
 import NaverCallback from './pages/NaverCallback';
+import GoogleCallback from './pages/GoogleCallback';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
             <Route path="/auth/naver/callback" element={<NaverCallback />} />
+            <Route path="/auth/google/callback" element={<GoogleCallback />} />
             <Route path="/category/:categoryId" element={<CategoryList />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/profile-edit" element={<ProfileEdit />} />
