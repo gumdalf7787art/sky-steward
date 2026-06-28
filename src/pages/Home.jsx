@@ -5,18 +5,11 @@ import BottomNav from '../components/BottomNav';
 
 const Home = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
   const [recommendedBusinesses, setRecommendedBusinesses] = useState([]);
   const [allBusinesses, setAllBusinesses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAllLoading, setIsAllLoading] = useState(true);
   const navigate = useNavigate();
-
-  const handleSearch = (e) => {
-    if (e.key === 'Enter' && searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
 
   const categoryMap = {
     'restaurant': { icon: 'restaurant', label: '식당/카페', bgCls: 'bg-tertiary-fixed/40', textCls: 'text-tertiary', fill: 1, chipBg: 'bg-tertiary', chipText: 'text-on-tertiary' },
@@ -103,22 +96,7 @@ const Home = () => {
     <>
       <Header />
       <main className="w-full">
-        {/* Search Bar Section */}
-        <section className="px-margin-mobile pt-[17px] pb-[8px]">
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span className="material-symbols-outlined text-outline">search</span>
-            </div>
-            <input 
-              className="w-full pl-11 pr-4 py-4 bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-lg" 
-              placeholder="업종, 업체명, 교회명 검색" 
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={handleSearch}
-            />
-          </div>
-        </section>
+
 
         {/* Hero Section */}
         <section className="px-margin-mobile pt-[8px] pb-[11px]">

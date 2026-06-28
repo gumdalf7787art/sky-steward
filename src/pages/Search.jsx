@@ -7,8 +7,6 @@ const Search = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const query = searchParams.get('q') || '';
-    
-    const [inputValue, setInputValue] = useState(query);
     const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
     
@@ -45,15 +43,10 @@ const Search = () => {
 
     useEffect(() => {
         if (query) {
+            setLimits({ byName: 3, byChurch: 3, byKeyword: 3, byChurchList: 3 }); // Reset limits on new search
             fetchResults(query);
         }
     }, [query, fetchResults]);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        setSearchParams({ q: inputValue });
-        setLimits({ byName: 3, byChurch: 3, byKeyword: 3, byChurchList: 3 }); // Reset limits on new search
-    };
 
     const showMore = (category) => {
         setLimits(prev => ({
@@ -225,19 +218,7 @@ const Search = () => {
             <Header />
             
             <main className="max-w-md mx-auto px-5 pt-6 space-y-8">
-                {/* Search Input Area */}
-                <form onSubmit={handleSearch} className="relative group">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span className="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-                    </div>
-                    <input 
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        placeholder="업체명, 교회명, 키워드를 입력해 주세요"
-                        className="w-full pl-11 pr-4 py-4 bg-slate-100 border border-slate-300 rounded-2xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-[15px] font-medium"
-                    />
-                </form>
+
 
                 {loading ? (
                     <div className="py-20 text-center space-y-4">
