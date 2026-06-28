@@ -7,7 +7,9 @@ const Home = () => {
   const [currentBanner, setCurrentBanner] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [recommendedBusinesses, setRecommendedBusinesses] = useState([]);
+  const [allBusinesses, setAllBusinesses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAllLoading, setIsAllLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -66,7 +68,7 @@ const Home = () => {
         const res = await fetch('/api/business/random');
         const data = await res.json();
         if (data.success) {
-          setRecommendedBusinesses(data.businesses);
+          setRecommendedBusinesses(data.businesses.slice(0, 4));
         }
       } catch (err) {
         console.error("Failed to fetch recommended businesses", err);
@@ -75,6 +77,21 @@ const Home = () => {
       }
     };
     fetchRecommended();
+
+    const fetchAll = async () => {
+      try {
+        const res = await fetch('/api/business/all');
+        const data = await res.json();
+        if (data.success) {
+          setAllBusinesses(data.businesses);
+        }
+      } catch (err) {
+        console.error("Failed to fetch all businesses", err);
+      } finally {
+        setIsAllLoading(false);
+      }
+    };
+    fetchAll();
 
     const timer = setInterval(() => {
       setCurrentBanner((prev) => (prev + 1) % banners.length);
@@ -192,92 +209,98 @@ const Home = () => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           ) : recommendedBusinesses.length > 0 ? (
-            <>
-              {/* Big Cards (Top 2) */}
-              <div className="space-y-4">
-                {recommendedBusinesses.slice(0, 2).map((biz) => {
-                  const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
-                  const imageKeys = JSON.parse(biz.images || '[]');
-                  const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800';
-                  const keywords = JSON.parse(biz.keywords || '[]');
+            <div className="grid grid-cols-2 gap-4">
+              {recommendedBusinesses.map((biz) => {
+                const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
+                const imageKeys = JSON.parse(biz.images || '[]');
+                const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400';
+                const keywords = JSON.parse(biz.keywords || '[]');
 
-                  return (
-                    <div 
-                      key={biz.id}
-                      onClick={() => navigate(`/business/${biz.id}`)}
-                      className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
-                    >
-                      <div className="h-40 w-full relative">
-                        <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
-                        <div className={`absolute top-3 left-3 ${cat.chipBg} ${cat.chipText} px-3 py-1 rounded-full text-label-lg font-bold`}>{cat.label}</div>
+                return (
+                  <div 
+                    key={biz.id} 
+                    onClick={() => navigate(`/business/${biz.id}`)}
+                    className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+                  >
+                    <div className="h-28 w-full relative">
+                      <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
+                      <div className={`absolute top-2 left-2 ${cat.chipBg} ${cat.chipText} px-2 py-0.5 rounded-full text-[10px] font-bold`}>{cat.label}</div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="text-body-md font-bold text-on-surface truncate">
+                        {biz.name}
+                        <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
+                      </h4>
+                      <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
+                      <div className="flex items-center gap-0.5 text-outline mb-2">
+                        <span className="material-symbols-outlined text-[14px]">location_on</span>
+                        <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>
                       </div>
-                      <div className="p-md">
-                        <div className="flex justify-between items-start mb-xs">
-                          <div>
-                            <h4 className="font-headline-md text-headline-md text-on-surface">
-                              {biz.name}
-                              <span className="text-slate-400 font-medium text-[11px] ml-1.5 opacity-80">({biz.ceo_name} 대표님)</span>
-                            </h4>
-                            <p className="text-body-md text-primary font-semibold">{biz.church_name || '우리교회'}</p>
-                          </div>
-                          <span className="material-symbols-outlined text-outline">favorite</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-outline mb-sm">
-                          <span className="material-symbols-outlined text-[18px]">location_on</span>
-                          <span className="text-label-lg truncate">{biz.address}</span>
-                        </div>
-                        <div className="flex gap-2 flex-wrap">
-                          {keywords.slice(0, 3).map((kw, i) => (
-                            <span key={i} className="bg-surface-container px-2 py-1 rounded text-label-sm text-on-surface-variant">#{kw}</span>
-                          ))}
-                        </div>
+                      <div className="flex gap-1 overflow-hidden">
+                        {keywords.slice(0, 1).map((kw, i) => (
+                          <span key={i} className="bg-surface-container px-1 py-0.5 rounded text-[9px] text-on-surface-variant">#{kw}</span>
+                        ))}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="py-10 text-center text-slate-400 text-sm">
+              등록된 추천 업체가 없습니다.
+            </div>
+          )}
+        </section>
 
-              {/* Grid Cards (Next 4) */}
-              {recommendedBusinesses.length > 2 && (
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  {recommendedBusinesses.slice(2, 6).map((biz) => {
-                    const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
-                    const imageKeys = JSON.parse(biz.images || '[]');
-                    const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400';
-                    const keywords = JSON.parse(biz.keywords || '[]');
+        {/* All Businesses */}
+        <section className="px-margin-mobile pb-xl">
+          <div className="flex justify-between items-center mb-md">
+            <h3 className="font-headline-md text-headline-md text-primary">전체 업체 리스트</h3>
+          </div>
+          
+          {isAllLoading ? (
+            <div className="flex justify-center py-10">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          ) : allBusinesses.length > 0 ? (
+            <div className="grid grid-cols-2 gap-4">
+              {allBusinesses.map((biz) => {
+                const cat = categoryMap[biz.category] || { label: biz.category, chipBg: 'bg-slate-500', chipText: 'text-white' };
+                const imageKeys = JSON.parse(biz.images || '[]');
+                const imageUrl = imageKeys.length > 0 ? (imageKeys[0].startsWith('http') ? imageKeys[0] : `/api/media/${imageKeys[0]}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400';
+                const keywords = JSON.parse(biz.keywords || '[]');
 
-                    return (
-                      <div 
-                        key={biz.id} 
-                        onClick={() => navigate(`/business/${biz.id}`)}
-                        className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
-                      >
-                        <div className="h-28 w-full relative">
-                          <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
-                          <div className={`absolute top-2 left-2 ${cat.chipBg} ${cat.chipText} px-2 py-0.5 rounded-full text-[10px] font-bold`}>{cat.label}</div>
-                        </div>
-                        <div className="p-3">
-                          <h4 className="text-body-md font-bold text-on-surface truncate">
-                            {biz.name}
-                            <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
-                          </h4>
-                          <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
-                          <div className="flex items-center gap-0.5 text-outline mb-2">
-                            <span className="material-symbols-outlined text-[14px]">location_on</span>
-                            <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>
-                          </div>
-                          <div className="flex gap-1 overflow-hidden">
-                            {keywords.slice(0, 1).map((kw, i) => (
-                              <span key={i} className="bg-surface-container px-1 py-0.5 rounded text-[9px] text-on-surface-variant">#{kw}</span>
-                            ))}
-                          </div>
-                        </div>
+                return (
+                  <div 
+                    key={biz.id} 
+                    onClick={() => navigate(`/business/${biz.id}`)}
+                    className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm flex flex-col cursor-pointer hover:shadow-md transition-shadow"
+                  >
+                    <div className="h-28 w-full relative">
+                      <img alt={biz.name} className="w-full h-full object-cover" src={imageUrl}/>
+                      <div className={`absolute top-2 left-2 ${cat.chipBg} ${cat.chipText} px-2 py-0.5 rounded-full text-[10px] font-bold`}>{cat.label}</div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="text-body-md font-bold text-on-surface truncate">
+                        {biz.name}
+                        <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
+                      </h4>
+                      <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
+                      <div className="flex items-center gap-0.5 text-outline mb-2">
+                        <span className="material-symbols-outlined text-[14px]">location_on</span>
+                        <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
-            </>
+                      <div className="flex gap-1 overflow-hidden">
+                        {keywords.slice(0, 1).map((kw, i) => (
+                          <span key={i} className="bg-surface-container px-1 py-0.5 rounded text-[9px] text-on-surface-variant">#{kw}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <div className="py-10 text-center text-slate-400 text-sm">
               등록된 업체가 없습니다.
