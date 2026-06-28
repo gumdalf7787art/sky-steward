@@ -476,23 +476,7 @@ const BusinessEdit = () => {
                             {bizStatus.message && <p className={`text-[11px] ml-1 font-bold ${bizStatus.success ? 'text-emerald-500' : 'text-rose-500'}`}>{bizStatus.message}</p>}
                         </div>
 
-                        <div className="space-y-1.5 relative" ref={searchRef}>
-                            <label className="text-xs font-bold text-slate-500 ml-1">교회 선택</label>
-                            <div className="relative">
-                                <input type="text" value={churchSearch} onChange={(e) => { if (formData.church_id) setFormData(prev => ({ ...prev, church_id: '' })); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 검색하여 변경하세요" />
-                                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">{isSearchingChurches ? 'sync' : 'search'}</span>
-                            </div>
-                            {churchResults.length > 0 && (
-                                <div className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden animate-fadeIn">
-                                    {churchResults.map(c => (
-                                        <div key={c.id} onClick={() => { setFormData(prev => ({ ...prev, church_id: c.id })); setChurchSearch(c.name); setChurchResults([]); }} className="px-5 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-none">
-                                            <p className="font-bold text-slate-800">{c.name}</p>
-                                            <p className="text-[11px] text-slate-400">{c.address}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+
                     </div>
 
                     {/* Address Branding Section */}

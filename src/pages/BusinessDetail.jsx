@@ -374,7 +374,7 @@ const BusinessDetail = () => {
                             </h2>
                             <p className="text-primary font-black flex items-center gap-1 text-[13px] hover:underline cursor-pointer group">
                                 <span className="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">church</span>
-                                {data.business.church_name || "소속교회 정보 없음"}
+                                {"빛가온교회"}
                             </p>
                         </div>
 
@@ -403,7 +403,7 @@ const BusinessDetail = () => {
                                 <p className="text-sm font-bold text-primary flex items-center gap-1.5 leading-relaxed">
                                     <span className="material-symbols-outlined text-[16px]">church</span>
                                     <span>
-                                        {data.business.church_name || "소속교회 정보 없음"}
+                                        {"빛가온교회"}
                                     </span>
                                 </p>
                             <p className="text-sm text-slate-500 leading-relaxed font-medium">

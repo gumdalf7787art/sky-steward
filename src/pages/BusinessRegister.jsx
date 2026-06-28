@@ -446,24 +446,7 @@ const BusinessRegister = () => {
                             {bizStatus.message && <p className={`text-[11px] font-bold mt-1.5 ml-1 ${bizStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>{bizStatus.message}</p>}
                         </div>
 
-                        {/* Church Search */}
-                        <div className="space-y-1.5 relative" ref={searchRef}>
-                            <label className="text-xs font-bold text-slate-500 ml-1">교회 선택</label>
-                            <div className="relative">
-                                <input type="text" value={selectedChurch ? selectedChurch.name : churchSearch} onChange={(e) => { if (selectedChurch) setSelectedChurch(null); setChurchSearch(e.target.value); }} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium pr-12" placeholder="교회 이름을 입력하여 검색하세요" />
-                                <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-300">{isSearchingChurches ? 'sync' : 'search'}</span>
-                            </div>
-                            {churchResults.length > 0 && !selectedChurch && (
-                                <div className="absolute z-50 left-0 right-0 top-full mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl max-h-60 overflow-y-auto overflow-hidden divide-y divide-slate-50">
-                                    {churchResults.map(church => (
-                                        <button key={church.id} type="button" onClick={() => { setSelectedChurch(church); setFormData(prev => ({ ...prev, church_id: church.id })); setChurchResults([]); }} className="w-full px-5 py-4 text-left hover:bg-slate-50 transition-colors flex flex-col gap-0.5">
-                                            <span className="font-bold text-slate-800 text-sm">{church.name}</span>
-                                            <span className="text-[11px] text-slate-400 leading-tight">{church.address}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+
 
                         {/* Category & Keywords */}
                         <div className="space-y-1.5">

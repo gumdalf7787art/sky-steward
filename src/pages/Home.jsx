@@ -231,7 +231,7 @@ const Home = () => {
                         {biz.name}
                         <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
                       </h4>
-                      <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
+                      <p className="text-[11px] text-primary font-semibold mb-1">{"빛가온교회"}</p>
                       <div className="flex items-center gap-0.5 text-outline mb-2">
                         <span className="material-symbols-outlined text-[14px]">location_on</span>
                         <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>
@@ -286,7 +286,7 @@ const Home = () => {
                         {biz.name}
                         <span className="text-slate-400 font-medium text-[10px] ml-1 opacity-80">({biz.ceo_name})</span>
                       </h4>
-                      <p className="text-[11px] text-primary font-semibold mb-1">{biz.church_name || '우리교회'}</p>
+                      <p className="text-[11px] text-primary font-semibold mb-1">{"빛가온교회"}</p>
                       <div className="flex items-center gap-0.5 text-outline mb-2">
                         <span className="material-symbols-outlined text-[14px]">location_on</span>
                         <span className="text-[10px] truncate">{biz.address.split(' ').slice(0, 2).join(' ')}</span>

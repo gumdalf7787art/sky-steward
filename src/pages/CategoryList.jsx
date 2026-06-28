@@ -203,7 +203,7 @@ const CategoryList = () => {
                 </div>
                 
                 <p className="text-[12px] text-primary font-semibold mb-1 truncate">
-                  {biz.church_name}
+                  {"빛가온교회"}
                 </p>
                 
                 <div className="flex items-center gap-1 text-outline mb-1.5 text-[11px] truncate w-full">
