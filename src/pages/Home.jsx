@@ -290,13 +290,12 @@ const Home = () => {
         <section className="px-margin-mobile py-10 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
           <div className="w-full">
             <div className="flex flex-col space-y-2">
-              <h4 className="text-body-lg font-bold text-slate-800 dark:text-slate-200">블루프라임</h4>
+              <h4 className="text-body-lg font-bold text-slate-800 dark:text-slate-200">빛가온교회 하늘청지기</h4>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-label-lg text-slate-500 dark:text-slate-400">
-                <p>대표 : 김덕규</p>
-                <p>사업자등록번호 : 153-87-03544</p>
+                <p>문의 : goodduck2@naver.com</p>
               </div>
               <p className="text-label-md text-slate-400 dark:text-slate-500 pt-4">
-                Copyright © BluePrime. All rights reserved.
+                Copyright © 빛가온교회 하늘청지기. All rights reserved.
               </p>
             </div>
           </div>
