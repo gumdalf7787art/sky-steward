@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useSetRecoilState } from 'recoil';
+import { authState } from '../atoms/auth';
+import Header from '../components/Header';
+import BottomNav from '../components/BottomNav';
 
-function NaverCallback() {
+const NaverCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const setAuth = useSetRecoilState(authState);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -36,8 +39,16 @@ function NaverCallback() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-          // AuthContext의 login 함수를 호출하여 로컬 상태 업데이트
-          login(data.token, data.user);
+          // Update global auth state
+          setAuth({
+            isAuthenticated: true,
+            user: data.user,
+            token: data.token
+          });
+          
+          // Save to localStorage for persistence
+          localStorage.setItem('sky_token', data.token);
+          localStorage.setItem('sky_user', JSON.stringify(data.user));
           
           // 메인 페이지로 이동 (replace: true 로 설정하여 뒤로가기 방지)
           navigate('/', { replace: true });
@@ -51,32 +62,34 @@ function NaverCallback() {
     };
 
     processNaverAuth();
-  }, [location, navigate, login]);
-
-  if (error) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center p-4">
-        <div className="bg-red-50 text-red-600 p-8 rounded-xl text-center max-w-md w-full shadow-sm">
-          <span className="material-symbols-outlined text-5xl mb-4">error</span>
-          <h2 className="text-xl font-bold mb-4">{error}</h2>
-          <button 
-            onClick={() => navigate('/login')}
-            className="w-full bg-slate-900 text-white py-3 rounded-lg font-medium hover:bg-slate-800 transition-colors"
-          >
-            로그인 페이지로 돌아가기
-          </button>
-        </div>
-      </div>
-    );
-  }
+  }, [location, navigate, setAuth]);
 
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center">
-      <div className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-      <p className="text-slate-600 font-medium text-lg animate-pulse">
-        네이버 로그인 중입니다...
-      </p>
-    </div>
+    <>
+      <Header />
+      <main className="max-w-md mx-auto px-margin-mobile py-xl text-center min-h-[60vh] flex flex-col justify-center items-center">
+        {error ? (
+          <div className="bg-error-container text-on-error-container p-4 rounded-xl flex flex-col items-center gap-3">
+            <span className="material-symbols-outlined text-[32px]">error</span>
+            <p className="font-medium text-body-lg">{error}</p>
+            <button 
+              onClick={() => navigate('/login')}
+              className="mt-4 px-6 py-2 bg-primary text-white rounded-lg font-bold"
+            >
+              로그인 페이지로 돌아가기
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-16 h-16 border-4 border-[#03C75A] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-body-lg text-slate-600 font-medium animate-pulse">
+              네이버 계정으로 로그인 중입니다...
+            </p>
+          </div>
+        )}
+      </main>
+      <BottomNav />
+    </>
   );
 }
 
