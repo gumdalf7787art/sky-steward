@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     profile_image TEXT,
     role TEXT DEFAULT 'USER', -- USER, BIZ, ADMIN, SUPER
     kakao_id TEXT UNIQUE,
+    naver_id TEXT UNIQUE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
