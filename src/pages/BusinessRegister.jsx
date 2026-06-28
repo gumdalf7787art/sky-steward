@@ -305,13 +305,13 @@ const BusinessRegister = () => {
         e.preventDefault();
         setError('');
 
-        if (!formData.name || !formData.ceo_name || !formData.biz_no || !formData.category || !formData.phone || !formData.address) {
+        if (!formData.name || !formData.ceo_name || !formData.category) {
             setError('필수 항목(* 표시)을 모두 입력해주세요.');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
-        if (!bizStatus.success) { setError('사업자등록번호 중복 확인을 해주세요.'); return; }
+        if (formData.biz_no && !bizStatus.success) { setError('사업자등록번호 중복 확인을 해주세요.'); return; }
 
         setLoading(true);
         const body = new FormData();
@@ -428,9 +428,9 @@ const BusinessRegister = () => {
                             <input required name="ceo_name" type="text" value={formData.ceo_name} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="대표자 성함을 입력하세요" />
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">연락처 <span className="text-rose-500 font-black">*</span></label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">연락처</label>
                             <div className="flex flex-col gap-2">
-                                <input required name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 010-1234-5678" />
+                                <input name="phone" type="tel" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="예: 010-1234-5678" />
                                 <label className="flex items-center gap-1.5 cursor-pointer text-[11px] font-bold text-slate-400 select-none ml-1">
                                     <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded-md border-slate-300 text-primary focus:ring-primary/20" />
                                     전화번호 상세페이지 노출 안 함
@@ -438,9 +438,9 @@ const BusinessRegister = () => {
                             </div>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업자등록번호 <span className="text-rose-500 font-black">*</span></label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">사업자등록번호</label>
                             <div className="flex gap-2">
-                                <input required name="biz_no" type="text" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
+                                <input name="biz_no" type="text" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
                                 <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || bizStatus.success} className={`px-5 rounded-2xl font-bold text-xs shadow-sm transition-all ${bizStatus.success ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-800 text-white active:scale-95'}`}>{bizStatus.loading ? '...' : bizStatus.success ? '확인됨' : '중복확인'}</button>
                             </div>
                             {bizStatus.message && <p className={`text-[11px] font-bold mt-1.5 ml-1 ${bizStatus.success ? 'text-emerald-600' : 'text-rose-500'}`}>{bizStatus.message}</p>}
@@ -485,11 +485,10 @@ const BusinessRegister = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">영업장 주소 <span className="text-rose-500 font-black">*</span></label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">영업장 주소</label>
                             <div className="space-y-2">
                                 <div className="relative group" onClick={handleAddressSearch}>
                                     <input 
-                                        required 
                                         readOnly
                                         name="address" 
                                         type="text" 

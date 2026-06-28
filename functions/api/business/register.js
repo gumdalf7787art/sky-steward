@@ -39,17 +39,19 @@ export async function onRequestPost(context) {
         const operatingHours = formData.get("operating_hours") || "";
         const parkingInfo = formData.get("parking_info") || "";
 
-        if (!name || !bizNo || !category || !ceoName || !phone || !address) {
+        if (!name || !category || !ceoName) {
             return new Response(JSON.stringify({ error: "필수 항목(* 표시)을 모두 입력해주세요." }), { status: 400 });
         }
 
         // 1. Check if biz_no already exists
-        const existing = await env.DB.prepare("SELECT id FROM businesses WHERE biz_no = ?")
-            .bind(bizNo)
-            .first();
+        if (bizNo && bizNo.trim() !== '') {
+            const existing = await env.DB.prepare("SELECT id FROM businesses WHERE biz_no = ?")
+                .bind(bizNo)
+                .first();
 
-        if (existing) {
-            return new Response(JSON.stringify({ error: "이미 등록된 사업자번호입니다." }), { status: 400 });
+            if (existing) {
+                return new Response(JSON.stringify({ error: "이미 등록된 사업자번호입니다." }), { status: 400 });
+            }
         }
 
         // 2. Handle Image Uploads to R2

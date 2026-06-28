@@ -352,10 +352,10 @@ const BusinessEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        if (!formData.name || !formData.ceo_name || !formData.biz_no || !formData.category || !formData.phone || !formData.address) {
+        if (!formData.name || !formData.ceo_name || !formData.category) {
             setError('필수 항목을 모두 입력해주세요.'); window.scrollTo({ top: 0, behavior: 'smooth' }); return;
         }
-        if (!bizStatus.success) { setError('사업자번호 중복 확인을 해주세요.'); return; }
+        if (formData.biz_no && !bizStatus.success) { setError('사업자번호 중복 확인을 해주세요.'); return; }
         
         setSaving(true);
         const body = new FormData();
@@ -466,7 +466,7 @@ const BusinessEdit = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업자 등록번호 *</label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">사업자 등록번호</label>
                             <div className="flex gap-2">
                                 <input type="text" name="biz_no" value={formData.biz_no} onChange={handleChange} className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="000-00-00000" />
                                 <button type="button" onClick={handleBizCheck} disabled={bizStatus.loading || (formData.biz_no === formData.original_biz_no)} className="px-6 bg-slate-800 text-white rounded-2xl font-bold text-sm disabled:bg-slate-200">
@@ -484,7 +484,7 @@ const BusinessEdit = () => {
                         <h3 className="text-sm font-black text-primary uppercase tracking-widest ml-1">연락처 및 위치</h3>
                         
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">연락처 *</label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">연락처</label>
                             <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl outline-none focus:bg-white focus:border-primary transition-all text-slate-800 font-medium" placeholder="010-0000-0000" />
                             <label className="flex items-center gap-2 mt-2 ml-1 cursor-pointer">
                                 <input type="checkbox" name="show_phone" checked={formData.show_phone} onChange={handleChange} className="w-4 h-4 rounded-md accent-primary" />
@@ -493,7 +493,7 @@ const BusinessEdit = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-slate-500 ml-1">사업체 주소 *</label>
+                            <label className="text-xs font-bold text-slate-500 ml-1">사업체 주소</label>
                             <div className="flex gap-2 mb-2">
                                 <input type="text" value={formData.address} readOnly className="flex-1 px-5 py-4 bg-slate-100 border border-slate-300 rounded-2xl text-slate-400 font-medium" placeholder="주소 검색을 이용하세요" />
                                 <button type="button" onClick={openPostcode} className="px-6 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">주소 검색</button>

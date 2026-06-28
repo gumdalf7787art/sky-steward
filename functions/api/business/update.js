@@ -57,7 +57,7 @@ export async function onRequestPost(context) {
         const operatingHours = formData.get("operating_hours") || "";
         const parkingInfo = formData.get("parking_info") || "";
 
-        if (!name || !bizNo || !category || !ceoName || !phone || !address) {
+        if (!name || !category || !ceoName) {
             return new Response(JSON.stringify({ error: "필수 항목(* 표시)을 모두 입력해주세요." }), { status: 400 });
         }
 
