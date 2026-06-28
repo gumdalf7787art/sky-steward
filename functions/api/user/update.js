@@ -71,7 +71,7 @@ export async function onRequestPost({ request, env }) {
                     });
 
                     // DB에는 프록시 URL 저장
-                    const imageUrl = `/api/media/${r2Key}`;
+                    const imageUrl = `/api/media/${r2Key}?t=${Date.now()}`;
                     updates.push('profile_image = ?');
                     values.push(imageUrl);
                 } catch (r2Error) {

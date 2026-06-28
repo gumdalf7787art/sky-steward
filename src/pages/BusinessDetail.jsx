@@ -597,7 +597,7 @@ const BusinessDetail = () => {
                                         <div className="flex items-center gap-2.5">
                                             <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center text-slate-300 font-black text-xs border border-slate-50 shadow-sm">
                                                 {review.user_image ? (
-                                                    <img src={review.user_image.startsWith('data:image') ? review.user_image : `/api/media/${review.user_image}`} className="w-full h-full object-cover" />
+                                                    <img src={review.user_image.startsWith('data:image') || review.user_image.startsWith('/api/media/') ? review.user_image : `/api/media/${review.user_image}`} className="w-full h-full object-cover" />
                                                 ) : (review.user_nickname?.charAt(0) || "?")}
                                             </div>
                                             <div className="space-y-0.5">
